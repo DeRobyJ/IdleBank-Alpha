@@ -1,0 +1,375 @@
+{
+  "itinerary": [
+    {
+      "name": "New York",
+      "raw material": "AA",
+      "production": ["DB", "AE"],
+      "type": "capital",
+      "central bank": "FED"
+    },
+    {
+      "name": "Philadelphia",
+      "raw material": "BA",
+      "production": ["BB", "DF"],
+      "type": "city",
+      "final product": "CC"
+    },
+    {
+      "name": "Los Angeles",
+      "raw material": "CA",
+      "production": ["CB", "AB"],
+      "type": "city",
+      "final product": "GC"
+    },
+    {
+      "name": "Bogotá",
+      "raw material": "EA",
+      "production": ["JC", "KB"],
+      "type": "city",
+      "final product": "EB"
+    },
+    {
+      "name": "Santiago",
+      "raw material": "FA",
+      "production": ["AB", "KD"],
+      "type": "city",
+      "final product": "AC"
+    },
+    {
+      "name": "Buenos Aires",
+      "raw material": "GA",
+      "production": ["DF", "MB"],
+      "type": "city",
+      "final product": "AD"
+    },
+    {
+      "name": "São Paulo",
+      "raw material": "HA",
+      "production": ["HB", "AB"],
+      "type": "capital",
+      "central bank": "CBB"
+    },
+    {
+      "name": "Rio de Janeiro",
+      "raw material": "DA",
+      "production": ["JC", "DF"],
+      "type": "city",
+      "final product": "AF"
+    },
+    {
+      "name": "Mexico City",
+      "raw material": "FA",
+      "production": ["FB", "DB"],
+      "type": "city",
+      "final product": "CC"
+    },
+    {
+      "name": "Toronto",
+      "raw material": "JA",
+      "production": ["GD", "LB"],
+      "type": "city",
+      "final product": "GB"
+    },
+    {
+      "name": "Glasgow",
+      "raw material": "IA",
+      "production": ["GD", "FB"],
+      "type": "city",
+      "final product": "JB"
+    },
+    {
+      "name": "London",
+      "raw material": "GA",
+      "production": ["AE", "KB"],
+      "type": "city",
+      "final product": "LC"
+    },
+    {
+      "name": "Paris",
+      "raw material": "GA",
+      "production": ["DF", "MB"],
+      "type": "capital",
+      "central bank": "ECB"
+    },
+    {
+      "name": "Amsterdam",
+      "raw material": "EA",
+      "production": ["KB", "AE"],
+      "type": "city",
+      "final product": "GE"
+    },
+    {
+      "name": "Rhine-Ruhr",
+      "raw material": "JA",
+      "production": ["GD", "HB"],
+      "type": "city",
+      "final product": "DE"
+    },
+    {
+      "name": "Moscow",
+      "raw material": "DA",
+      "production": ["DD", "JC"],
+      "type": "city",
+      "final product": "DC"
+    },
+    {
+      "name": "Milan",
+      "raw material": "CA",
+      "production": ["CB", "AB"],
+      "type": "city",
+      "final product": "MC"
+    },
+    {
+      "name": "Madrid",
+      "raw material": "IA",
+      "production": ["KB", "KD"],
+      "type": "city",
+      "final product": "KC"
+    },
+    {
+      "name": "Lagos",
+      "raw material": "DA",
+      "production": ["DD", "BB"],
+      "type": "capital",
+      "central bank": "ACB"
+    },
+    {
+      "name": "Johannesburg",
+      "raw material": "KA",
+      "production": ["AB", "DF"],
+      "type": "city",
+      "final product": "AF"
+    },
+    {
+      "name": "Cairo",
+      "raw material": "DA",
+      "production": ["JC", "AE"],
+      "type": "city",
+      "final product": "HC"
+    },
+    {
+      "name": "Jerusalem",
+      "raw material": "KA",
+      "production": ["HB", "BB"],
+      "type": "city",
+      "final product": "BC"
+    },
+    {
+      "name": "Istanbul",
+      "raw material": "AA",
+      "production": ["AE", "DB"],
+      "type": "city",
+      "final product": "DE"
+    },
+    {
+      "name": "Almaty",
+      "raw material": "LA",
+      "production": ["FB", "KB"],
+      "type": "city",
+      "final product": "JD"
+    },
+    {
+      "name": "Delhi",
+      "raw material": "GA",
+      "production": ["MB", "DF"],
+      "type": "capital",
+      "central bank": "RBI"
+    },
+    {
+      "name": "Mumbai",
+      "raw material": "CA",
+      "production": ["AB", "DB"],
+      "type": "city",
+      "final product": "DC"
+    },
+    {
+      "name": "Kolkata",
+      "raw material": "KA",
+      "production": ["JC", "MB"],
+      "type": "city",
+      "final product": "HC"
+    },
+    {
+      "name": "Singapore",
+      "raw material": "BA",
+      "production": ["DF", "GD"],
+      "type": "city",
+      "final product": "DG"
+    },
+    {
+      "name": "Jakarta",
+      "raw material": "NA",
+      "production": ["DD", "AB"],
+      "type": "city",
+      "final product": "AD"
+    },
+    {
+      "name": "Melbourne",
+      "raw material": "KA",
+      "production": ["KB", "AE"],
+      "type": "city",
+      "final product": "AC"
+    },
+    {
+      "name": "Sydney",
+      "raw material": "LA",
+      "production": ["LB", "JC"],
+      "type": "capital",
+      "central bank": "RBA"
+    },
+    {
+      "name": "Bangkok",
+      "raw material": "NA",
+      "production": ["KB", "HB"],
+      "type": "city",
+      "final product": "JB"
+    },
+    {
+      "name": "Ho Chi Minh City",
+      "raw material": "IA",
+      "production": ["BB", "FB"],
+      "type": "city",
+      "final product": "KE"
+    },
+    {
+      "name": "Guangzhou",
+      "raw material": "HA",
+      "production": ["MB", "GD"],
+      "type": "city",
+      "final product": "DC"
+    },
+    {
+      "name": "Shenzhen",
+      "raw material": "FA",
+      "production": ["CB", "DF"],
+      "type": "city",
+      "final product": "DG"
+    },
+    {
+      "name": "Hong Kong",
+      "raw material": "MA",
+      "production": ["DF", "FB"],
+      "type": "city",
+      "final product": "FC"
+    },
+    {
+      "name": "Shanghai",
+      "raw material": "KA",
+      "production": ["AB", "AE"],
+      "type": "capital",
+      "central bank": "PBC"
+    },
+    {
+      "name": "Osaka",
+      "raw material": "BA",
+      "production": ["GD", "JC"],
+      "type": "city",
+      "final product": "BC"
+    },
+    {
+      "name": "Tokyo",
+      "raw material": "CA",
+      "production": ["KB", "AB"],
+      "type": "city",
+      "final product": "GB"
+    },
+    {
+      "name": "Seoul",
+      "raw material": "FA",
+      "production": ["DB", "KD"],
+      "type": "city",
+      "final product": "FC"
+    },
+    {
+      "name": "Beijing",
+      "raw material": "NA",
+      "production": ["MB", "DF"],
+      "type": "city",
+      "final product": "JD"
+    },
+    {
+      "name": "Chicago",
+      "raw material": "GA",
+      "production": ["DD", "FB"],
+      "type": "city",
+      "final product": "AD"
+    }
+  ],
+  "requirement": {
+    "AC": "AB",
+    "AD": "AB",
+    "AF": "AE",
+    "BC": "BB",
+    "CC": "CB",
+    "DC": "DB",
+    "DE": "DD",
+    "DG": "DF",
+    "EB": "EA",
+    "FC": "FB",
+    "GB": "GA",
+    "GC": "GA",
+    "GE": "GD",
+    "HC": "HB",
+    "JB": "JA",
+    "JD": "JC",
+    "KC": "KB",
+    "KE": "KD",
+    "LC": "LB",
+    "MC": "MB",
+    "AB": "AA",
+    "AE": "AA",
+    "BB": "BA",
+    "CB": "CA",
+    "DB": "DA",
+    "DD": "DA",
+    "DF": "DA",
+    "FB": "FA",
+    "GD": "GA",
+    "HB": "HA",
+    "JC": "JA",
+    "KB": "KA",
+    "KD": "KA",
+    "LB": "LA",
+    "MB": "MA"
+  },
+  "price": {
+    "IA": 300,
+    "NA": 40,
+    "EA": 7000,
+    "GA": 50,
+    "JA": 6000,
+    "AA": 100,
+    "BA": 20000,
+    "CA": 500000,
+    "DA": 4000,
+    "FA": 10000,
+    "HA": 80000,
+    "KA": 5000,
+    "LA": 50000,
+    "MA": 500
+  },
+  "prize": {
+    "AC" : {"money": 3000, "blocks": 5},
+    "AD" : {"money": 1500, "blocks": 5},
+    "AF" : {"money": 3000, "blocks": 10},
+    "BC" : {"money": 150000, "blocks": 17},
+    "CC" : {"money": 2000000, "blocks": 40},
+    "DC" : {"money": 40000, "blocks": 10},
+    "DE" : {"money": 40000, "blocks": 7},
+    "DG" : {"money": 30000, "blocks": 7},
+    "FC" : {"money": 40000, "blocks": 3},
+    "GE" : {"money": 1200, "blocks": 12},
+    "HC" : {"money": 500000, "blocks": 25},
+    "JD" : {"money": 70000, "blocks": 13},
+    "KC" : {"money": 100000, "blocks": 35},
+    "KE" : {"money": 200000, "blocks": 70},
+    "LC" : {"money": 100000, "blocks": 55},
+    "MC" : {"money": 15000, "blocks": 35},
+    "EB" : {"money": 15000, "blocks": 7},
+    "GB" : {"money": 500, "blocks": 5},
+    "GC" : {"money": 1000, "blocks": 3},
+    "JB" : {"money": 40000, "blocks": 12},
+    "IA" : {"money": 1500, "blocks": 3},
+    "NA" : {"money": 380, "blocks": 5}
+  }
+}

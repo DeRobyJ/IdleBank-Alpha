@@ -1,0 +1,3097 @@
+{
+  "Done": {
+    "English": "Done!",
+    "Italiano": "Fatto!",
+    "Français": "",
+    "Español": "",
+    "Português": "Pronto!"
+  },
+  "Insufficient balance": {
+    "English": "You need more money!",
+    "Italiano": "Servono più soldi!",
+    "Français": "",
+    "Español": "",
+    "Português": "Dinheiro insuficiente!"
+  },
+  "Insufficient blocks": {
+    "English": "You need more blocks!",
+    "Italiano": "Servono più blocchi!",
+    "Français": "",
+    "Español": "",
+    "Português": "Blocos insuficientes!"
+  },
+  "Low offer": {
+    "English": "Can't create an offer this low, please offer an higher price.",
+    "Italiano": "Non puoi offrire così poco, riprova con un'offerta più alta.",
+    "Français": "",
+    "Español": "",
+    "Português": "Oferta muito baixa, tente oferecer um preço mais alto."
+  },
+  "Reserve error": {
+    "English": "Couldn't reserve an id for your offer, please try again.",
+    "Italiano": "Ho avuto un errore nel riservare un id per la tua offerta, ti prego di riprovare.",
+    "Français": "",
+    "Español": "",
+    "Português": "Erro ao reservar um id para sua oferta, tente novamente."
+  },
+  "Upload error": {
+    "English": "Error while putting your offer, please try again.",
+    "Italiano": "Ho avuto un errore nell'inserire un id per la tua offerta, ti prego di riprovare.",
+    "Français": "",
+    "Español": "",
+    "Português": "Erro ao colocar sua oferta, tente novamente."
+  },
+  "No MMMB found": {
+    "English": "You don't have enough blocks to sell!",
+    "Italiano": "Non hai abbastanza blocchi da vendere!",
+    "Français": "",
+    "Español": "",
+    "Português": "Nenhum bloco disponível para venda!"
+  },
+  "No available offers": {
+    "English": "Nobody is buying this block for this currency.",
+    "Italiano": "Nessuno sta comprando blocchi di questo tipo per questa valuta.",
+    "Français": "",
+    "Español": "",
+    "Português": "Ninguém está comprando um bloco por esta moeda."
+  },
+  "Offer retrieval error": {
+    "English": "Offer found, but some error occurred, please try again.",
+    "Italiano": "Ho trovato l'offerta, ma c'è stato un errore, ti prego di riprovare.",
+    "Français": "",
+    "Español": "",
+    "Português": "Oferta encontrada, mas um erro ocorreu, tente novamente."
+  },
+  "Transaction error": {
+    "English": "Couldn't perform the transaction, please contact support.",
+    "Italiano": "La transazione non è andata a buon fine, contatta il supporto.",
+    "Français": "",
+    "Español": "",
+    "Português": "A transação falhou, contate o suporte."
+  },
+  "Offer notify accepted": {
+    "English": "You offer has been accepted, you got 1 {block_type}!",
+    "Italiano": "La tua offerta è stata accettata, hai ottenuto 1 {block_type}",
+    "Français": "",
+    "Español": ""
+  },
+  "Offer notify button": {
+    "English": "Buy one more!",
+    "Italiano": "Comprane un altro!",
+    "Français": "",
+    "Español": ""
+  },
+  "Maintenance message": {
+    "English": "The game is currently under maintenance, check out @idlebank for updates!",
+    "Italiano": "Il gioco è in manutenzione, controlla @idlebank per aggiornamenti!",
+    "Français": "",
+    "Español": "",
+    "Português": "O jogo está sob manutenção, dê uma olhada em @idlebank para atualizações!"
+  },
+  "MM membership": {
+    "English": "Membership: {membcode}\n",
+    "Italiano": "Associazione: {membcode}\n",
+    "Français": "",
+    "Español": "",
+    "Português": "Associação: {membcode}\n"
+  },
+  "MM main balance": {
+    "English": "Balance: {value}{sym}\n",
+    "Italiano": "Saldo: {value}{sym}\n",
+    "Français": "",
+    "Español": "",
+    "Português": "Saldo: {value}{sym}\n"
+  },
+  "MM other balance": {
+    "English": "Other currencies:",
+    "Italiano": "Altre valute:",
+    "Français": "",
+    "Español": "",
+    "Português": "Outras moedas:"
+  },
+  "MM blocks": {
+    "English": "Blocks: ",
+    "Italiano": "Blocchi: ",
+    "Français": "",
+    "Español": "",
+    "Português": "Blocos: "
+  },
+  "MM production w sec": {
+    "English": "Your bank produces:\n{hourly_rate}{sym}/h (~{persec_rate}{sym}/second)\n",
+    "Italiano": "La tua banca produce:\n{hourly_rate}{sym}/h (~{persec_rate}{sym}/secondo)\n",
+    "Français": "",
+    "Español": "",
+    "Português": "Seu banco produz:\n{hourly_rate}{sym}/h (~{persec_rate}{sym}/segundo)\n"
+  },
+  "MM production w min": {
+    "English": "Your bank produces:\n{hourly_rate}{sym}/h (~{permin_rate}{sym}/minute)\n",
+    "Italiano": "La tua banca produce:\n{hourly_rate}{sym}/h (~{permin_rate}{sym}/minuto)\n",
+    "Français": "",
+    "Español": "",
+    "Português": "Seu banco produz:\n{hourly_rate}{sym}/h (~{permin_rate}{sym}/minuto)\n"
+  },
+  "MM global production": {
+    "English": "Global production: ",
+    "Italiano": "Produzione globale: ",
+    "Français": "",
+    "Español": "",
+    "Português": "Produção global: "
+  },
+  "MM needed to upgrade": {
+    "English": "\nTo upgrade your production, you need:\n",
+    "Italiano": "\nPer migliorare la tua produzione, ti serve:\n",
+    "Français": "",
+    "Español": "",
+    "Português": "\nPara melhorar sua produção, é necessário:\n"
+  },
+  "MM needed money": {
+    "English": "Money: {val}{sym} ",
+    "Italiano": "Soldi: {val}{sym} ",
+    "Français": "",
+    "Español": "",
+    "Português": "Dinheiro: {val}{sym} "
+  },
+  "MM needed money seconds": {
+    "English": [
+      "({time} seconds, kinda)\n",
+      "(just about {time} seconds)\n",
+      "(maximum {time} seconds, I swear)\n",
+      "({time} seconds, give or take)\n",
+      "(before you can say '{time} seconds')\n",
+      "(approximately close to {time} seconds)\n",
+      "({time} seconds, if my math is correct)\n",
+      "(keep updating till these {time} seconds pass)\n"
+    ],
+    "Italiano": [
+      "({time} secondi circa)\n",
+      "({time} secondi... penso)\n",
+      "({time} secondi, giù di lì)\n",
+      "(massimo massimo {time} secondi)\n",
+      "({time} secondi)\n",
+      "(mi dicono {time} secondi)\n",
+      "(daaammi sooolo un minuto... o {time} secondi)\n"
+    ],
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "MM needed money minutes": {
+    "English": "({time} minutes)\n",
+    "Italiano": "({time} minuti)\n",
+    "Français": "",
+    "Español": "",
+    "Português": "({time} minutos)\n"
+  },
+  "MM needed money hours": {
+    "English": "({time} hours)\n",
+    "Italiano": "({time} ore)\n",
+    "Français": "",
+    "Español": "",
+    "Português": "({time} horas)\n"
+  },
+  "MM needed money days": {
+    "English": "({time} days)\n",
+    "Italiano": "({time} giorni)\n",
+    "Français": "",
+    "Español": "",
+    "Português": "({time} dias)\n"
+  },
+  "MM needed blocks" : {
+    "English": "Blocks: {val}\n",
+    "Italiano": "Blocchi: {val}\n",
+    "Français": "",
+    "Español": "",
+    "Português": "Blocos: {val}\n"
+  },
+  "MM missing extras" : {
+    "English": "Seasonal extra costs: ",
+    "Italiano": "Costi extra per Stagione: ",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "MM titles" : {
+    "English":  ["Piggy Bank",              "School treasury",        "Mattress Bank", "Cooperative Bank", "Credit Union",      "National Bank",    "Inflation Master",         "International Bank", "Quantitative Massager",      "Banknote Lasagna",     "Whatever it Prints",     "Multithreaded Crypto Miner", "Solar System Bank", "Intergalactic Billionaire Generator"],
+    "Italiano": ["Porcellino Salvadanaio", "Fondo Cassa Scolastico", "Banca Materasso", "Banca Popolare", "Credito Cooperativo", "Banca Nazionale", "Maestro dell'Inflazione", "Banca Internazionale", "Massaggiatore Quantitativo", "Lasagna di Banconote", "Stampi quel che Stampi", "Crypto Miner Multiprocesso", "Banca del Sistema Solare", "Generatore di Miliardari Intergalattici"],
+    "Français": ["",              "",        "", "", "",      "",    "",         "", "",      "",     "",     "", "", ""],
+    "Español":  ["",              "",        "", "", "",      "",    "",         "", "",      "",     "",     "", "", ""],
+    "Português": ["Cofrinho", "Tesoureiro escolar", "Banco de Colchão", "Banco Cooperativo", "União do Crédito", "Banco Nacional", "Mestre da Inflação", "Banco Internacional", "Massageador Quantitativo", "Lasanha de Notas", "Tanto faz o que Imprime", "Crypto Miner Multifileirado", "Banco do Sistema Solar", "Gerador Bilionário Intergaláctico"]
+  },
+  "button upgrade prod": {
+    "English": "Upgrade production for {money_cost}{sym} and {block_cost} {type}",
+    "Italiano": "Migliora produzione per {money_cost}{sym} e {block_cost} {type}",
+    "Français": "",
+    "Español": "",
+    "Português": "Melhorar produção por {money_cost}{sym} e {block_cost} {type}"
+  },
+  "button upgrade prod bulk" : {
+    "English": "Multi-upgrade ({levels} levels)",
+    "Italiano": "Multi-miglioramento ({levels} livelli)",
+    "Français": "",
+    "Español": ""
+  },
+  "upgrade prod bulk confirmation" : {
+    "English": "Are you sure you want to spend {money_cost}{sym} and {block_cost} {block_type} to get to level {final_level}?\nThis will grant your faction {points} points for this Season!\n\n",
+    "Italiano": "Stai per spendere {money_cost}{sym} e {block_cost} {block_type} per raggiungere il livello {final_level}. Va bene?\nLa tua fazione otterrà {points} punti per questa Stagione!\n\n",
+    "Français": "",
+    "Español": ""
+  },
+  "button sell blocks": {
+    "English": "Sell blocks",
+    "Italiano": "Vendi blocchi",
+    "Français": "",
+    "Español": "",
+    "Português": "Vender blocos"
+  },
+  "button put block request": {
+    "English": "Put block request",
+    "Italiano": "Crea richiesta blocchi",
+    "Français": "",
+    "Español": "",
+    "Português": "Criar busca por blocos"
+  },
+  "button update": {
+    "English": "Update",
+    "Italiano": "Aggiorna",
+    "Français": "",
+    "Español": "",
+    "Português": "Atualizar"
+  },
+  "button settings": {
+    "English": "Settings",
+    "Italiano": "Impostazioni",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "settings menu": {
+    "English": "Here are your current settings.\nPress the buttons to change them!",
+    "Italiano": "Ecco le tue impostazioni correnti.\nPremi i pulsanti per cambiarle!",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "settings Bulk_confirm": {
+    "English": "Confirm Multi-upgrade",
+    "Italiano": "Conferma Miglioramento Multiplo",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "settings CP_notification": {
+    "English": "Coinopoly notifications",
+    "Italiano": "Notifiche Coinopoly",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "button main sell option": {
+    "English": "Sell {block_type} for {currency_sym}",
+    "Italiano": "Vendi {block_type} per {currency_sym}",
+    "Français": "",
+    "Español": "",
+    "Português": "Vender {block_type} por {currency_sym}"
+  },
+  "button main buy option": {
+    "English": "Buy {block_type} for {currency_sym}",
+    "Italiano": "Compra {block_type} per {currency_sym}",
+    "Français": "",
+    "Español": "",
+    "Português": "Comprar {block_type} por {currency_sym}"
+  },
+  "button secondary exchange option": {
+    "English": "{block_type} for {currency_sym}",
+    "Italiano": "{block_type} per {currency_sym}",
+    "Français": "",
+    "Español": "",
+    "Português": "{block_type} por {currency_sym}"
+  },
+  "OL offers not found": {
+    "English": "Nobody is buying this block for this currency.",
+    "Italiano": "Non ci sono richieste per questo blocco in questa valuta.",
+    "Français": "",
+    "Español": "",
+    "Português": "Ninguém está comprando esse bloco por esta moeda."
+  },
+  "OL best offer": {
+    "English": "Current best offer: {val}{sym}",
+    "Italiano": "Migliore offerta corrente: {val}{sym}",
+    "Français": "",
+    "Español": "",
+    "Português": "Melhor oferta atual: {val}{sym}"
+  },
+  "OL other offers": {
+    "English": "\nOthers:\n",
+    "Italiano": "\nAltre:\n",
+    "Français": "",
+    "Español": "",
+    "Português": "\nOutros:\n"
+  },
+  "Welcome screen": {
+    "English": "Welcome to IdleBank Alpha!\nTo start playing, choose a central bank between:\n- Federal Reserve (FED)\n- European Central Bank (ECB)\n- People's Bank of China (PBC)\n- Reserve Bank of Australia (RBA)\n- Central Bank of Brazil (CBB)\n- Reserve Bank of India (RBI)\n\n",
+    "Italiano": "Ti do il benvenuto a IdleBank Alpha!\nPer giocare, scegli una banca centrale tra:\n- Federal Reserve (FED)\n- Banca Centrale Europea (ECB)\n- Banca Popolare Cinese (PBC)\n- Banca Nazionale dell'Australia (RBA)\n- Banca Centrale del Brasile (CBB)\n- Reserve Bank of India (RBI)\n\n",
+    "Français": "",
+    "Español": "",
+    "Português": "Bem ao IdleBank Alpha!\nPara começar a jogar, escolha um banco central entre:\n- Federal Reserve (FED)\n- Banco Central Europeu (ECB)\n- Banco da População Chinesa (PBC)\n- Reserve Bank of Australia (RBA)\n- Banco Central do Brasil (CBB)\n- Reserve Bank of India (RBI)\n\n"
+  },
+  "faction FED": {
+    "English": "Federal Reserve",
+    "Italiano": "",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "faction ECB": {
+    "English": "European Central Bank",
+    "Italiano": "Banca Centrale Europea",
+    "Français": "",
+    "Español": "",
+    "Português": "Banco Central Europeu"
+  },
+  "faction PBC": {
+    "English": "People's Bank of China",
+    "Italiano": "Banca Popolare Cinese",
+    "Français": "",
+    "Español": "",
+    "Português": "Banco da População Chinesa"
+  },
+  "faction RBA": {
+    "English": "Reserve Bank of Australia",
+    "Italiano": "Banca Nazionale dell'Australia",
+    "Français": "",
+    "Español": "",
+    "Português": "Reserve Bank of Australia"
+  },
+  "faction CBB": {
+    "English": "Central Bank of Brazil",
+    "Italiano": "Banca Centrale del Brasile",
+    "Français": "",
+    "Español": "",
+    "Português": "Banco Central do Brasil"
+  },
+  "faction RBI": {
+    "English": "Reserve Bank of India",
+    "Italiano": "",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "faction ACB": {
+    "English": "African Central Bank ",
+    "Italiano": "Banca Centrale Africana",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "faction you": {
+    "English": "You",
+    "Italiano": "Tu",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "Internal error": {
+    "English": "Internal Error, please contact support.",
+    "Italiano": "Errore interno, contatta il supporto.",
+    "Français": "",
+    "Español": "",
+    "Português": "Erro interno, contate o suporte"
+  },
+  "Activated error": {
+    "English": "Account already activated",
+    "Italiano": "Utenza già attivata",
+    "Français": "",
+    "Español": "",
+    "Português": "Conta já ativada"
+  },
+  "Activation error": {
+    "English": "Couldn't activate, please contact support",
+    "Italiano": "Non posso attivare la tua utenza, contatta il supporto",
+    "Français": "",
+    "Español": "",
+    "Português": "Não foi possível ativar, contate o suporte"
+  },
+  "Have fun": {
+    "English": "Have fun!",
+    "Italiano": "Buon divertimento!",
+    "Français": "",
+    "Español": "",
+    "Português": "Se divirta!"
+  },
+  "Selling info": {
+    "English": "You can sell any kind of block for any currency.\nPlease choose an option.",
+    "Italiano": "Puoi vendere qualsiasi blocco in qualsiasi valuta.\nScegli una delle opzioni.",
+    "Français": "",
+    "Español": "",
+    "Português": "Você pode vender qualquer tipo de bloco por qualquer moeda.\nEscolha uma opção."
+  },
+  "button sell": {
+    "English": "Sell",
+    "Italiano": "Vendi",
+    "Français": "",
+    "Español": "",
+    "Português": "Vender"
+  },
+  "button back": {
+    "English": "Back to Main Menu",
+    "Italiano": "Torna al menù",
+    "Français": "",
+    "Español": "",
+    "Português": "Voltar ao menu"
+  },
+  "button back mini": {
+    "English": "Back to game",
+    "Italiano": "Torna al gioco",
+    "Français": "",
+    "Español": ""
+  },
+  "button ok": {
+    "English": "Ok",
+    "Italiano": "Va bene",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "Block request info": {
+    "English": "You can put requests of any kind, as long as your balance allows it.\nYou'll have to specify the amount of money you're offering for 1 block.\nThat money will be deducted from your account as soon as the request is made.\nYou can only create requests if you offer {amount}% more money that the current highest!",
+    "Italiano": "Puoi inserire richieste di ogni tipo, se te le puoi permettere.\nDovrai specificare il prezzo che stai offrendo per ricevere 1 blocco.\nTale prezzo verrà detratto dal tuo saldo appena fatta la richiesta.\nPuoi creare richieste solo offrendo il {amount}% in più della migliore offerta corrente!",
+    "Français": "",
+    "Español": "",
+    "Português": "Você pode colocar pedidos de qualquer tipo, desde que seu saldo permita.\nVocê deve especificar a quantia de dinheiro que você está oferecendo por 1 bloco.\nEsse valor vai ser debitado da sua conta assim que o pedido for feito.\nVocê só pode criar pedidos se oferecer {amount}% mais dinheiro do que a melhor oferta atual!"
+  },
+  "Make offer with limit": {
+    "English": "\nPlease write your offer, at least {min_amount}, or press the button to cancel!",
+    "Italiano": "\nProponi il prezzo che sei disposto a pagare, almeno {min_amount}, o tocca il pulsante per annullare!",
+    "Français": "",
+    "Español": "",
+    "Português": "\nPor favor escreva sua oferta, pelo menos {min_amount}, ou aperte o botão para cancelar!"
+  },
+  "Make offer without limit": {
+    "English": "\nPlease write your offer or press the button to cancel!",
+    "Italiano": "\nProponi il prezzo che sei disposto a pagare o tocca il bottone per annullare!",
+    "Français": "",
+    "Español": "",
+    "Português": "\nPor favor escreva sua oferta ou aperte o botão para cancelar!"
+  },
+  "help message": {
+    "English": "Check out this channel @idlebank to get guides and updates on the game!",
+    "Italiano": "Entra nel canale @idlebank per leggere guide e rimanere informato sugli aggiornamenti del gioco!",
+    "Français": "",
+    "Español": "",
+    "Português": "Dê uma olhada no canal @idlebank para achar guias e atualizações do jogo!"
+  },
+  "bad message": {
+    "English": "I didn't understand, please try again!",
+    "Italiano": "Non ho capito, riprova!",
+    "Français": "",
+    "Español": "",
+    "Português": "Não entendi, tente novamente!"
+  },
+  "timeout": {
+    "English": "Timeout, Telegram is having trouble handling your requests, please try again in a bit!",
+    "Italiano": "Tempo per la richiesta scaduto, Telegram ha difficoltà a gestire le tue richieste, riprova tra un po'!",
+    "Français": "",
+    "Español": "",
+    "Português": "Tempo esgotado, tente novamente!"
+  },
+  "Language set": {
+    "English": "You selected English!",
+    "Italiano": "Hai selezionato l'Italiano!",
+    "Français": "",
+    "Español": "",
+    "Português": "Você escolheu Português!",
+    "Français": "",
+    "Español": ""
+  },
+  "Event AlphaPioneer": {
+    "English": "Thank you for being one of the pioneers of the game!\nTo celebrate, you will get 20 blocks of your membership. This also serves as a compensation for some of the recent changes!",
+    "Italiano": "Grazie per aver partecipato all'inizio del gioco!\nPer celebrare, otterrai 20 blocchi della tua associazione. Questo compensa anche un recente cambiamento del gioco!",
+    "Français": "",
+    "Español": "",
+    "Português": "Obrigado por ser um dos pioneiros do jogo!\nPara celebrar, você receberá 20 blocos da sua associação. Isso serve como compensação pelas mudanças recentes!"
+  },
+  "Event done": {
+    "English": "You already got the event bonus!",
+    "Italiano": "Hai già ottenuto il bonus dell'evento!",
+    "Français": "",
+    "Español": "",
+    "Português": "Você já conseguiu o bônus do evento!"
+  },
+  "Event none": {
+    "English": "There's no ongoing event.",
+    "Italiano": "Nessun evento al momento.",
+    "Français": "",
+    "Español": "",
+    "Português": "Não há eventos no momento."
+  },
+  "button event": {
+    "English": "Event!",
+    "Italiano": "Evento!",
+    "Français": "",
+    "Español": "",
+    "Português": "Evento!"
+  },
+  "NICK structure": {
+    "#comment": "adjective_1: size, physical quality, shape, age | adjective_2: colour, material, other",
+    "English": "{adjective_1} {adjective_2} {noun}",
+    "Italiano": "{adjective_1} {noun} {adjective_2}",
+    "Français": "",
+    "Español": "",
+    "Português": "{noun} {adjective_2} {adjective_1}"
+  },
+  "NICK adjective_1": {
+    "English": ["Boundless","Bulky","Tiny","Cosmic","Vast","Teensy",             "Lonely","Thin","Rough","Pointy","Fuzzy",            "Round","Deep","Hollow","Oval","Ancient", "Modern","New","Hard","Grand", "Adorable",                "Charming",  "Intricate", "Confident", "Slithering", "Noisy", "Tactical", "Queer"],
+    "Italiano": ["Sconfinat*","Gross*","Piccin*","Cosmic*","Vast*","Microscopic*","Solitari*","Sottile","Ruvid*","Appuntit*","Cresp*", "Rotond*","Profond*","Vuot*","Ovale", "Antic*","Modern*","Nuov*","Dur*","Grandios*", "Adorabile", "Affascinante", "Intricat*", "Fiducios*", "Serpeggiante", "Chiassos*", "Tattic*", "Queer"],
+    "Français": "",
+    "Español": "",
+    "Português": ["Infinit*", "Gross*", "Pequen*", "Cósmic*", "Vast*", "Pequenininh*", "Solitári*", "Magr*", "Ásper*", "Pontud*", "Felpud*", "Redond*", "Fund*", "Vazi*", "Oval", "Antig*", "Modern*", "Nov*", "Dur*", "Grande", "Adorável", "Encantador*", "Intricad*", "Confiante", "Meandros", "Barluhent*", "Tátic*", "Queer"]
+  },
+  "NICK adjective_2": {
+    "English": ["Ivory","Scarlet","Orange",       "Red",    "Mint","Blue","Green","Grey","Golden","Purple","Silver","Diamond","Steel",          "Wooden","Glass","Frozen","Plastic",            "Printing","Transparent","Secular", "Speeding", "Dancing",                          "Rainbow", "Mechanical", "Cybernetic", "Paper", "Cheese", "Nuclear"],
+    "Italiano": ["d'Avorio","Scarlatt*","Arancione","Ross*","Menta","Blu","Verde","Grigi*","Dorat*","Viola","Argente*","di Diamante","d'Acciaio","di Legno","Vetrat*","Ghiacciat*","di Plastica","Stampante","Trasparente","Laic*", "Sfrecciante", "Danzante",                      "Arcobaleno", "Meccanic*", "Cibernetic*", "di Carta", "di Formaggio", "Nucleare"],
+    "Français": "",
+    "Español": "",
+    "Português": ["de Marfim", "Escarlate", "Laranja", "Vermelh*", "Menta", "Azul", "Verde", "Cinza", "Dourad*", "Rox*", "Pratead*", "de Diamante", "de Aço", "de Madeira", "de Vidro", "Congelad*", "Plástic*", "Impressor*", "Transparente", "Secular", "Investidor*", "Dançante", "do Arco-íris", "Mecânic*", "Cibernétic*", "de Papel", "de Queijo", "Nuclear"]
+  },
+  "NICK noun": {
+    "English": ["House","Bank","Guild","Pizza","Horse","Tree",            "Palace","Lad","Youngster","Damsel","Pirate","Dragon","Fox","Cow","Herd","Cat","Dog","Parrot","Oasis","Nose", "Omelet",                     "Chick",    "Cake", "Penguin",    "Computer",        "Crown", "Flute", "King", "Queen", "Prince", "Princess",       "Sentry", "Book", "Manga", "Comic",        "Chandelier", "Seven", "Ace", "Cloud", "Sun", "Moon", "Rain",       "Snow", "Hail", "Storm", "Sky", "Pillar",            "Monster", "Drum", "Prayer", "Eye",       "Horizon", "Skull", "Need",         "Bird",     "Slicer", "Camel", "Energy",          "Guitar", "Dream", "Sugar", "Crystal", "Pixel"],
+    "Italiano": ["Casa","Banca","Confraternita","Pizza","Cavallo","Albero","Palazzo","Giovanotto","Giovane","Fanciulla","Pirata","Drago","Volpe","Vacca","Gregge","Gatto","Cane","Pappagallo","Oasi","Naso", "Frittata", "Pulcino", "Torta", "Pinguino", "Computer",       "Corona", "Flauto", "Re", "Regina", "Principe", "Principessa", "Sentinella", "Libro", "Manga", "Fumetto", "Lampadario", "Sette", "Asso", "Nuvola", "Sole", "Luna", "Pioggia", "Neve", "Grandine", "Tempesta", "Cielo", "Colonna",      "Mostro", "Tamburo", "Preghiera", "Occhio", "Orizzonte", "Teschio", "Bisogno", "Pennuto", "Affettatore", "Cammello", "Energia", "Chitarra", "Sogno", "Zucchero", "Cristallo", "Pixel"],
+    "Italiano_gender": ["f", "f", "f", "f",             "m", "m",           "m", "m", "m",                  "f", "m", "m", "f", "f", "m",                          "m", "m", "m", "f",                "m", "f", "m",                "f",         "m",       "m",           "f", "m", "m", "f", "m", "f",                                            "f", "m", "m", "m",                       "m", "m", "m",               "f", "m", "f", "f"            , "f", "f", "f", "m", "f",                               "m",        "m",      "f",          "m",    "m",          "m",      "m",        "m",        "m",            "m",        "f",      "f",        "m",      "m",      "m",          "m"],
+    "Français": "",
+    "Français_gender": "",
+    "Español": "",
+    "Español_gender": "",
+    "Português": ["Casa", "Banco", "Guilda", "Pizza", "Cavalo", "Árvore", "Palácio", "Rapaz", "Jovem", "Donzela", "Pirata", "Dragão", "Raposa", "Vaca", "Rebanho", "Gato", "Cachorro", "Papagaio", "Oásis", "Nariz", "Omelete", "Garoto", "Bolo", "Pinguim", "Computador", "Coroa", "Flauta", "Rei", "Rainha", "Príncipe", "Princesa",  "Sentinela", "Livro", "Mangá", "Cômico",        "Lustre", "Sete", "Ás", "Nuvem", "Sol", "Lua", "Chuva",       "Neve", "Granizo", "Tempestade", "Céu", "Pilar",            "Monstro", "Tambor", "Prece", "Olho",     "Horizonte", "Crânio", "Necessidade", "Pássaro", "Fatiador", "Camelo", "Energia",      "Violão", "Sonho", "Açúcar", "Cristal", "Pixel"],
+    "Português_gender": ["f","m","f","f","m","f",                                "m","m","m", "f","m","m",                                       "f","f","m","m","m","m",                                    "m","m","f","m",               "m",    "m",        "m",       "f",     "f",        "m",    "f",      "m",      "f",              "f",    "m",      "m",    "m",              "m",      "m",    "m", "f",      "m",   "f",  "f",            "f",  "m",          "f",        "m",  "m",                "m",        "m",        "f",    "m",        "m",        "m",        "f",         "m",         "m",        "m",        "f",        "m",       "m",     "m",      "m",      "m"]
+  },
+  "nick not set": {
+    "English":"Would you like to create a nickname, or will you just use a random one for now?\nYou can always change later!",
+    "Italiano":"Ti va di creare un soprannome? Altrimenti puoi anche usarne uno generato casualmente.\nPotrai sempre cambiarlo in seguito!",
+    "Français": "",
+    "Español": "",
+    "Português":"Você gostaria de criar um apelido, ou usaria um aleatório por enquanto?\nVocê sempre pode mudar depois!"
+  },
+  "button create nick":{
+    "English":"Create nickname",
+    "Italiano":"Crea un soprannome",
+    "Français": "",
+    "Español": "",
+    "Português":"Criar um apelido"
+  },
+  "button random nick": {
+    "English":"Just use a random one",
+    "Italiano":"Usane uno a caso",
+    "Français": "",
+    "Español": "",
+    "Português":"Usar um aleatório"
+  },
+  "nickname settings current": {
+    "English":"Current nickname: {nickname}\n\n",
+    "Italiano":"Soprannome attuale: {nickname}\n\n",
+    "Français": "",
+    "Español": "",
+    "Português":"Apelido atual: {nickname}\n\n"
+  },
+  "nickname settings translate": {
+    "English":"Your nickname will be translated to the reader's language, when shown",
+    "Italiano":"Il soprannome verrà tradotto nella lingua del lettore, quando verrà mostrato",
+    "Français": "",
+    "Español": "",
+    "Português":"Seu apelido será traduzido para a linguagem do leitor, quando exibido"
+  },
+  "nickname settings force": {
+    "English":"Your nickname will be shown in this form, without translations",
+    "Italiano":"Il soprannome verrà mostrato in questa forma, senza traduzioni",
+    "Français": "",
+    "Español": "",
+    "Português":"Seu apelido será mostrado desta forma, sem traduções"
+  },
+  "button nickchange adj1": {
+    "English":"{dice} first adj",
+    "Italiano":"{dice} primo agg",
+    "Français": "",
+    "Español": "",
+    "Português":"{dice} primeiro adj"
+  },
+  "button nickchange adj2": {
+    "English":"{dice} second adj",
+    "Italiano":"{dice} secondo agg",
+    "Français": "",
+    "Español": "",
+    "Português":"{dice} segundo adj"
+  },
+  "button nickchange noun": {
+    "English":"{dice} noun",
+    "Italiano":"{dice} sostantivo",
+    "Français": "",
+    "Español": "",
+    "Português":"{dice} substantivo"
+  },
+  "button nickchange forcelang": {
+    "English":"Fix language",
+    "Italiano":"Fissa lingua",
+    "Français": "",
+    "Español": "",
+    "Português":"Travar linguagem"
+  },
+  "button nickchange translang": {
+    "English":"Translate to reader",
+    "Italiano":"Traduci al lettore",
+    "Français": "",
+    "Español": "",
+    "Português":"Traduzir para o leitor"
+  },
+  "button change nickname": {
+    "English": "Your nickname",
+    "Italiano": "Il tuo soprannome",
+    "Français": "",
+    "Español": "",
+    "Português": "Seu apelido"
+  },
+  "button discard": {
+    "English":"Discard",
+    "Italiano":"Scarta",
+    "Français": "",
+    "Español": "",
+    "Português":"Descartar"
+  },
+  "button save": {
+    "English":"Save",
+    "Italiano":"Salva",
+    "Français": "",
+    "Español": "",
+    "Português":"Salvar"
+  },
+  "button minigames": {
+    "English": "Game Room",
+    "Italiano": "Sala Giochi",
+    "Français": "",
+    "Español": "",
+    "Português": "Sala de Jogo"
+  },
+  "button leaderboard": {
+    "English": "Leaderboard",
+    "Italiano": "Classifica",
+    "Français": "",
+    "Español": "",
+    "Português": "Placar"
+  },
+  "button multiplayer_info": {
+    "English": "Stats",
+    "Italiano": "Statistiche",
+    "Français": "",
+    "Español": ""
+  },
+  "multiplayer info": {
+    "English": "Here's what we got:\n{last_24h} players in the last 24 hours,\n{last_7d} players in the last 7 days,\n{last_30d} players in the last 30 days;\n{tot_accounts} activated accounts in total.\n\nTop Gear obtained: {top_gear} by\n{top_gear_nick}\n\nShop Chain Highscore: {shopchain_highscore} by\n{shopchain_highscore_nick}",
+    "Italiano": "Ecco qua:\n{last_24h} giocatori nelle ultime 24 ore,\n{last_7d} giocatori negli ultimi 7 giorni,\n{last_30d} giocatori negli ultimi 30 giorni;\n{tot_accounts} account totali attivati.\n\nMiglior Gear ottenuto: {top_gear} da\n{top_gear_nick}\n\nPunteggio Record Catena di Negozi: {shopchain_highscore} da\n{shopchain_highscore_nick}",
+    "Français": "",
+    "Español": ""
+  },
+  "work in progress": {
+    "English": "This feature hasn't been implemented yet, but it's coming soon!\n",
+    "Italiano": "Questa funzione non è ancora stata implementata, ma arriverà presto!\n",
+    "Français": "",
+    "Español": "",
+    "Português": "Essa função ainda não foi implementada, mas chegará em breve!\n"
+  },
+  "button comebacklater": {
+    "English": "Ok, I'll come back later!",
+    "Italiano": "Va bene, tornerò più tardi!",
+    "Français": "",
+    "Español": "",
+    "Português": "Tudo bem, volto logo!"
+  },
+  "Event 1monthOld": {
+    "English": "IdleBank is now 1 month old! To celebrate, you will get {blocks} bl!\n\nI hope you like the new Leaderboard and I'm sure you're looking forward to the minigames, which are coming soon! Have fun!",
+    "Italiano": "IdleBank compie 1 mese! Per celebrare, otterrai {blocks} blocchi!\n\nSpero ti piaccia la nuova Classifica e sono sicuro che non vedi l'ora di provare i minigiochi, che sono in arrivo! Buon divertimento! ",
+    "Français": "",
+    "Español": "",
+    "Português": "IdleBank completou 1 mês! Para comemorar, você receberá {blocks} blocos!\n\nEu espero que goste do novo Placar e tenho certeza que você está ansioso pelos minigames, que chegarão em breve! Se divirta!"
+  },
+  "Random": {
+    "English": "Random",
+    "Italiano": "Casuale",
+    "Français": "",
+    "Español": "",
+    "Português": "Aleatório"
+  },
+  "Average": {
+    "#comment": "plural, context: 123€/h average",
+    "English": "average",
+    "Italiano": "medi",
+    "Français": "",
+    "Español": "",
+    "Português": "médios"
+  },
+  "button dismiss notification": {
+    "English": "Uh, ok",
+    "Italiano": "Ah, bene",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "games menu welcome": {
+    "English": "Welcome to the Games Room! Select one of these three games to play:\n\n*Daily News*\n{DN_info}\n\n*Coinopoly*\n{CP_info}\n\n*Ore Miner*\n{OM_info}\n\n*Global Steel Road*\n{SR_info}\n\n*Investment Plan*\n{IP_info}\n\n*Shop Chain*\n{SC_info}",
+    "Italiano": "Ti diamo il benvenuto alla Sala Giochi! Scegli uno di questi tre giochi:\n\n*Daily News*\n{DN_info}\n\n*Coinopoly*\n{CP_info}\n\n*Ore Miner*\n{OM_info}\n\n*Global Steel Road*\n{SR_info}\n\n*Investment Plan*\n{IP_info}*Catena di Negozi*\n{SC_info}",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "games menu DN": {
+    "English": "Vote a Country from the list and see how it goes! 1 prize each day!",
+    "Italiano": "Vota uno Stato dalla lista e vedi come va! 1 premio al giorno!",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "games menu OM": {
+    "English": "Why would you get bored on socials when you can come to the mine and get bonus money? There's also some shiny stuff growing down there, I wonder what they are...",
+    "Italiano": "Perché annoiarsi sui social quando puoi venire in miniera e ottenere soldi bonus? Là sotto vedo crescere qualcosa di scintillante, mi chiedo cosa sia...",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "games menu IP": {
+    "English": "Have some spare money? These 12 companies are willing to produce blocks and give them to the most generous investors!",
+    "Italiano": "Hai soldi in più? Queste 12 aziende stanno producendo blocchi e li daranno agli investitori più generosi!",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "games menu CP": {
+    "English": "Take Monopoly, add a simulation of the exponential cryptocurrency markets, et voila! And you can play every hour!",
+    "Italiano": "Prendi Monolopy, aggiungi una simulazione dei mercati esponenziali di criptovalute, et voila! E puoi giocare ogni ora!",
+    "Français": "",
+    "Español": ""
+  },
+  "games menu SR": {
+    "English": "Exchange goods in the whole world! But you only have 5 minutes until the train goes away...",
+    "Italiano": "Scambia beni in tutto il mondo! Ma hai solo 5 minuti prima che il treno riparta...",
+    "Français": "",
+    "Español": ""
+  },
+  "games menu SC": {
+    "English": "Open shops and hire people and pay them well to get blocks! Shops are permanent, forever!",
+    "Italiano": "Apri negozi e assumi persone e pagale bene per ottene blocchi! I negozi sono permanenti, per sempre!",
+    "Français": "",
+    "Español": ""
+  },
+  "button minis DN": {
+    "#comment": "you can decide if you want to translate the name of the game in your language or you want to keep the english one. To keep the english, just leave the space blank.",
+    "English": "Daily News",
+    "Italiano": "",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "button minis OM": {
+    "English": "Ore Miner",
+    "Italiano": "",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "button minis IP": {
+    "English": "Investment Plan",
+    "Italiano": "",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "button minis CP": {
+    "English": "Coinopoly",
+    "Italiano": "",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "button minis SR": {
+    "English": "Global Steel Road",
+    "Italiano": "",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "button Shop Chain": {
+    "English": "Shop Chain",
+    "Italiano": "Catena di Negozi",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "DN notify most": {
+    "English": "Congratulations! You've won {prize} from Daily News! Here's a message from them:\n_Thanks for having played to our last edition of Daily News. You've been the first voter of the most voted Country, please accept our prize!\nSee you soon,\n~President Anne Burger~_",
+    "Italiano": "Complimenti! Hai ottenuto {prize} da Daily News! Ti hanno lasciato questo messaggio:\n_Grazie per aver giocato nella scorsa edizione di Daily News. Sei stata la prima persona a votare lo Stato più votato, accetta il nostro premio!\nA presto,\n~Presidente Anne Burger~_",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "DN notify least": {
+    "English": "Congratulations! You've won {prize} from Daily News! Here's a message from them:\n_Thanks for having played to our last edition of Daily News. You've been the last voter of the least voted Country, please accept our prize!\nSee you soon,\n~President Anne Burger~_",
+    "Italiano": "Complimenti! Hai ottenuto {prize} da Daily News! Ti hanno lasciato questo messaggio:\n_Grazie per aver giocato nella scorsa edizione di Daily News. Sei stata l'ultima persona a votare lo Stato meno votato, accetta il nostro premio!\nA presto,\n~Presidente Anne Burger~_",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "DN thanks message": {
+    "English": "Hey, thanks a lot for playing with us. This is a random message that seldom appears, and you have the opportunity to show how you feel about the game by pressing one of the 6 emojis down here.\nIf you do, the programmer will get the feedback *together with your Telegram nickname*. You can delete this message if you don't want to send a feedback. Thanks in any case!",
+    "Italiano": "Ciao, grazie mille per giocare con noi. Questo è un messaggio casuale che appare di rado, e puoi mostrare come ti senti riguardo al gioco premendo una delle 6 emoji qua sotto.\nSe lo fai, il programmatore riceverà il feedback *insieme al tuo nickname Telegram*. Puoi eliminare questo messaggio se non vuoi inviare un feedback. Geazie in ogni caso!",
+    "Français": "",
+    "Español": ""
+  },
+  "DN thanks": {
+    "English": "Thanks for voting!",
+    "Italiano": "Grazie per aver votato!",
+    "Français": "",
+    "Español": ""
+  },
+  "DN extra money": {
+    "English": "Here's a surprise prize of {money}{cur_sym}!",
+    "Italiano": "Ecco un premio a sorpresa di {money}{cur_sym}!",
+    "Français": "",
+    "Español": ""
+  },
+  "DN extra blocks": {
+    "English": "Here's a surprise prize of {blocks} blocks!",
+    "Italiano": "Ecco un premio a sorpresa di {blocks} blocchi!",
+    "Français": "",
+    "Español": ""
+  },
+  "DN extra CP_crypto": {
+    "English": "Here's a surprise prize of {coins} {coin_type} for Coinopoly!",
+    "Italiano": "Ecco un premio a sorpresa di {coins} {coin_type} per Coinopoly!",
+    "Français": "",
+    "Español": ""
+  },
+  "DN extra onvote CP_extraturn": {
+    "English": "You got a dice, you can use it in Coinopoly to get an extra turn!",
+    "Italiano": "Hai ottenuto un dado, puoi usarlo su Coinopoly per avere un turno extra!",
+    "Français": "",
+    "Español": ""
+  },
+  "DN extra onwin CP_extraturn": {
+    "English": "You got five dice, you can use them in Coinopoly to get extra turns! Pretty incredible now that I think about it...",
+    "Italiano": "Hai ottenuto cinque dadi, puoi usarli su Coinopoly per avere turni extra! Assurdo ora che ci penso...",
+    "Français": "",
+    "Español": ""
+  },
+  "DN extra onvote OM_protection": {
+    "English": "You got a protection for your adventures in Ore Miner!",
+    "Italiano": "Hai ottenuto una protezione per le tue avventure su Ore Miner!",
+    "Français": "",
+    "Español": ""
+  },
+  "DN extra onwin OM_protection": {
+    "English": "You got ten protections for your adventures in Ore Miner!",
+    "Italiano": "Hai ottenuto dieci protezioni per le tue avventure su Ore Miner!",
+    "Français": "",
+    "Español": ""
+  },
+  "DN extra onvote OM_key": {
+    "English": "You got... A key? What's this for? Well, we'll keep it safe for you until we find out what it is...",
+    "Italiano": "Hai ottenuto... Una chiave? E a che serve? Strano, la terremo al sicuro finché non capiremo cos'è...",
+    "Français": "",
+    "Español": ""
+  },
+  "DN extra onwin OM_key": {
+    "English": "You got three more of those keys... Seriously, what are they for?",
+    "Italiano": "Hai ottenuto altre tre di quelle chiavi? Seriamente, a che servono?",
+    "Français": "",
+    "Español": ""
+  },
+  "DN extra OM_coal": {
+    "English": "The Country decided to give you some coal for Global Steel Road!",
+    "Italiano": "Lo Stato ha deciso di darti del carbone per Global Steel Road!",
+    "Français": "",
+    "Español": ""
+  },
+  "DN extra onvote SR_gas": {
+    "English": "The Country decided to give you some gas for Global Steel Road!",
+    "Italiano": "Lo Stato ha deciso di darti del gas per Global Steel Road!",
+    "Français": "",
+    "Español": ""
+  },
+  "DN extra onwin SR_gas": {
+    "English": "Something happenend in the market...",
+    "Italiano": "È successo qualcosa nel mercato...",
+    "Français": "",
+    "Español": ""
+  },
+  "DN extra onwin None_mystery": {
+    "English": "You've got a mysterious item. I wonder what it is...",
+    "Italiano": "Hai ottenuto un oggetto misterioso. Mi chiedo cosa sia...",
+    "Français": "",
+    "Español": ""
+  },
+  "DN countries": {
+    "English": ["Canada", "France", "Germany", "Japan", "Italy", "United Kingdom", "USA", "Brazil", "Russia", "China", "India", "South Africa", "Australia", "Saudi Arabia", "Argentina", "South Korea", "Indonesia", "Mexico", "Turkey", "Spain"],
+    "Italiano": ["Canada", "Francia", "Germania", "Giappone", "Italia", "Regno Unito", "USA", "Brasile", "Russia", "Cina", "India", "Sudafrica", "Australia", "Arabia Saudita", "Argentina", "Corea del Sud", "Indonesia", "Messico", "Turchia", "Spagna"],
+    "Français": ["","","","","","","","","","","","","","","","","","","",""],
+    "Español": ["","","","","","","","","","","","","","","","","","","",""],
+    "Português": ["","","","","","","","","","","","","","","","","","","",""]
+  },
+  "DN welcome": {
+    "English": "Rules:\n- Every 25 hours, a new game starts\n- Some random Countries are selected and listed, and players can vote one\n- Every player can only vote once per game\n- The first player to vote the most voted country and the last player to vote the least voted country win!\n",
+    "Italiano": "Regole:\n- Ogni 25 ore inizia un nuovo giro\n- Vengono casualmente selezionate e mostrate alcuni Stati a caso, e i giocatori possono votarne uno\n- Ogni giocatore può votare una volta per giro\n- Vincono il primo a votare lo Stato più votato e l'ultimo a votare lo Stato meno votato!\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "DN round time prize": {
+    "English": "\nThe current round ends {time}.\nVotes so far: {votes}\nPrize so far: {prize}\n",
+    "Italiano": "\nIl giro attuale finisce {time}.\nVoti fin ora: {votes}\nPremio corrente: {prize}\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "DN already voted": {
+    "English": "\nYou've already cast your vote in this game! You'll get notified if you win.",
+    "Italiano": "\nHai già votato in questo giro! Ti arriverà una notifica se vinci.",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "DN please vote": {
+    "English": "\nPlease select a Country using these buttons to cast your vote!",
+    "Italiano": "\nUsa i pulsanti per votare uno degli Stati!",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "DN invalid country": {
+    "English": "We're sorry, but the Country you selected is not in this current game. Please try again.",
+    "Italiano": "Siamo spiacenti, ma lo Stato selezionato non fa parte di questo giro. Riprova.",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "button agencies": {
+    "English": "News Agency",
+    "Italiano": "Agenzia Stampa"
+},
+"DN Agencies Info": {
+  "English": "Here you can start or join a News Agency!\n- 2 or 3 players per agency\n- Once full, if all vote the same Country, they get a Mysterious Item, and they win together!\n- If any gets a Jackpot, the others get Mysterious Items too!\n\n",
+  "Italiano": "Qui puoi fondare o unirti a un'Agenzia di Stampa!\n- 2 o 3 giocatori per agenzia\n- Fatta l'agenzia, se tutti votano lo stesso Paese, ottengono un Oggetto Misterioso, e si vince insieme!\n- Se qualcuno fa Jackpot, tutti ricevono Oggetti Misteriosi!\n\n"
+},
+"DN Agencies agency": {
+  "English": "{ag_name} - {size} spots",
+  "Italiano": "{ag_name} - {size} posti"
+},
+"DN Agencies member": {
+  "English": "{name}\n- Last voted on {last_vote}\n- Has {mys_items} mysterious items",
+  "Italiano": "{name}\n- Ultimo voto il {last_vote}\n- Ha {mys_items} oggetti misteriosi"
+},
+"DN Agencies button join": {
+  "English": "Join ",
+  "Italiano": "Entra in "
+},
+"DN Agencies button create": {
+  "English": "Create for ",
+  "Italiano": "Crea per "
+},
+"DN Agencies button leave": {
+  "English": "Leave your agency",
+  "Italiano": "Abbandona agenzia"
+},
+"DN Agencies notify join": {
+  "English": "{new_member} joins your News Agency in Daily News!",
+  "Italiano": "{new_member} entra a far parte della tua Agenzia di Stampa di Daily News!"
+},
+"DN Agencies notify leave": {
+  "English": "{new_member} decided to leave your News Agency in Daily News...",
+  "Italiano": "{new_member} ha deciso di lasciare la tua Agenzia di Stampa di Daily News..."
+},
+"DN Agencies notify all voted": {
+  "English": "Your Agency voted for the same Country, you all get a mysterious item!",
+  "Italiano": "La tua Agenzia ha votato per lo stesso Paese, ottenete tutti un oggetto misterioso!"
+},
+"DN Agencies notify jackpot": {
+  "English": "Hey colleague! I just got a JACKPOT from my mysterious items, here are {quantity} for you!\nYours, {sender}",
+  "Italiano": "Ehi collega! Ho appena fatto JACKPOT con i miei oggetti misteriosi, eccone {quantity} per te!\nA presto, {sender}"
+},
+  "OM ores destroyed": {
+    "English": "There were some ores here, but the hammer destroyed them!\n\n",
+    "Italiano": "C'erano dei minerali, ma il martello li ha distrutti!\n\n",
+    "Français": "",
+    "Español": ""
+  },
+  "OM ores_message 2": {
+    "English": "{num1} {ore1} and {num2} {ore2}",
+    "Italiano": "{num1} {ore1} e {num2} {ore2}",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM ores_message 3": {
+    "English": "{num1} {ore1}, {num2} {ore2} and {num3} {ore3}",
+    "Italiano": "{num1} {ore1}, {num2} {ore2} e {num3} {ore3}",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM ores_message 4": {
+    "English": "You've found {num1} {ore1}, {num2} {ore2}, {num3} {ore3} and {num4} {ore4}",
+    "Italiano": "{num1} {ore1}, {num2} {ore2}, {num3} {ore3} e {num4} {ore4}",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM ore aluminium": {
+    "English": "aluminium",
+    "Italiano": "alluminio",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM ore magnesium": {
+    "English": "magnesium",
+    "Italiano": "magnesio",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM ore chromium": {
+    "English": "chromium",
+    "Italiano": "cromo",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM ore iron": {
+    "English": "iron",
+    "Italiano": "ferro",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM ore antimony": {
+    "English": "antimony",
+    "Italiano": "antimonio",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM ore silver": {
+    "English": "silver",
+    "Italiano": "argento",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM ore copper": {
+    "English": "copper",
+    "Italiano": "rame",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM ore platinum": {
+    "English": "platinum",
+    "Italiano": "platino",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM ore gold": {
+    "English": "gold",
+    "Italiano": "oro",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM prize ore": {
+    "English": "You've found {prize}!\n",
+    "Italiano": "Hai trovato {prize}!\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM prize blocks": {
+    "English": "*What?!* You've just extracted {blocks_num} {type}!\n",
+    "Italiano": "*Che cosa?!* Hai appena estratto {blocks_num} {type}!\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM prize protection": {
+    "English": "You found 1 protection for future mining sessions!\n",
+    "Italiano": "Hai trovato 1 protezione per le prossime sessioni in miniera!\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM prize coal": {
+    "English": "You found 1 coal for use in Global Steel Road!\n",
+    "Italiano": "Hai trovato 1 carbone da usare in Global Steel Road!\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM ore conversion": {
+    "English": "You sold the ores for {money}{cur_sym}\n\n",
+    "Italiano": "Hai venduto i minerali per {money}{cur_sym}\n\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM welcome": {
+    "English": "Rules:\n- The cave is made of stone layers, you have to mine it little by little without completely destroying it\n- Each layer can sustain some damage before falling down, if damage is more than 10 above the max sustained, the cave is destroyed and you have to try again from the start\n- Instead, if damage is 10 or less above the max sustained, the layer collapses, you collect ores and advance to the next!\n- You can use two tools: the hammer is imprecise but strong, the pick is very precise but deals little damage\n- Tools must be repaired from time to time, if you break one you lose!\n\nThis game is heavily based on luck!\n",
+    "Italiano": "Regole:\n- La miniera è composta da strati di pietra, devi scavare piano piano senza distruggerla completamente\n- Ogni strato può resistere a un po' di danno prima di crollare, se il danno è più di 10 sopra il massimo sostenibile, la miniera viene distrutta e devi ricominciare da capo\n- Invece, se il danno è 10 o meno sopra il massimo sostenibile, lo strato crolla, tu ottieni dei minerali e passi al prossimo strato!\n- Hai due attrezzi: il martello è impreciso ma forte, il piccone è molto preciso ma infligge poco danno\n- Gli attrezzi vanno riparati ogni tanto, se uno si rompe hai preso!\n\nQuesto gioco è molto casuale!\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM past results": {
+    "English": "\nYour deepest layer: {record}.\nTotal earnings: {money}{cur_sym}.\nYou extracted {mUSDmb} mUSDmb, {mEmb} mEmb, {mYmb} mYmb, {mAUDmb} mAUDmb, {mBRmb} mBRmb, {mIRmb} mIRmb and {mAmb} mAmb.",
+    "Italiano": "\nIl tuo strato più profondo: {record}.\nGuadagni totali: {money}{cur_sym}.\nHai estratto {mUSDmb} mUSDmb, {mEmb} mEmb, {mYmb} mYmb, {mAUDmb} mAUDmb, {mBRmb} mBRmb, {mIRmb} mIRmb e {mAmb} mAmb.",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM top level": {
+    "English": "\nCurrent global record: {lvl} layers.",
+    "Italiano": "\nRecord mondiale attuale: {lvl} strati.",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM start": {
+    "#comment": "This is a reference to the song from Disney's Snow White. If for any reason you feel it's better to drop the reference for your language, you can instead translate <Let's mine!>",
+    "English": "Heigh-ho!",
+    "Italiano": "Ehi-ho!",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM start protected": {
+    "English": "With protections: {protections}",
+    "Italiano": "Con protezioni: {protections}",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM exit message": {
+    "English": "You're going back to the Main menu.\nHowever, you can continue playing using the message above!",
+    "Italiano": "Stai tornando al Menù principale.\nIn ogni caso, puoi continuare a giocare usando il messaggio qua sopra!",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM lose": {
+    "English": "The mine was destroyed and is no longer accessible, try again!",
+    "Italiano": "La miniera è stata distrutta e non è più accesibile, ritenta!",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM layer broken": {
+    "English": "Great! This layer has fallen down!\n",
+    "Italiano": "Bene! Questo strato è crollato!\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM choose upgrade": {
+    "English": "\nBefore mining the next layer, let's upgrade your tools.\nYou can repair your hammer or your pick. Otherwise, you can increase your mining strength.",
+    "Italiano": "\nPrima di scavare il prossimo strato, miglioria i tuoi attrezzi.\nPuoi riparare il martello o il piccone. Oppure, puoi aumentare la tua forza.",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM upgrade strength": {
+    "English": "+10 strength",
+    "Italiano": "+10 forza",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM upgrade precision": {
+    "English": "+5 precision",
+    "Italiano": "+5 precisione",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM repair hammer": {
+    "English": "Repair hammer",
+    "Italiano": "Ripara martello",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM repair pick": {
+    "English": "Repair pick",
+    "Italiano": "Ripara piccone",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM use key": {
+    "English": "Use secret key ({owned})",
+    "Italiano": "Usa chiave segreta ({owned})",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM layer status": {
+    "English": "Layer {level}\nDamage: {damage}/({hp}-{hpmax})",
+    "Italiano": "Strato {level}\nDanni: {damage}/({hp}-{hpmax})",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM hammer status": {
+    "English": "\nHammer uses: {uses}/{uses_max} (damage output: {damage_min}-{damage_max})",
+    "Italiano": "\nUsi martello: {uses}/{uses_max} (danni inflitti: {damage_min}-{damage_max})",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM pick status": {
+    "English": "\nPick uses: {uses}/{uses_max} (damage output: {damage})\n",
+    "Italiano": "\nUsi piccone: {uses}/{uses_max} (danni inflitti: {damage})\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM broken hammer": {
+    "English": "You broke the hammer.",
+    "Italiano": "Hai rotto il martello.",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM broken pick": {
+    "English": "You broke the pick.",
+    "Italiano": "Hai rotto il piccone.",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM respawn": {
+    "English": "Go on for {blocks_to_pay} random blocks",
+    "Italiano": "Continua per {blocks_to_pay} blocchi a caso",
+    "Français": "",
+    "Español": ""
+  },
+  "OM continue": {
+    "English": "Use your tools wisely!",
+    "Italiano": "Pondera attentamente l'uso degli attrezzi!",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM use hammer": {
+    "English": "Hammer",
+    "Italiano": "Martello",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM use pick": {
+    "English": "Pick",
+    "Italiano": "Piccone",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "OM exit": {
+    "English": "Exit",
+    "Italiano": "Esci",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP time about": {
+    "#comment": "context: the round ends in about 2-3 hours",
+    "English": "in about {h1}-{h2} hours",
+    "Italiano": "in circa {h1}-{h2} ore",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP time less1h": {
+    "English": "within one hour",
+    "Italiano": "entro un'ora",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP no more turns": {
+    "English": "You can't invest anymore until this round ends.",
+    "Italiano": "Non puoi più investire finché non finisce il giro.",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP Instant no more turns": {
+    "English": "Your company won't change anymore for this round.",
+    "Italiano": "La tua azienda non cambierà più per questo giro.",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP next action time": {
+    "English": "You can invest in {minutes} minutes!",
+    "Italiano": "Potrai investire tra {minutes} minuti!",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP next company time": {
+    "English": "Your company will change in {minutes} minutes!",
+    "Italiano": "La tua azienda cambierà tra {minutes} minuti!",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP welcome": {
+    "English": "Rules:\n- Invest your spare money in one of 12 companies\n- The higher the level of the company, the more it costs, and the more blocks you'll get right away!\n- Collaborate with your faction to create lines of 3 companies and maximize the gains for your market!\n\nThis round ends {time_left_general}.\n",
+    "Italiano": "Regole:\n- Investi i tuoi soldi in più in una di 12 aziende\n- Investire in aziende di livello più alto costa di più, ma ti dà subito più blocchi!\n- Collabora con la tua fazione per creare linee di 3 aziende e massimizzare i guadagni per il vostro mercato!\n\nQuesto giro termina {time_left_general}.\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP button info": {
+    "English": "Info",
+    "Italiano": "Info",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP your turn": {
+    "English": "Select a company to invest.\n",
+    "Italiano": "Scegli un'azienda in cui investire.\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP your company": {
+    "English": "You can currently invest in {cid} only.\n",
+    "Italiano": "Al momento puoi investire solo in {cid}.\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP tris prize": {
+    "English": "\nBonus for new lines: {current} blocks (grows by ~{rate} a minute)\n",
+    "Italiano": "\nBonus per nuovi tris: {current} blocchi (cresce di ~{rate} al minuto)\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP gamemode Timed_Capitalist": {
+    "English": "Timed Capitalist mode: invest when it's your turn and get extra prizes when you score a tris, every faction has the same prices.\n",
+    "Italiano": "Modalità Capitalista a Tempo: aspetta il turno per investire e ottieni premi se fai tris, ogni fazione ha gli stessi prezzi.\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP gamemode Timed_Socialist": {
+    "English": "Timed Socialist mode: invest when it's your turn and get extra prizes when you score a tris, lower factions pay a lot less.\n",
+    "Italiano": "Modalità Soclialista a Tempo: aspetta il turno per investire e ottieni premi se fai tris, le fazioni minori pagano molto meno.\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP gamemode Instant_Capitalist": {
+    "English": "Instant Capitalist mode: invest as much as you can afford, every faction has the same prices.\n",
+    "Italiano": "Modalità Capitalista Istantanea: investi quanto e quando puoi, ogni fazione ha gli stessi prezzi.\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP gamemode Instant_Socialist": {
+    "English": "Instant Socialist mode: invest as much as you can afford, lower factions pay a lot less.\n",
+    "Italiano": "Modalità Soclialista Istantanea: investi quanto e quando puoi, le fazioni minori pagano molto meno.\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP game changed": {
+    "English": "While you were choosing a company, the round ended! Please try again",
+    "Italiano": "Mentre sceglievi un'azienda, è finito il giro! Ritenta",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "and": {
+    "English": "and",
+    "Italiano": "e",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP already invested": {
+    "English": "Sorry, but it looks like you're already investing!",
+    "Italiano": "Ci dispiace, ma sembra che tu stia già investendo!",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP hour locked": {
+    "English": "This company is temporarily unavailable!",
+    "Italiano": "Questa azienda non è al momento disponibile!",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP round locked": {
+    "English": "This company is closed for this round!",
+    "Italiano": "Questa azienda è chiusa per questo giro!",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP not your company": {
+    "English": "Your can't invest in this company right now!",
+    "Italiano": "Non puoi investire in questa azienda adesso!",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP invested": {
+    "English": "Thanks for the investment! You got {prize} blocks!",
+    "Italiano": "Grazie per l'investimento! Hai ottenuto {prize} blocchi!",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP info prices": {
+    "English": "These are the current prices for you:\n",
+    "Italiano": "Questi sono i prezzi attuali per te:\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP info extra price": {
+    "English": "Prices with the ! sigh have a high tax.\n",
+    "Italiano": "I prezzi con il simbolo ! sono molto tassati.\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "IP info market prizes": {
+    "English": "These are the lines and the factions currently owning them, together with the prize blocks that will be added to the markets:\n",
+    "Italiano": "Ecco le linee e le fazioni che le controllano al momento, e i blocchi che saranno aggiunti ai mercati:\n",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "MM Tips": {
+    "Newcomer" : {
+      "English": "Your Central Bank delegated money printing to you! Select _Upgrade production_ whenever possible to increase your production rate, using magical money making blocks (mMmb) and some money.",
+      "Italiano": "La tua Banca Centrale ti ha delegato il compito di stampare moneta! Seleziona _Migliora produzione_ quando possibile per aumentare la velocità di stampa, usando i blocchi magici di stampa moneta (chiamati mMmb) e un po' di soldi.",
+      "Français": "",
+      "Español": "",
+      "Português": ""
+    },
+    "Block Selling" : {
+      "English": "You can now _sell blocks_  you don't use to the market to get more money. This way you can upgrade your production even faster! You'll be able to get more blocks in the future.",
+      "Italiano": "Da adesso puoi _vendere blocchi_ inutilizzati nel mercato per ottenere dei soldi. Così puoi migliorare la produzione ancora più velocemente! Potrai ottenere altri blocchi più avanti.",
+      "Français": "",
+      "Español": "",
+      "Português": ""
+    },
+    "Money Cap" : {
+      "English": "Please note that you can't store infinite money of your currency! You won't produce money after a while, so come back and upgrade!",
+      "Italiano": "Fai attenzione: non puoi tenere infiniti soldi della tua valuta! Dopo un po', non ne verranno prodotti più, finché non migliori la produzione!",
+      "Français": "",
+      "Español": "",
+      "Português": ""
+    },
+    "Global Production" : {
+      "English": "You can now see the global production of all the currencies! As you might guess, you're playing with a whole team of people! Together, your faction races against the others to be the most productive one.",
+      "Italiano": "Ora puoi vedere la produzione globale per tutte le valute! Infatti stai giocando insieme a un intero gruppo di persone! Insieme, la tua fazione gareggia contro le altre per essere la più produttiva.",
+      "Français": "",
+      "Español": "",
+      "Português": ""
+    },
+    "Leaderboard" : {
+      "English": "You unlocked the _Leaderboard_! Here you can get some more information about other players. You also unlocked the _Game Room_, check it out to see when you'll be able to have fun with minigames!",
+      "Italiano": "Hai sbloccato la _Classifica_! Qui trovi un po' di informazioni in più sugli altri giocatori. Puoi anche accedere alla _Sala Giochi_, così da sapere quando potrai giocare ai minigiochi!",
+      "Français": "",
+      "Español": "",
+      "Português": ""
+    },
+    "Minigame Daily News" : {
+      "English": "You can now play _Daily News_, go cast your vote in the _Game Room_!",
+      "Italiano": "Ora puoi giocare a _Daily News_, vai a votare nella _Sala Giochi_!",
+      "Français": "",
+      "Español": "",
+      "Português": ""
+    },
+    "Minigame Ore Miner" : {
+      "English": "You can now play _Ore Miner_, that's perfect when you need just a little more money to upgrade!",
+      "Italiano": "Ora puoi giocare a _Ore Miner_, un minigioco perfetto per quelle volte in cui ti servono giusto un po' di soldi in più per migliorare la produzione!",
+      "Français": "",
+      "Español": "",
+      "Português": ""
+    },
+    "Minigame Coinopoly" : {
+      "English": "You can now play _Coinopoly_ in the _Game Room_, for the cryptocurrency fans!",
+      "Italiano": "Ora puoi giocare a _Coinopoly_ nella _Sala Giochi_, per i fan delle criptovalute!",
+      "Français": "",
+      "Español": "",
+      "Português": ""
+    },
+    "Minigame Global Steel Road" : {
+      "English": "You can now play _Global Steel Road_, easy to play, hard to optimize!",
+      "Italiano": "Ora puoi giocare a _Global Steel Road_, facile da giocare, difficile da ottimizzare!",
+      "Français": "",
+      "Español": "",
+      "Português": ""
+    },
+    "Block Requesting" : {
+      "English": "Do you need more blocks? Now you can buy them in the market!",
+      "Italiano": "Servono blocchi? Ora puoi comprarli nel mercato!",
+      "Français": "",
+      "Español": "",
+      "Português": ""
+    },
+    "Minigame Investment Plan" : {
+      "English": "You can now play _Investment Plan_, go to the _Game Room_ and try to get some blocks by investing in some companies!",
+      "Italiano": "Ora puoi giocare a _Investment Plan_, vai alla _Sala Giochi_ e ottieni blocchi investendo su alcune aziende!",
+      "Français": "",
+      "Español": "",
+      "Português": ""
+    },
+    "End of tips" : {
+      "English": "You've unlocked (almost) every feature of the game! Have fun playing, and perhaps go meet the communities of your faction. For any information, write /help",
+      "Italiano": "Hai sbloccato (quasi) tutte le funzioni di gioco! Divertiti e magari incontra le community della tua fazione. Per altre informazioni, scrivi /help",
+      "Français": "",
+      "Español": "",
+      "Português": ""
+    }
+  },
+  "Level lock": {
+    "English": "Unlock this feature at level {lvl}",
+    "Italiano": "Sblocca questa funzione al livello {lvl}",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "Gear lock": {
+    "English": "Unlock this feature at gear {gear}",
+    "Italiano": "Sblocca questa funzione alla marcia {gear}",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "Event moneycap_compensation": {
+    "English": "With the introduction of the money cap feature, a lot of us will lose a considerable amount of money for our own currency.\nThis is made to balance the game for everyone, especially to prevent new players to upgrade from 0 to 40 in a single hour!\n\nTo compensate for the money loss, and to test the new balance with a fresh start, here's 20 blocks for everyone!",
+    "Italiano": "Con l'introduzione del money cap, ossia di un tetto all'accumulo di moneta della propria valuta, molti di noi perderanno una grossa quantità di soldi.\nQuesta funzione servirà a bilanciare il gioco per tutti, specialmente per i nuovi giocatori che attualmente possono passare da livello 0 a 40 in un'ora! Per compensare questa perdita, e per testare il nuovo bilanciamento con un nuovo inizio, ecco 20 blocchi per tutti!",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
+  "Gearup not ready": {
+    "English": "You need more levels to gear up! Get to level {needed_level} and come back!",
+    "Italiano": "Servono più livelli per salire di marcia! Raggiungi il livello {needed_level} e riprova!",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup not available": {
+    "English": "You can't gear up at this time!",
+    "Italiano": "Non puoi salire di marcia adesso!",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup too much money": {
+    "English": "The market can't absorb your money. Try to spend at least {excess}{sym} before!",
+    "Italiano": "Il mercato non può assorbire il tuo capitale. Prova a spendere almeno {excess}{sym} prima!",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup info": {
+    "English": "You can now upgrade your gaming experience by gearing up your bank!\nHere is a list of what will change. You can choose to stay in your current faction or to change membership. Gearing up will become harder every time!\n\nNote that when you do this all your money get donated to your current faction Market!\n\n",
+    "Italiano": "Hai la possibilità di migliorare la tua esperienza di gioco facendo salire di marcia la tua banca!\nSotto trovi la lista dei cambiamenti a cui verrai sottoposto. Puoi decidere di stare nella tua fazione corrente oppure di cambiare. Salire alle prossime marce diventerà sempre più dispendioso!\n\nNota che quando lo fai doni tutti i tuoi soldi al Mercato della fazione corrente!\n\n",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup effect Prod_level": {
+    "English": "Production level: ",
+    "Italiano": "Livello di produzione: ",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup effect Prod_rate": {
+    "English": "Base money production rate: ",
+    "Italiano": "Velocità base produzione moneta: ",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup effect bonus_blocks": {
+    "English": "Instant bonus blocks: ",
+    "Italiano": "Blocchi bonus istantanei: ",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup effect new_badge": {
+    "English": "New badge for your nickname: ",
+    "Italiano": "Nuovo stemma per il tuo soprannome: ",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup effect new_superbadge": {
+    "English": "New SUPERBADGE to distinguish yourself for your accomplishment: ",
+    "Italiano": "Nuovo SUPERSTEMMA per contraddistinguerti per il tuo risultato: ",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup effect weekly_to_daily": {
+    "English": "Natural block growth: 1 every week → 1 every day\n(Bonuses for faction balancing may be applied)",
+    "Italiano": "Crescita naturale blocchi: 1 a settimana → 1 al giorno\n(Possono essere applicati bonus di bilanciamento tra le fazioni)",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup effect no_money_cap": {
+    "English": "You will no longer be restricted by the money cap!",
+    "Italiano": "Non verrai più limitato dal money cap!",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup effect block_rate": {
+    "English": "Daily bonus blocks:\n",
+    "Italiano": "Blocchi bonus giornalieri:\n",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup effect multipliers": {
+    "English": "\n\nWith every new badge, your money production is slightly improved, regardless of your current currency.\nMultiplier change:\n",
+    "Italiano": "\n\nPer ogni stemma, la tua produzione è leggermente aumentata, indipendentemente dalla tua valuta.\nVariazione del moltiplicatore:\n",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup button keep memb": {
+    "English": "Confirm and keep faction ",
+    "Italiano": "Conferma tenendo la fazione ",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup button change memb": {
+    "English": "Confirm to {memb} ",
+    "Italiano": "Conferma verso {memb} ",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup button max": {
+    "English": "Gear Maximum ({qty} gears) ",
+    "Italiano": "Marcia Massima ({qty} marce)",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup ACB rule": {
+    "English": "ACB is a special faction: you can't stay in it twice in a row!",
+    "Italiano": "ACB è una fazione speciale: non puoi rimanerci due volte di seguito!",
+    "Français": "",
+    "Español": ""
+  },
+  "Error old market": {
+    "English": "You can't put new requests on this market!",
+    "Italiano": "Non è più possibile inserire richieste in questo mercato!",
+    "Français": "",
+    "Español": ""
+  },
+  "button block market": {
+    "English": "Block Market",
+    "Italiano": "Mercato Blocchi",
+    "Français": "",
+    "Español": ""
+  },
+  "button flea market": {
+    "English": "Flea Market",
+    "Italiano": "Mercatino",
+    "Français": "",
+    "Español": ""
+  },
+  "button confirm": {
+    "English": "Confirm!",
+    "Italiano": "Conferma!",
+    "Français": "",
+    "Español": ""
+  },
+  "accup new market general info": {
+    "English": "IdleBank Alpha is evolving!\nYou are free to update your experience to the new one when you want, but at some point the changes will become mandatory, so please take your time to review them and upgrade your account.\n\nCurrently, every player can have money from all three currencies, and the market is divided in 9 sections, buying and selling all three block types in all three currencies.\nThis proved to be not ideal, with most players unable to make use of blocks and/or money they have.\n\nNew and upgraded accounts will change all of this: everyone will have all their money converted to the currency of their Central Bank, and the market will only have 3 sections, one per block type. This way you can easily sell blocks you don't use and get the money you need to buy blocks you do use.\n\nThe excange rate between currencies is calculated on global production, just like in the InvestmentPlan minigame.\n\nThe new market is also made simpler: players no longer need to wait of other players to create/accept block requests, the market itself will change the current block price based on the amount of bought and sold blocks. Everyone will be able to buy and sell blocks instantly, even more than one block at once.\n\nHere's what will happen to your money:\n",
+    "Italiano": "IdleBank Alpha sta cambiando!\nPuoi aggiornare la tua esperienza di gioco quando preferisci, ma ad un certo punto sarà obbligatorio per tutti, quindi prenditi il tempo di leggere le novità e di aggiornare il tuo account.\n\nAttualmente, tutti possiedono soldi di ogni valuta, e il mercato è diviso in 9 sezioni, per comprare e vendere i tre tipi di blocchi in tutte e tre le valute.\nIl risultato non è stato quello sperato, molti giocatori non riescono a far frutto di blocchi e/o soldi in loro possesso.\n\nAggiornando l'account, tutto cambierà: il saldo di tutti verrà convertito alla valuta della loro Banca Centrale, e il mercato avrà solo 3 sezioni, una per tipo di blocco. Così puoi facilmente vendere blocchi che non usi in cambio di soldi che puoi subito usare per compare blocchi utili.\n\nIl tasso di cambio tra le valute è calcolato sulla produzione globale, proprio come per il minigioco InvestmentPlan.\n\nIl nuovo mercato sarà più semplice: non sarà più necessario aspettare che gli altri giocatori creino o accettino le richieste, il mercato stesso gestirà il prezzo dei blocchi sulla base delle quantità comprate e vendute. Tutti possono comprare e vendere blocchi all'instante, anche più blocchi per volta.\n\nEcco cosa accadrà ai tuoi soldi:\n",
+    "Français": "",
+    "Español": ""
+  },
+  "accup balance": {
+    "English": "{old_balance} converted to {new_balance}\n",
+    "Italiano": "{old_balance} convertiti in {new_balance}\n",
+    "Français": "",
+    "Español": ""
+  },
+  "accup total": {
+    "English": "You'll end up with: {total_new_balance}",
+    "Italiano": "In totale, avrai: {total_new_balance}",
+    "Français": "",
+    "Español": ""
+  },
+  "Market section status": {
+    "English": "*{block} market*\n{direction_emoji} Price: {price}{cur_sym}\n`Market money: {money_pcent}% full\nMarket blocks: {block_pcent}% full`\n\n",
+    "Italiano": "*Mercato di {block}*\n{direction_emoji} Prezzo: {price}{cur_sym}\n`Soldi nel mercato: {money_pcent}% pieno\nBlocchi nel mercato: {block_pcent}% pieno`\n\n",
+    "Français": "",
+    "Español": ""
+  },
+  "Market section status short": {
+    "English": "{direction_emoji} *{block}*: {price}{cur_sym} per block\n`\tMoney: {money_pcent}% | Blocks: {block_pcent}%`\n",
+    "Italiano": "{direction_emoji} *{block}*: {price}{cur_sym} per blocco\n`\tSoldi: {money_pcent}% | Blocchi {block_pcent}%`\n",
+    "Français": "",
+    "Español": ""
+  },
+  "Market info": {
+    "English": "Here are the current prices for all blocks!\nYou can buy and sell any block for money of your own currency.\nThe exchange rates are based on the global production of each currency.\n\n",
+    "Italiano": "Ecco i prezzi di ogni blocco!\nPuoi comprare e vendere qualsiasi blocco per soldi della tua valuta.\nI tassi di cambio sono calcolati sulla produzione globale delle valute.\n\n",
+    "Français": "",
+    "Español": ""
+  },
+  "Market EDB command": {
+    "English": "Use this command to check currency exchange, minigame bonusses and discounts: {command}",
+    "Italiano": "Usa questo comando per controllare gli scambi di valuta, i bonus e gli sconti per i minigiochi: {command}",
+    "Français": "",
+    "Español": ""
+  },
+  "Market full money": {
+    "English": "This market can't accept more purchase",
+    "Italiano": "Questo mercato non accetta altri acquisti",
+    "Français": "",
+    "Español": ""
+  },
+  "Market empty money": {
+    "English": "This market is out of money",
+    "Italiano": "Questo mercato è al verde",
+    "Français": "",
+    "Español": ""
+  },
+  "Market full blocks": {
+    "English": "This market has no space left for blocks",
+    "Italiano": "Questo mercato non può più immagazzinare blocchi",
+    "Français": "",
+    "Español": ""
+  },
+  "Market empty blocks": {
+    "English": "This market is out of blocks",
+    "Italiano": "Questo mercato non ha più blocchi",
+    "Français": "",
+    "Español": ""
+  },
+  "Market button absolute": {
+    "English": "See data",
+    "Italiano": "Vedi dati",
+    "Français": "",
+    "Español": ""
+  },
+  "Market button back": {
+    "English": "Back to market",
+    "Italiano": "Torna al mercato",
+    "Français": "",
+    "Español": ""
+  },
+  "button market sell": {
+    "English": "Sell",
+    "Italiano": "Vendi",
+    "Français": "",
+    "Español": ""
+  },
+  "button market buy": {
+    "English": "Buy",
+    "Italiano": "Comp",
+    "Français": "",
+    "Español": ""
+  },
+  "button old market": {
+    "English": "Sell to old market",
+    "Italiano": "Vendi al vecchio mercato",
+    "Français": "",
+    "Español": ""
+  },
+  "Flea Market Info": {
+    "English": "The Flea Market allows anyone to swap between items! Come often to check which offers are available!\n\n",
+    "Italiano": "Il Mercatino offre a chiunque un luogo di scambio tra oggetti! Torna spesso per vedere cosa è disponibile!\n\n",
+    "Français": "",
+    "Español": ""
+  },
+  "Flea Market Offer": {
+    "English": "{offer_name} ending in {time_left}:\n exchange {item_0} with {item_1}\n",
+    "Italiano": "{offer_name} termina tra {time_left}:\n scambia {item_0} con {item_1}\n",
+    "Français": "",
+    "Español": ""
+  },
+  "Flea Market Fee": {
+    "English": "Fee to pay: {price}{cur_sym}\n",
+    "Italiano": "Tassa dovuta: {price}{cur_sym}\n",
+    "Français": "",
+    "Español": ""
+  },
+  "Flea Market Fee not due": {
+    "English": "Fees are currently covered by the Market\n\n",
+    "Italiano": "Le tasse sono attualmente coperte dal Mercato\n\n",
+    "Français": "",
+    "Español": ""
+  },
+  "Flea Market Offer Name hot": {
+    "English": "Hot Offer",
+    "Italiano": "Offerta in Tendenza",
+    "Français": "",
+    "Español": ""
+  },
+  "Flea Market Offer Name mid": {
+    "English": "Midday Offer",
+    "Italiano": "Offerta del Mezzogiorno",
+    "Français": "",
+    "Español": ""
+  },
+  "Flea Market Offer Name ins": {
+    "English": "Instant Offer",
+    "Italiano": "Offerta Istantanea",
+    "Français": "",
+    "Español": ""
+  },
+  "FM item coal": {
+    "English": "Coal",
+    "Italiano": "Carbone",
+    "Français": "",
+    "Español": ""
+  },
+  "FM item protections": {
+    "English": "Protections",
+    "Italiano": "Protezioni",
+    "Français": "",
+    "Español": ""
+  },
+  "FM item key": {
+    "English": "Keys",
+    "Italiano": "Chiavi",
+    "Français": "",
+    "Español": ""
+  },
+  "FM item dice": {
+    "English": "Dice",
+    "Italiano": "Dadi",
+    "Français": "",
+    "Español": ""
+  },
+  "FM item crypto": {
+    "English": "Crypto",
+    "Italiano": "Crypto",
+    "Français": "",
+    "Español": ""
+  },
+  "FM item block": {
+    "English": "Blocks",
+    "Italiano": "Blocchi",
+    "Français": "",
+    "Español": ""
+  },
+  "FM item investment_pass": {
+    "English": "Inv. Pass",
+    "Italiano": "Pass Inv.",
+    "Français": "",
+    "Español": ""
+  },
+  "CP error no action available": {
+    "English": "You're currently in a storehouse, you can't do much!",
+    "Italiano": "Al momento sei in un magazzino, non puoi fare granché!",
+    "Français": "",
+    "Español": ""
+  },
+  "CP error action not available": {
+    "English": "Unfortunately you can't do that right now!",
+    "Italiano": "Purtroppo non puoi farlo al momento!",
+    "Français": "",
+    "Español": ""
+  },
+  "CP roll": {
+    "English": "You roll the dice... {dieval}!",
+    "Italiano": "Lanci il dado... {dieval}!",
+    "Français": "",
+    "Español": ""
+  },
+  "CP landon storehouse": {
+    "English": "You landed on a storehouse, and you got {blocks} blocks!",
+    "Italiano": "Hai raggiunto un magazzino, ottenendo {blocks} blocchi!",
+    "Français": "",
+    "Español": ""
+  },
+  "CP cell storehouse": {
+    "English": "storehouse",
+    "Italiano": "magazzino",
+    "Français": "",
+    "Español": ""
+  },
+  "CP landon storehouse nocoin": {
+    "English": "You landed on a storehouse, but since you don't have coins, you don't get any block!",
+    "Italiano": "Hai raggiunto un magazzino, ma visto che non hai coin, non ottieni nessun blocco!",
+    "Français": "",
+    "Español": ""
+  },
+  "CP landon crypto": {
+    "English": "You landed on a crypto coin market!",
+    "Italiano": "Hai raggiunto il mercato di una crypto coin!",
+    "Français": "",
+    "Español": ""
+  },
+  "CP welcome": {
+    "English": "Rules:\n- Every hour, you can throw a dice and land on either a storehouse or a crypto coin market\n- On markets, you can mine coins for free, buy some of the coins in stock or sell all your coins of that crypto at the current price\n- When you land on a storehouse, you win 1 block for every kind of coin you have!\n- You can also pay crypto to buy houses, getting blocks when people land on them.\n\n",
+    "Italiano": "Regole:\n- Ogni ora, puoi lanciare un dado e raggiungere un magazzino o un mercato di una crypto coin\n- Nei mercati, puoi fare Mining gratuitamente, comprare parte delle coin disponibili oppure vendere tutte le tue coin di quella crypto al prezzo attuale\n- Quando raggiungi un magazzino, vinci 1 blocco per ogni tipo di coin in tuo possesso!\n- Puoi anche pagare crypto per comprare case, e otterrai blocchi quando la gente cade su di esse.\n\n",
+    "Français": "",
+    "Español": ""
+  },
+  "CP in storehouse": {
+    "English": "You're currently in a storehouse.\n",
+    "Italiano": "Ti trovi in un magazzino.\n",
+    "Français": "",
+    "Español": ""
+  },
+  "CP in coin": {
+    "English": "You're in a {coin_name} market\nMarket stock: {qty_stock}\nYour wallet: {qty_player}\nPrice: {price}\n",
+    "Italiano": "Sei in un mercato di {coin_name}\nNel mercato: {qty_stock}\nNel tuo portafoglio: {qty_player}\nPrezzo: {price}\n",
+    "Français": "",
+    "Español": ""
+  },
+  "CP button move": {
+    "English": "Throw the dice",
+    "Italiano": "Lancia il dado",
+    "Français": "",
+    "Español": ""
+  },
+  "CP button extra dice": {
+    "English": "Throw extra dice ({qty} left)",
+    "Italiano": "Lancia un dado extra ({qty} rimanenti)",
+    "Français": "",
+    "Español": ""
+  },
+  "CP button mine": {
+    "English": "Mine some crypto",
+    "Italiano": "Fai Mining di crypto",
+    "Français": "",
+    "Español": ""
+  },
+  "CP button buy main": {
+    "English": "Buy {qty} for {price}{cur_sym}",
+    "Italiano": "Compra {qty} per {price}{cur_sym}",
+    "Français": "",
+    "Español": ""
+  },
+  "CP button buy others": {
+    "English": "{qty} for {price}{cur_sym}",
+    "Italiano": "{qty} per {price}{cur_sym}",
+    "Français": "",
+    "Español": ""
+  },
+  "CP button sell": {
+    "English": "Sell coins for {prize}{cur_sym}",
+    "Italiano": "Vendi monete per {prize}{cur_sym}",
+    "Français": "",
+    "Español": ""
+  },
+  "CP button build": {
+    "English": "Buy a house for {price}",
+    "Italiano": "Compra una casa per {price}",
+    "Français": "",
+    "Español": ""
+  },
+  "CP button map": {
+    "English": "Full board",
+    "Italiano": "Tabellone",
+    "Français": "",
+    "Español": ""
+  },
+  "CP button Wallet": {
+    "English": "Wallet",
+    "Italiano": "Portafoglio",
+    "Français": "",
+    "Español": ""
+  },
+  "CP button Stock": {
+    "English": "Stock",
+    "Italiano": "Riserva",
+    "Français": "",
+    "Español": ""
+  },
+  "CP button Price": {
+    "English": "Prices",
+    "Italiano": "Prezzi",
+    "Français": "",
+    "Español": ""
+  },
+  "CP notify house": {
+    "English": "Someone landed on your house in Coinopoly! You won {blocks} blocks!",
+    "Italiano": "Qualcuno è arrivato sulla tua casa in Coinopoly! Hai vinto {blocks} blocchi!",
+    "Français": "",
+    "Español": ""
+  },
+  "CP landon house": {
+    "English": "\nSomeone has a house on this cell, and they just won blocks... You should probably buy one yourself!",
+    "Italiano": "\nQualcuno ha una casa in questa casella, e ha appena vinto dei blocchi... Dovresti proprio comprarne una pure tu!",
+    "Français": "",
+    "Español": ""
+  },
+  "CP landon your house": {
+    "English": "\nYou landed on your house, here's {blocks} blocks!",
+    "Italiano": "\nSei arrivato in casa tua, eccoti {blocks} blocchi!",
+    "Français": "",
+    "Español": ""
+  },
+  "CP house count": {
+    "English": "You are the owner in {num} cell(s).",
+    "Italiano": "Sei il proprietario di {num} cella/e.",
+    "Français": "",
+    "Español": ""
+  },
+  "CP mining": {
+    "English": "You got {qty} by mining!",
+    "Italiano": "Hai ottenuto {qty} dal mining!",
+    "Français": "",
+    "Español": ""
+  },
+  "SR products": {
+    "AA": {
+      "English": "Fruits&Veg",
+      "Italiano": "Frutta e Verdura",
+      "Français": "",
+      "Español": ""
+    },
+    "AB": {
+      "English": "Fruit Juice",
+      "Italiano": "Succo di Frutta",
+      "Français": "",
+      "Español": ""
+    },
+    "AC": {
+      "English": "Healthy Drink",
+      "Italiano": "Bevanda Salutare",
+      "Français": "",
+      "Español": ""
+    },
+    "AD": {
+      "English": "Soda",
+      "Italiano": "Bevanda Gassata",
+      "Français": "",
+      "Español": ""
+    },
+    "AE": {
+      "English": "Fruit&Veg Pieces",
+      "Italiano": "Pezzi di Frutta e Verdura",
+      "Français": "",
+      "Español": ""
+    },
+    "AF": {
+      "English": "Salad",
+      "Italiano": "Insalata",
+      "Français": "",
+      "Español": ""
+    },
+    "BA": {
+      "English": "Bioch. Cells",
+      "Italiano": "Cellule Biochimiche",
+      "Français": "",
+      "Español": ""
+    },
+    "BB": {
+      "English": "Protein Liquid",
+      "Italiano": "Proteine Liquide",
+      "Français": "",
+      "Español": ""
+    },
+    "BC": {
+      "English": "Medicine",
+      "Italiano": "Medicina",
+      "Français": "",
+      "Español": ""
+    },
+    "CA": {
+      "English": "Movies",
+      "Italiano": "Film",
+      "Français": "",
+      "Español": ""
+    },
+    "CB": {
+      "English": "Movie Translation",
+      "Italiano": "Traduzioni per Film",
+      "Français": "",
+      "Español": ""
+    },
+    "CC": {
+      "English": "Cinema Film Show",
+      "Italiano": "Spettacolo in Sala Cinema",
+      "Français": "",
+      "Español": ""
+    },
+    "DA": {
+      "English": "Mineral Fuel",
+      "Italiano": "Combustibile Fossile",
+      "Français": "",
+      "Español": ""
+    },
+    "DB": {
+      "English": "Refined Oil",
+      "Italiano": "Petrolio Raffinato",
+      "Français": "",
+      "Español": ""
+    },
+    "DC": {
+      "English": "Vehicle Fuel",
+      "Italiano": "Carburante",
+      "Français": "",
+      "Español": ""
+    },
+    "DD": {
+      "English": "Gas",
+      "Italiano": "Gas",
+      "Français": "",
+      "Español": ""
+    },
+    "DE": {
+      "English": "Electricity",
+      "Italiano": "Elettricità",
+      "Français": "",
+      "Español": ""
+    },
+    "DF": {
+      "English": "Plastic",
+      "Italiano": "Plastica",
+      "Français": "",
+      "Español": ""
+    },
+    "DG": {
+      "English": "Plastic Tools",
+      "Italiano": "Strumenti di Plastica",
+      "Français": "",
+      "Español": ""
+    },
+    "EA": {
+      "English": "Renewables",
+      "Italiano": "Rinnovabili",
+      "Français": "",
+      "Español": ""
+    },
+    "EB": {
+      "English": "Green Energy",
+      "Italiano": "Energia Verde",
+      "Français": "",
+      "Español": ""
+    },
+    "FA": {
+      "English": "Copper",
+      "Italiano": "Rame",
+      "Français": "",
+      "Español": ""
+    },
+    "FB": {
+      "English": "Electrical Wires",
+      "Italiano": "Circuiti Elettrici",
+      "Français": "",
+      "Español": ""
+    },
+    "FC": {
+      "English": "Electronics",
+      "Italiano": "Elettronica",
+      "Français": "",
+      "Español": ""
+    },
+    "GA": {
+      "English": "Corn&Wheat",
+      "Italiano": "Mais e Grano",
+      "Français": "",
+      "Español": ""
+    },
+    "GB": {
+      "English": "Bread",
+      "Italiano": "Pane",
+      "Français": "",
+      "Español": ""
+    },
+    "GC": {
+      "English": "Cornmeal",
+      "Italiano": "Farina",
+      "Français": "",
+      "Español": ""
+    },
+    "GD": {
+      "English": "Grain Alcohol",
+      "Italiano": "Alcol Etilico",
+      "Français": "",
+      "Español": ""
+    },
+    "GE": {
+      "English": "Whiskey",
+      "Italiano": "Whiskey",
+      "Français": "",
+      "Español": ""
+    },
+    "HA": {
+      "English": "Gemstones",
+      "Italiano": "Pietre Preziose",
+      "Français": "",
+      "Español": ""
+    },
+    "HB": {
+      "English": "Polished Gem",
+      "Italiano": "Gemma Lucidata",
+      "Français": "",
+      "Español": ""
+    },
+    "HC": {
+      "English": "Jewelry",
+      "Italiano": "Gioiello",
+      "Français": "",
+      "Español": ""
+    },
+    "IA": {
+      "English": "Fish&Meat",
+      "Italiano": "Carne e Pesce",
+      "Français": "",
+      "Español": ""
+    },
+    "JA": {
+      "English": "Wood",
+      "Italiano": "Legno",
+      "Français": "",
+      "Español": ""
+    },
+    "JB": {
+      "English": "Furniture",
+      "Italiano": "Mobili",
+      "Français": "",
+      "Español": ""
+    },
+    "JC": {
+      "English": "Cellulose",
+      "Italiano": "Cellulosa",
+      "Français": "",
+      "Español": ""
+    },
+    "JD": {
+      "English": "Paper",
+      "Italiano": "Carta",
+      "Français": "",
+      "Español": ""
+    },
+    "KA": {
+      "English": "Metals",
+      "Italiano": "Metalli",
+      "Français": "",
+      "Español": ""
+    },
+    "KB": {
+      "English": "Metal Parts",
+      "Italiano": "Parti Metalliche",
+      "Français": "",
+      "Español": ""
+    },
+    "KC": {
+      "English": "Car",
+      "Italiano": "Automobile",
+      "Français": "",
+      "Español": ""
+    },
+    "KD": {
+      "English": "Stainless Steel",
+      "Italiano": "Acciaio Inossidabile",
+      "Français": "",
+      "Español": ""
+    },
+    "KE": {
+      "English": "Metallic Tools",
+      "Italiano": "Attrezzi Metallici",
+      "Français": "",
+      "Español": ""
+    },
+    "LA": {
+      "English": "Uranium",
+      "Italiano": "Uranio",
+      "Français": "",
+      "Español": ""
+    },
+    "LB": {
+      "English": "Enriched Uranium",
+      "Italiano": "Uranio Arricchito",
+      "Français": "",
+      "Español": ""
+    },
+    "LC": {
+      "English": "Nuclear Energy",
+      "Italiano": "Energia Nucleare",
+      "Français": "",
+      "Español": ""
+    },
+    "MA": {
+      "English": "Fibres",
+      "Italiano": "Fibre",
+      "Français": "",
+      "Español": ""
+    },
+    "MB": {
+      "English": "Textile Products",
+      "Italiano": "Prodotti Tessili",
+      "Français": "",
+      "Español": ""
+    },
+    "MC": {
+      "English": "Clothes",
+      "Italiano": "Vestiti",
+      "Français": "",
+      "Español": ""
+    },
+    "NA": {
+      "English": "Rice",
+      "Italiano": "Riso",
+      "Français": "",
+      "Español": ""
+    }
+  },
+  "SR section Prizes": {
+    "English": "Earnings for final products",
+    "Italiano": "Guadagni per i prodotti finali",
+    "Français": "",
+    "Español": ""
+  },
+  "SR section Prices": {
+    "English": "Prices of materials",
+    "Italiano": "Prezzi dei materiali",
+    "Français": "",
+    "Español": ""
+  },
+  "SR section Exchanges": {
+    "English": "Exchanges map",
+    "Italiano": "Mappa degli scambi",
+    "Français": "",
+    "Español": ""
+  },
+  "SR button buy": {
+    "English": "Buy {itemname}",
+    "Italiano": "Compra {itemname}",
+    "Français": "",
+    "Español": ""
+  },
+  "SR button exchange": {
+    "English": "Exchange {requireditemname} with {itemname}",
+    "Italiano": "Scambia {requireditemname} con {itemname}",
+    "Français": "",
+    "Español": ""
+  },
+  "SR button sell": {
+    "English": "Sell {itemname}",
+    "Italiano": "Vendi {itemname}",
+    "Français": "",
+    "Español": ""
+  },
+  "SR button to Market": {
+    "English": "Go to GSR Market",
+    "Italiano": "Vai al Mercato GSR",
+    "Français": "",
+    "Español": ""
+  },
+  "SR button to Factories": {
+    "English": "Go to GSR Factories",
+    "Italiano": "Vai alle Fabbriche GSR",
+    "Français": "",
+    "Español": ""
+  },
+  "SR Factories button own": {
+    "English": "Get {factory_letter}: {cost}{block_type}",
+    "Italiano": "Prendi {factory_letter}: {cost}{block_type}",
+    "Français": "",
+    "Español": ""
+  },
+  "SR Factories button up": {
+    "English": "Up {factory_letter}: {cost}{block_type}",
+    "Italiano": "Migl. {factory_letter}: {cost}{block_type}",
+    "Français": "",
+    "Español": ""
+  },
+  "SR Factories button switch": {
+    "English": "Switch {factory_letter}: {cost}{block_type}",
+    "Italiano": "Scambia {factory_letter}: {cost}{block_type}",
+    "Français": "",
+    "Español": ""
+  },
+  "SR Factories notify lost factory": {
+    "English": "Somebody got your Factory in {city}!",
+    "Italiano": "Qualcuno ha preso la tua Fabbrica in {city}!",
+    "Français": "",
+    "Español": ""
+  },
+  "SR Factories notify switched factory": {
+    "English": "Somebody switched your Factory in {city}!",
+    "Italiano": "Qualcuno ha scambiato la tua Fabbrica in {city}!",
+    "Français": "",
+    "Español": ""
+  },
+  "SR Factories button invest": {
+    "English": "{price} -> {prize} blocks",
+    "Italiano": "{price} -> {prize} blocchi",
+    "Français": "",
+    "Español": ""
+  },
+  "SR Factories landowner": {
+    "English": "Current landowner (S factory):\n{landowner}",
+    "Italiano": "Latifondista corrente (fabbrica S):\n{landowner}",
+    "Français": "",
+    "Español": ""
+  },
+  "SR Factories dividend": {
+    "English": "Dividends in this city are: {base_div}{cur_sym}",
+    "Italiano": "I dividendi in questa città valgono: {base_div}{cur_sym}",
+    "Français": "",
+    "Español": ""
+  },
+  "SR Factories city info": {
+    "English": "Welcome to {statname}!",
+    "Italiano": "Benvenutə a {statname}!",
+    "Français": "",
+    "Español": ""
+  },
+  "SR sell info": {
+    "English": "This market is buying {itemname} for {money}{cur_sym} and {blocks} {blocktype}.\n",
+    "Italiano": "Questo mercato compra {itemname} per {money}{cur_sym} e {blocks} {blocktype}.\n",
+    "Français": "",
+    "Español": ""
+  },
+  "SR welcome": {
+    "English": "Rules:\n- This exchange route quickly crosses 42 important cities around the world\n- At every stop, you can buy, exchange and sell goods, for very high prizes\n- You can only sell final products in the 7 capitals\n- You can speed up the trip by giving coal, obtained in Ore Miner!\n\n",
+    "Italiano": "Regole:\n- Questa linea commerciale attraversa velocemente 42 città importanti in giro per il mondo\n- Ad ogni fermata, puoi comprare, scambiare e vendere beni, per premi molto ghiotti\n- Puoi vendere prodotti finiti solo nelle 7 capitali\n- Puoi fare accelerare il viaggio dando carbone, ottenuto in Ore Miner!\n\n",
+    "Français": "",
+    "Español": ""
+  },
+  "SR inventory": {
+    "English": "Goods you currently have:\n{items}\n",
+    "Italiano": "Beni in tuo possesso:\n{items}\n",
+    "Français": "",
+    "Español": ""
+  },
+  "SR inventory final prods": {
+    "English": "Final products:\n",
+    "Italiano": "Prodotti finiti:\n",
+    "Français": "",
+    "Español": ""
+  },
+  "SR inventory next stop": {
+    "English": "next stop",
+    "Italiano": "prossima fermata",
+    "Français": "",
+    "Español": ""
+  },
+  "SR Factories welcome": {
+    "English": "Rules:\n- At every stop, you can use blocks to own a Factory, or get blocks by investing money in them!\n- Owners get a cut from investments and earn money every time the game enters the city!\n- You can own 1 factory per city.\n\n",
+    "Italiano": "Regole:\n- Ad ogni fermata, puoi usare blocchi per appropriarti di una Fabbrica, o ottenere blocchi investendoci soldi!\n- I proprietari ottengono una quota dagli investimenti e guadagnano soldi ogni volta che il gioco arriva alla città!\n- Puoi possedere 1 fabbrica per città.\n\n",
+    "Français": "",
+    "Español": ""
+  },
+  "SR Factories state": {
+    "English": "City land:\n{state}\n",
+    "Italiano": "Terreni della città:\n{state}\n",
+    "Français": "",
+    "Español": ""
+  },
+  "SR travelling": {
+    "English": "We're currently travelling to {next_station}...\n",
+    "Italiano": "Siamo attualmente in viaggio verso {next_station}...\n",
+    "Français": "",
+    "Español": ""
+  },
+  "SR button coal": {
+    "English": "Give coal ({coal} left)",
+    "Italiano": "Dai carbone ({coal} rimanenti)",
+    "Français": "",
+    "Español": ""
+  },
+  "SR city info": {
+    "English": "Welcome to {statname}!\nWe're selling {rawmatname} and we produce {prod1name}, {prod2name} and {finprodname}!\n",
+    "Italiano": "Benvenutə a {statname}!\nVendiamo {rawmatname} e produciamo {prod1name}, {prod2name} e {finprodname}!\n",
+    "Français": "",
+    "Español": ""
+  },
+  "SR capital info": {
+    "English": "The {cenbank} welcomes you to our capital, {statname}.\nYou can buy {rawmatname}, obtain {prod1name} and {prod2name}, or you can sell any final product.\n",
+    "Italiano": "La {cenbank} vi dà il benvenuto alla nostra capitale, {statname}.\nPotete comprare {rawmatname}, ottenere {prod1name} e {prod2name}, oppure potete vendere qualsiasi prodotto finito.\n",
+    "Français": "",
+    "Español": ""
+  },
+  "SR available investments": {
+    "English": "\nInvestments left: {num}",
+    "Italiano": "\nInvestimenti rimasti: {num}",
+    "Français": "",
+    "Español": ""
+  },
+  "SR investment passes": {
+    "English": " + {passes} Investment Passes",
+    "Italiano": " + {passes} Pass Investimento",
+    "Français": "",
+    "Español": ""
+  },
+  "SR no coal": {
+    "English": "But you don't have coal...",
+    "Italiano": "Ma tu non hai cabone...",
+    "Français": "",
+    "Español": ""
+  },
+  "SR error going": {
+    "English": "We're currently travelling!",
+    "Italiano": "Per ora siamo in viaggio!",
+    "Français": "",
+    "Español": ""
+  },
+  "SR error not capital": {
+    "English": "You can only sell to capital cities!",
+    "Italiano": "Puoi solo vendere in città capitali!",
+    "Français": "",
+    "Español": ""
+  },
+  "SR error requirement not met": {
+    "English": "You don't have the necessary item!",
+    "Italiano": "Non possiedi il prodotto necessario!",
+    "Français": "",
+    "Español": ""
+  },
+  "SR error item not available": {
+    "English": "This item is not available here!",
+    "Italiano": "Questo prodotto non è disponibile qua!",
+    "Français": "",
+    "Español": ""
+  },
+  "SR error materials sold out": {
+    "English": "Unfortunately we're sold out!",
+    "Italiano": "Purtroppo è tutto esaurito!",
+    "Français": "",
+    "Español": ""
+  },
+  "SR error inventory full": {
+    "English": "You don't have space for that!",
+    "Italiano": "Non hai altro spazio!",
+    "Français": "",
+    "Español": ""
+  },
+  "SR error build blocks": {
+    "English": "You don't have enough blocks of the right kind!",
+    "Italiano": "Non hai abbastanza blocchi del tipo giusto!",
+    "Français": "",
+    "Español": ""
+  },
+  "SR error already landowner": {
+    "English": "You already own a factory in this city!",
+    "Italiano": "Possiedi già una fabbrica in questa città!",
+    "Français": "",
+    "Español": ""
+  },
+  "SR error already invested": {
+    "English": "You already invested in this city!",
+    "Italiano": "Hai già investito in questa città!",
+    "Français": "",
+    "Español": ""
+  },
+  "SR error no owner": {
+    "English": "There's no factory here!",
+    "Italiano": "Qui non c'è nessuna fabbrica!",
+    "Français": "",
+    "Español": ""
+  },
+  "SR error value too high": {
+    "English": "The value of this factory is too high, try another one!",
+    "Italiano": "Il valore di questa fabbrica è troppo alto, provane un'altra!",
+    "Français": "",
+    "Español": ""
+  },
+  "SC already paid": {
+    "English": "Your employees already got paid for the current shift!",
+    "Italiano": "I tuoi dipendenti sono già stati pagati per il turno corrente!",
+    "Français": "",
+    "Español": ""
+  },
+  "SC block prize": {
+    "English": "Your employees worked this shift and produced {prize}.",
+    "Italiano": "I tuoi dipendenti hanno fatto il turno e hanno prodotto {prize}.",
+    "Français": "",
+    "Español": ""
+  },
+  "SC presentation": {
+    "English": "Welcome to your Shop Chain!\nOpen shops in your current faction and employ up to 10 workers per shop.\nPay them a fair wage, and get blocks in return. Compete in your faction for the best wage, but don't overwhelm your fellow faction members or they might be cut out!\n\n",
+    "Italiano": "Benvenutə alla tua Catena di Negozi!\nApri negozi nella fazione corrente e assumi fino a 10 lavoratori per ognuno di essi.\nPagali bene e ottieni blocchi in cambio! Competi con la tua fazione per il miglior salario, ma non sopraffare i tuoi compagni, potresti tagliarli fuori!\n\n",
+    "Français": "",
+    "Español": ""
+  },
+  "SC player data": {
+    "English": "You currently employ {employees} people at {current_wage} daily wage.\nYou own {tot_shops} shops, so divided:\n[{shops_FED} | {shops_ECB} | {shops_PBC} | {shops_RBA} | {shops_CBB} | {shops_RBI} | {shops_ACB}]\nRecent paiments:\nyesterday {recent_payments} now",
+    "Italiano": "Attualmente gestisci {employees} dipendenti ad un salario giornaliero di {current_wage}.\nHai {tot_shops} negozi, così divisi:\n[{shops_FED} | {shops_ECB} | {shops_PBC} | {shops_RBA} | {shops_CBB} | {shops_RBI} | {shops_ACB}]\nPagamenti recenti:\nieri {recent_payments} ora",
+    "Français": "",
+    "Español": ""
+  },
+  "SC button pay": {
+    "English": "Pay shift ({amount} → {price} tot)",
+    "Italiano": "Paga turno ({amount} → {price} tot)",
+    "Français": "",
+    "Español": ""
+  },
+  "SC button hire": {
+    "English": "Hire 1",
+    "Italiano": "Assumi 1",
+    "Français": "",
+    "Español": ""
+  },
+  "SC not hired": {
+    "English": "You need to open new shops to hire more people!",
+    "Italiano": "Devi aprire più negozi per assumere altra gente!",
+    "Français": "",
+    "Español": ""
+  },
+  "SC button open shop": {
+    "English": "Open new shop ({block_cost})",
+    "Italiano": "Apri nuovo negozio ({block_cost})",
+    "Français": "",
+    "Español": ""
+  },
+  "SC button maximize": {
+    "English": "Maximize shops!",
+    "Italiano": "Apri negozi al massimo!",
+    "Français": "",
+    "Español": ""
+  },
+  "SC not opened": {
+    "English": "You need to hire more people to open new shops!",
+    "Italiano": "Devi aprire assumere altra gente per aprire più negozi!",
+    "Français": "",
+    "Español": ""
+  },
+  "SC maximized": {
+    "English": "Paid {blocks} blocks to open {shops} shops!",
+    "Italiano": "Sono stati pagati {blocks} blocchi per aprire {shops} negozi!",
+    "Français": "",
+    "Español": ""
+  },
+  "SC button data": {
+    "English": "Stats",
+    "Italiano": "Statistiche",
+    "Français": "",
+    "Español": ""
+  },
+  "SC button main": {
+    "English": "Back to management",
+    "Italiano": "Torna a gestire",
+    "Français": "",
+    "Español": ""
+  },
+  "SC Data Player Faction": {
+    "English": "Current faction: ",
+    "Italiano": "Fazione attuale: ",
+    "Français": "",
+    "Español": ""
+  },
+  "SC Data Line": {
+    "English": "\nmaximum {max} | average {avg} | minimum {min} ({syn})",
+    "Italiano": "\nmassimo {max} | medio {avg} | minimo {min} ({syn})",
+    "Français": "",
+    "Español": ""
+  },
+  "SC best unified": {
+    "English": "Your faction has the best employer, for {wage} it's {player}",
+    "Italiano": "La tua fazione ha il miglior datore di lavoro, per {wage} è {player}",
+    "Français": "",
+    "Español": ""
+  },
+  "SC best two": {
+    "English": "Best in your faction is, for {wage_pf}, {player_pf}\nBest in general is, for {wage_general}, {player_general}",
+    "Italiano": "Migliore nella tua fazione è, per {wage_pf}, {player_pf}\nMigliore in generale è, per {wage_general}, {player_general}",
+    "Français": "",
+    "Español": ""
+  },
+  "SC wage not changed": {
+    "English": "You can't reduce the wage any more!",
+    "Italiano": "Non puoi ridurre il salario oltre!",
+    "Français": "",
+    "Español": ""
+  },
+  "minis button manual": {
+    "English": "Manual",
+    "Italiano": "Guida",
+    "Français": "",
+    "Español": ""
+  },
+  "blocks": {
+    "English": "blocks",
+    "Italiano": "blocchi",
+    "Français": "",
+    "Español": ""
+  },
+  "EDB exchange": {
+    "English": "That money would be converted in the markets for:\n",
+    "Italiano": "Quei soldi sarebbe convertiti nel mercato con:\n",
+    "Français": "",
+    "Español": ""
+  },
+  "EDB discount": {
+    "English": "For minigame costs, you would pay instead: ",
+    "Italiano": "Per i costi nei minigiochi, pagheresti invece: ",
+    "Français": "",
+    "Español": ""
+  },
+  "EDB bonus": {
+    "English": "Instead of that amount of blocks, minigames will award: ",
+    "Italiano": "Invece di quella quantità di blocchi, i minigiochi ti premierebbero con: ",
+    "Français": "",
+    "Español": ""
+  },
+  "EDB block prices": {
+    "English": "Approximate block prices\n- Market: {market}\n- IP Capitalist Mode: {IPcap}\n- IP Socialist Mode: {IPsoc}\n- GSR Factory investments: {GSRFbase}\n... - with bonus: {GSRFwbonus}\n...... - on factory S: {GSRFwbonusS}\n",
+    "Italiano": "",
+    "Français": "",
+    "Español": ""
+  },
+  "mystery item screen": {
+    "English": "You can use these items to get one of the following prizes (each has the same probability):\n:: {blocks_self} {self_type}\n:: {blocks_random} blocks of one random type\n:: {blocks_eachtype} blocks for each type\n:: {money}{cur_sym}\n:: {coal} coal for Global Steel Road\n:: {protections} protections for Ore Miner\n:: {keys} secret keys\n:: {dice} extra dice for Coinopoly\n:: {crypto_random} coins of a random crypto of Coinopoly\n:: {crypto_each} coins for each crypto of Coinopoly\n:: {investment_pass} Investment Passes for GSR Factories\n:: {mysteryitem} mysterious items ready to be opened",
+    "Italiano": "Puoi usare questi oggetti per ottenere uno dei premi seguenti (hanno tutti la stessa probabilità):\n:: {blocks_self} {self_type}\n:: {blocks_random} blocchi di un tipo a caso\n:: {blocks_eachtype} blocchi per ognuno dei tipi\n:: {money}{cur_sym}\n:: {coal} carbone per Global Steel Road\n:: {protections} protezioni per Ore Miner\n:: {keys} chiavi segrete\n:: {dice} dadi extra per Coinopoly\n:: {crypto_random} coin di una crypto di Coinopoly a caso\n:: {crypto_each} coin per ogni crypto di Coinopoly\n:: {investment_pass} Pass di Investimento per Fabbriche GSR\n:: {mysteryitem} oggetti misteriosi pronti per essere aperti",
+    "Français": "",
+    "Español": ""
+  },
+  "button use mystery item": {
+    "English": "Use mysterious item ({count} left)",
+    "Italiano": "Usa oggetto misterioso ({count} rimanenti)",
+    "Français": "",
+    "Español": ""
+  },
+  "mystery prize blocks 1type": {
+    "English": "You found {qty} {type}!",
+    "Italiano": "Hai trovato {qty} {type}!",
+    "Français": "",
+    "Español": ""
+  },
+  "mystery prize blocks each": {
+    "English": "You found {mUSDmb} mUSDmb, {mEmb} mEmb, {mYmb} mYmb, {mAUDmb} mAUDmb, {mBRmb} mBRmb, {mIRmb} mIRmb and {mAmb} mAmb!",
+    "Italiano": "Hai trovato {mUSDmb} mUSDmb, {mEmb} mEmb, {mYmb} mYmb, {mAUDmb} mAUDmb, {mBRmb} mBRmb, {mIRmb} mIRmb e {mAmb} mAmb!",
+    "Français": "",
+    "Español": ""
+  },
+  "mystery prize money": {
+    "English": "You found {qty}{sym}!",
+    "Italiano": "Hai trovato {qty}{sym}!",
+    "Français": "",
+    "Español": ""
+  },
+  "mystery prize crypto random": {
+    "English": "You found {coins} {coin_type} of Coinopoly!",
+    "Italiano": "Hai trovato {coins} {coin_type} di Coinopoly!",
+    "Français": "",
+    "Español": ""
+  },
+  "mystery prize crypto each": {
+    "English": "You found {Solana} Solana, {Litecoin} Litecoin, {Polkadot} Polkadot, {Terra} Terra, {BitTorrent} BitTorrent, {Shiba} Shiba, {Dogecoin} Dogecoin, {Filecoin} Filecoin, {IdleCoin} IdleCoin, {Bitcoin} Bitcoin, {Ada} Ada, {Tether} Tether, {Ether} Ether of Coinopoly!",
+    "Italiano": "Hai trovato {Solana} Solana, {Litecoin} Litecoin, {Polkadot} Polkadot, {Terra} Terra, {BitTorrent} BitTorrent, {Shiba} Shiba, {Dogecoin} Dogecoin, {Filecoin} Filecoin, {IdleCoin} IdleCoin, {Bitcoin} Bitcoin, {Ada} Ada, {Tether} Tether, {Ether} Ether di Coinopoly!",
+    "Français": "",
+    "Español": ""
+  },
+  "mystery prize investment_pass": {
+    "English": "You found {qty} Investment Passes for the GSR Factories!",
+    "Italiano": "Hai trovato {qty} Pass Investimento per le Fabbriche GSR!",
+    "Français": "",
+    "Español": ""
+  },
+  "mystery prize mystery_item": {
+    "English": "JACKPOT! You found {qty} new mysterious items!",
+    "Italiano": "JACKPOT! Hai trovato {qty} nuovi oggetti misteriosi!",
+    "Français": "",
+    "Español": ""
+  },
+  "mystery prize dice": {
+    "English": "You found {qty} dice for Coinopoly!",
+    "Italiano": "Hai trovato {qty} dadi per Coinopoly!",
+    "Français": "",
+    "Español": ""
+  },
+  "mystery prize key": {
+    "English": "You found {qty} secret keys!",
+    "Italiano": "Hai trovato {qty} chiavi segrete!",
+    "Français": "",
+    "Español": ""
+  },
+  "mystery prize coal": {
+    "English": "You found {qty} coal for Global Steel Road!",
+    "Italiano": "Hai trovato {qty} carbone per Global Steel Road!",
+    "Français": "",
+    "Español": ""
+  },
+  "mystery prize protections": {
+    "English": "You found {qty} protections for Ore Miner!",
+    "Italiano": "Hai trovato {qty} protezioni per Ore Miner!",
+    "Français": "",
+    "Español": ""
+  },
+  "found mystery item": {
+    "English": "You found a mysterious item!!",
+    "Italiano": "Hai trovato un oggetto misterioso!!",
+    "Français": "",
+    "Español": ""
+  },
+  "found mystery items": {
+    "English": "You found {qty} mysterious items!!",
+    "Italiano": "Hai trovato {qty} oggetti misteriosi!!",
+    "Français": "",
+    "Español": ""
+  },
+  "error no item left": {
+    "English": "You don't have this item right now!",
+    "Italiano": "Attualmente non possiedi questo oggetto!",
+    "Français": "",
+    "Español": ""
+  },
+  "season 1": {
+    "English": "Winter",
+    "Italiano": "Inverno",
+    "Français": "",
+    "Español": ""
+  },
+  "season 2": {
+    "English": "Spring",
+    "Italiano": "Primavera",
+    "Français": "",
+    "Español": ""
+  },
+  "season 3": {
+    "English": "Summer",
+    "Italiano": "Estate",
+    "Français": "",
+    "Español": ""
+  },
+  "season 4": {
+    "English": "Fall",
+    "Italiano": "Autunno",
+    "Français": "",
+    "Español": ""
+  },
+  "button season leaderboard": {
+    "English": "Seasonal",
+    "Italiano": "Stagionale",
+    "Français": "",
+    "Español": ""
+  },
+  "Gearup season top": {
+    "English": "You're the captain of your faction, you can't gear up!",
+    "Italiano": "Sei capitano della tua fazione, non puoi salire di marcia!",
+    "Français": "",
+    "Español": ""
+  },
+  "Month": {
+    "English": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    "Italiano": ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"],
+    "Français": "",
+    "Español": ""
+  },
+  "TV Title Seasonal": {
+    "English": "Seasonal Variations",
+    "Italiano": "Variazioni Stagionali",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Title Monthly": {
+    "English": "Monthly Variations",
+    "Italiano": "Variazioni Mensili",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Seasonal First Faction Daily Shrink": {
+    "English": "Block storage size of 1st faction market shrinks 10% every 25 hours.",
+    "Italiano": "Dimensione magazzino blocchi del mercato della 1a fazione si riduce del 10% ogni 25 ore. ",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Seasonal Block Cost Multiplier by Gear": {
+    "English": "Block cost to Upgrade production is greatly increased based on gear level.",
+    "Italiano": "Costo in blocchi per Migliorare la produzione è molto aumentato in base al livello marcia.",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Seasonal Top3 Factions Biweek Shrink": {
+    "English": "Storage sizes of 1st, 2nd and 3rd factions markets shrink 90%, 80% and 50% respectively every ~2 weeks.",
+    "Italiano": "Dimensioni magazzini dei mercati di 1a, 2a e 3a fazioni si riducono rispettivamente del 90%, 80% e 50% ogni ~2 settimane.",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Seasonal Top3 Captains Block Buying Lock": {
+    "English": "Captains of 1st, 2nd and 3rd factions can't buy blocks from the Market.",
+    "Italiano": "I Capitani delle 1a, 2a e 3a fazioni non possono comprare blocchi dal Mercato.",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Seasonal First Faction No Discounts or Bonus": {
+    "English": "Minigame block bonus and cost discount don't apply to 1st faction.",
+    "Italiano": "I bonus blocchi e sconti sui costi dei minigiochi non si applicano alla 1a fazione.",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Seasonal Nothing": {
+    "English": "No Seasonal Variation.",
+    "Italiano": "Nessuna Variazione Stagionale.",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Monthly DN Options -": {
+    "English": "Daily News has {value} less option.",
+    "Italiano": "Daily News ha {value} opzione in meno.",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Monthly DN Options +": {
+    "English": "Daily News has {value} more option.",
+    "Italiano": "Daily News ha {value} opzione in più.",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Monthly CP Dice Pity": {
+    "English": "Coinopoly: When landing on another player's house, you may get an extra dice.",
+    "Italiano": "Coinopoly: Quando arrivi su una casa non tua, potresti ricevere un dado extra.",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Monthly CP House Degrade": {
+    "English": "Coinopoly: houses degrade very often.",
+    "Italiano": "Coinopoly: le case perdono valore molto spesso.",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Monthly CP Coin Tax": {
+    "English": "Coinopoly: when buying a house, 50% of coins are lost.",
+    "Italiano": "Coinopoly: quando compri una casa, il 50% delle coin sono perse.",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Monthly OM Extra Tool Durability": {
+    "English": "Tools in Ore Miner have {value} more uses.",
+    "Italiano": "Gli strumenti di Ore Miner possono essere usati {value} volte in più",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Monthly OM Extra Layer HP": {
+    "English": "Mine layers in Ore Miner can resist {value} HP more.",
+    "Italiano": "I layer della miniera di Ore Miner possono resistere {value} HP in più.",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Monthly GSRF Extra Dividends and Degrade": {
+    "English": "Dividends in Global Steel Road Factories are worth {dividends} times more, but factories degrade a minimum value of {degrade}.",
+    "Italiano": "I dividendi delle Fabbriche in Global Steel Road valgono {dividends} volte di più, ma le fabbriche perdono valore di minimo {degrade}.",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Monthly GSRF Invest Frenzy": {
+    "English": "Investing in Global Steel Road Factories costs 80% less, and lower factions can invest more times.",
+    "Italiano": "Investire nelle Fabbriche di Global Steel Road costa l'80% in meno, e le fazioni minori possono investire più volte.",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Monthly IP Turn Multiplier": {
+    "English": "Players in Investment Plan have {value} times more turns.",
+    "Italiano": "Su Investment Plan il numero di turni è moltiplicato per {value}.",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Monthly IP Comeback": {
+    "English": "For all factions but the 1st, Investment Plan prices have a 90% discount.",
+    "Italiano": "Per tutte le fazioni tranne la 1a, i prezzi di Investment Plan sono scontati del 90%.",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Monthly Nothing": {
+    "English": "No Monthly Variation.",
+    "Italiano": "Nessuna Variazione Mensile.",
+    "Français": "",
+    "Español": ""
+  },
+  "TV Economy Inflation": {
+    "English": "\nYour economy inflation: {inflation}%",
+    "Italiano": "\nInflazione della tua economia: {inflation}%",
+    "Français": "",
+    "Español": ""
+  },
+  "PP Levels": {
+    "English": "Production level: {prod}\nGear level: {gear}\n",
+    "Italiano": "Livello di produzione: {prod}\nLivello di marcia: {gear}\n",
+    "Français": "",
+    "Español": ""
+  },
+  "PP SC highscore": {
+    "English": "Shop Chain highscore: {score}\n\n",
+    "Italiano": "Record punteggio Catena di Negozi: {score}\n\n",
+    "Français": "",
+    "Español": ""
+  },
+  "PP Info": {
+    "English": "Account created on {creation_date}\nLast activity on {lastlogin_date}\n",
+    "Italiano": "Account creato il {creation_date}\nUltima attività il {lastlogin_date}\n",
+    "Français": "",
+    "Español": ""
+  },
+  "PP Inventory": {
+    "English": "Inventory:\n- Dice: {dice}\n- Coal: {coal}\n- Secret keys: {keys}\n- Investment Passes: {gsrfPass}\n- Mystery Items: {item}\n",
+    "Italiano": "Inventario:\n- Dadi: {dice}\n- Carbone: {coal}\n- Chiavi segrete: {keys}\n- Pass Investimento: {gsrfPass}\n- Oggetti Misteriosi: {item}\n",
+    "Français": "",
+    "Español": ""
+  },
+  "PP Badges page": {
+    "English": "Badges page {current}/{total}\n",
+    "Italiano": "Pagina stemmi {current}/{total}\n",
+    "Français": "",
+    "Español": ""
+  },
+  "PP Badges no pages": {
+    "English": "Badges\n",
+    "Italiano": "Stemmi\n",
+    "Français": "",
+    "Español": ""
+  },
+  "Valve Info": {
+    "English": "- You can close valves to temporarily reduce your production level, so it is easier to progress! Then, once satisfied, you can open them again.\n- The fee is 100 hours of production.\n- However, note that valves value is based on your position in the global production leaderboard!\n\nThese are the current values:\n",
+    "Italiano": "- Puoi chiudere le valvole per ridurre il tuo livello di produzione temporaneamente, così da progredire più facilmente! In seguito potrai riaprirle.\n- Il costo è di 100 ore di produzione.\n- Ma attenzione, il valore di una valvola dipende dalla tua posizione nella classifica di produzione globale!\n\nEcco i valori attuali:\n",
+    "Français": "",
+    "Español": ""
+  },
+  "Valve faction value": {
+    "English": "{faction}: 1 valve = {value} production levels\n",
+    "Italiano": "{faction}: 1 valvola = {value} livelli di produzione\n",
+    "Français": "",
+    "Español": ""
+  },
+  "Valve user options": {
+    "English": "\n\nCurrent: {cur_level} levels, {cur_valves} valves\nClosing {valves_closing} valves: {level_after_closing} levels, {valves_after_closing} valves\nOpening all valves: {level_after_opening} levels\n\nNote you can gear up at level {gear_level_cost}\n\n",
+    "Italiano": "\n\nAdesso: {cur_level} livelli, {cur_valves} valvole\nChiudendo {valves_closing} valvole: {level_after_closing} livelli, {valves_after_closing} valvole\nAprendole tutte: {level_after_opening} livelli\n\nConsidera che puoi aumentare di manrcia a livello {gear_level_cost}\n\n",
+    "Français": "",
+    "Español": ""
+  },
+  "Valve note gear normal": {
+    "English": "Actually, you can currently gear up!\n",
+    "Italiano": "In realtà potresti salire di marcia già ora!\n",
+    "Français": "",
+    "Español": ""
+  },
+  "Valve note gear after opening": {
+    "English": "If you open the valves now, you'll be able to gear up.\n",
+    "Italiano": "Se apri le valvole ora, potrai salire di marcia.\n",
+    "Français": "",
+    "Español": ""
+  },
+  "Valve price": {
+    "English": "Current operation fee: {price}",
+    "Italiano": "Costo operativo attuale: {price}",
+    "Français": "",
+    "Español": ""
+  },
+  "Valve button open": {
+    "English": "Open valves",
+    "Italiano": "Apri valvole",
+    "Français": "",
+    "Español": ""
+  },
+  "Valve button close": {
+    "English": "Close valves",
+    "Italiano": "Chiudi valvole",
+    "Français": "",
+    "Español": ""
+  },
+  "button personal page": {
+    "English": "You",
+    "Italiano": "Tu",
+    "Français": "",
+    "Español": ""
+  }
+}
