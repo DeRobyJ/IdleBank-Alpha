@@ -9,7 +9,7 @@ import conversions as conv
 import print_util as put
 import random
 import temporal_variations as tv
-
+import math
 import time
 start_time = time.time()
 
@@ -593,7 +593,7 @@ def games_menu(chat_id):
 
 def gear_menu(chat_id):
     message = ""
-    can, level_cost = game.can_gear_up(chat_id)
+    can, level_cost, _ = game.can_gear_up(chat_id)
     if level_cost is None:
         return "WIP", [{uistr.get(chat_id, "button back"): "Main menu"}]
     if not can:
@@ -835,8 +835,17 @@ def market_keyboard_options(limit):
         options = [1, 10, 70, 400, limit]
     elif limit <= 10000:
         options = [1, 10, 100, 800, limit]
-    else:
+    elif limit <= 1000000000:
         options = [1, limit // 100, limit // 10, limit // 4, limit]
+    else:
+        options = [
+            1,
+            int(math.pow(limit, 1 / 8)),
+            int(math.pow(limit, 1 / 4)),
+            int(math.pow(limit, 1 / 2)),
+            limit // 2,
+            limit
+        ]
     return options
 
 
@@ -1660,6 +1669,14 @@ def handle_message(chat_id, mex):
                 "production_level"] > 35 or
                game.load_main_menu(chat_id)["user"]["gear_level"] > 0)):
                 return gear_menu(chat_id)
+        elif mex == "/mi":
+            return mystery_item_screen(chat_id)
+        elif mex == "/valve":
+            if (game.check_account(chat_id)["status"] == "Activated" and
+               (game.load_main_menu(chat_id)["user"][
+                "production_level"] > 35 or
+               game.load_main_menu(chat_id)["user"]["gear_level"] > 0)):
+                return valve_screen(chat_id)
         elif "/edb" in mex:
             query_parts = mex.split()
             faction = "No"
