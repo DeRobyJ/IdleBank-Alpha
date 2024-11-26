@@ -88,7 +88,7 @@ def load_main_menu(chat_id):
         ru["production_level"])
     data["production_level"] = ru["production_level"]
     data["balance"] = ru["balance"]
-    if data["balance"] < 0:
+    if type(data["balance"]) is int and data["balance"] < 0:
         dbw.consolidate_balance(chat_id)
         data["balance"] = 0
     data["blocks"] = ru["blocks"]
@@ -426,7 +426,7 @@ def calculate_bulk_upgrade(chat_id):
         )
         points += int(
             (min(10000 * levels_done, costs["Blocks"]) - points) * best.season_pity_rate(
-                user_data["membership"], costs["Blocks"]
+                user_data["membership"], min(costs["Blocks"], 5000 * levels_done)
             )
         )
         calculated_bulk_upgrades[hash_id]["season_points"] = points
@@ -924,7 +924,12 @@ def flea_market_offer_prepare(chat_id, turn):
     if "block" in offer:
         block_type = rgen.choice(gut.list["block"])
         player_prod = best.get_production(chat_id)
+        upgrade_block_cost = gut.production_upgrade_costs(dbr.login(chat_id)["production_level"] + 1)["Blocks"]
         if offer[0] == "block":
+            quantities[0][0] = max(
+                quantities[0][0],
+                int(quantities[0][0] * (upgrade_block_cost ** .65) / 100)
+            )
             quantities[0][0] = max(
                 quantities[0][0],
                 best.get_market_blocks_for(
@@ -944,6 +949,10 @@ def flea_market_offer_prepare(chat_id, turn):
             )
             '''
         else:
+            quantities[1][1] = max(
+                quantities[1][1],
+                int(quantities[1][1] * (upgrade_block_cost ** .65) / 100)
+            )
             quantities[1][1] = max(
                 quantities[1][1],
                 best.get_market_blocks_for(
@@ -1110,19 +1119,27 @@ def gear_up_level_cost(base, to):
     return level_cost
 
 
+def gear_up_block_prize(base, to):
+    block_prize = 0
+    for gear in range(base + 1, to + 1):
+        block_prize += (gear - 1) * 100
+    return block_prize
+
+
 def can_gear_up(chat_id):
     user_data = dbr.login(chat_id)
     cur_gear_level = user_data["gear_level"]
 
     level_cost = gear_up_level_cost(cur_gear_level, cur_gear_level + 1)
+    block_prize = gear_up_block_prize(cur_gear_level, cur_gear_level + 1)
 
     cur_prod_level = user_data["production_level"]
 
     if check_balance_type(chat_id) == "old":
-        return False, level_cost
+        return False, level_cost, block_prize
     if cur_prod_level <= level_cost:
-        return False, level_cost
-    return True, level_cost
+        return False, level_cost, block_prize
+    return True, level_cost, block_prize
 
 
 def check_max_gear_up(chat_id):
@@ -1203,7 +1220,7 @@ def passes_season_gearup_limit(chat_id):
 
 # This performs the soft-reset feature of the game
 def gear_up(chat_id, new_membership):
-    player_can, level_cost = can_gear_up(chat_id)
+    player_can, level_cost, block_prize = can_gear_up(chat_id)
     if not player_can:
         return uistr.get(chat_id, "Gearup not available")
     if level_cost is None:
@@ -1290,7 +1307,7 @@ def gear_up(chat_id, new_membership):
 
     # Adding bonus blocks
     dbw.add_block(chat_id, conv.name(membership=new_membership)
-                  ["currency"], count=level_cost)
+                  ["currency"], count=block_prize)
 
     top_gear = multiplayer_info_upget(chat_id)["top_gear"]["level"]
     if new_gear_level <= top_gear - 10:
@@ -1314,6 +1331,7 @@ def bulk_gear_up(chat_id, gears):
         return uistr.get(chat_id, "Gearup ACB rule")
 
     level_cost = gear_up_level_cost(cur_gear_level, cur_gear_level + gears)
+    block_prize = gear_up_block_prize(cur_gear_level, cur_gear_level + gears)
     if level_cost + 1 > cur_prod_level:
         return uistr.get(chat_id, "Gearup not available")
 
@@ -1346,7 +1364,7 @@ def bulk_gear_up(chat_id, gears):
 
     # Adding bonus blocks
     dbw.add_block(chat_id, conv.name(membership=user_data["membership"])
-                  ["currency"], count=level_cost)
+                  ["currency"], count=block_prize)
 
     top_gear = multiplayer_info_upget(chat_id)["top_gear"]["level"]
     if cur_gear_level < top_gear - 10:
@@ -1360,7 +1378,7 @@ def bulk_gear_up(chat_id, gears):
 
 # Calculates all the benefits/changes if the player gears up
 def gearup_effects(chat_id):
-    _, level_cost = can_gear_up(chat_id)
+    _, level_cost, block_prize = can_gear_up(chat_id)
     user_data = dbr.login(chat_id)
 
     effects = {}
@@ -1373,7 +1391,7 @@ def gearup_effects(chat_id):
         gut.hourly_production_rate_of_level(
             max(0, user_data["production_level"] - level_cost))
     )
-    effects["bonus_blocks"] = level_cost
+    effects["bonus_blocks"] = block_prize
     effects["block_rate"] = (
         gut.gear_blocks(user_data["nickname"]["badge_line"]),
         {conv.name(membership=user_data["membership"])["currency"]:
@@ -1485,7 +1503,7 @@ def use_mystery_item(chat_id, qty=1):
     if qty == "all":
         qty = best.inventory_get(chat_id, "mystery_item")
     if not best.inventory_use(chat_id, "mystery_item", qty) or qty == 0:
-        return uistr.get(chat_id, "error no item left")
+        return uistr.get(chat_id, "error no item left"), []
 
     message = ''
     notifications = []
@@ -1675,13 +1693,14 @@ def use_mystery_item(chat_id, qty=1):
                     if chat_id == member_id:
                         continue
                     best.inventory_give(member_id, "mystery_item", dna_quantity)
-                    notifications.append({
-                        "chat_id": member_id,
-                        "message": uistr.get(member_id, "DN Agencies notify jackpot").format(
-                            sender=uistr.nickname(member_id, chat_id, dbr.get_nickname(chat_id)),
-                            quantity=dna_quantity
-                        )
-                    })
+                    if dbr.login(member_id)["settings"]["DN_Agency_mysteryitem_notification"]:
+                        notifications.append({
+                            "chat_id": member_id,
+                            "message": uistr.get(member_id, "DN Agencies notify jackpot").format(
+                                sender=uistr.nickname(member_id, chat_id, dbr.get_nickname(chat_id)),
+                                quantity=dna_quantity
+                            )
+                        })
 
     return message, notifications
 
@@ -1787,7 +1806,7 @@ def get_valve_screen_data(chat_id):
     user_currency = best.get_types_of(chat_id)["currency"]
     op_price = best.get_valve_operation_price(chat_id)
 
-    can_gear_normally, gear_level_cost = can_gear_up(chat_id)
+    can_gear_normally, gear_level_cost, _ = can_gear_up(chat_id)
     can_gear_after_opening = level_after_opening_valves > gear_level_cost
 
     max_valve_closing = best.get_max_valve_closing(chat_id)
