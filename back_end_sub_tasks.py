@@ -645,7 +645,7 @@ def mystery_item_base_probability(chat_id):
     player_virtual_level = (player_gear**2 // 2) * 100 + player_level
 
     # top_level = dbr.get_multiplayer_info()["top_production"]["level"]
-    top_gear = dbr.get_multiplayer_info()["top_gear"]["level"]
+    top_gear = max(2, dbr.get_multiplayer_info()["top_gear"]["level"])
     top_virtual_level = (top_gear**2 // 2) * 100  # + top_level
 
     return 1 - player_virtual_level / top_virtual_level
@@ -716,4 +716,4 @@ def get_valve_operation_price(chat_id):
 def get_max_valve_closing(chat_id):
     valve_value = get_valve_value(chat_id)
     level = dbr.login(chat_id)["production_level"]
-    return (level - (10**6)) // valve_value
+    return max(0, (level - (10**6)) // valve_value)
