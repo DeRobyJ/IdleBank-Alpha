@@ -436,7 +436,8 @@ def user_season_data_unpack(sd_packed):
 
 settings_list = [
     "Bulk_confirm",
-    "CP_notification"
+    "CP_notification",
+    "DN_Agency_mysteryitem_notification"
 ]
 
 
@@ -463,7 +464,8 @@ def settings_unpack(flag):
 
 default_settings = settings_pack({
     "Bulk_confirm": False,
-    "CP_notification": True
+    "CP_notification": True,
+    "DN_Agency_mysteryitem_notification": True
 })
 
 

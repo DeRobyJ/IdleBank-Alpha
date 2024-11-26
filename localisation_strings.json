@@ -285,6 +285,13 @@
     "Español": "",
     "Português": ""
   },
+  "settings DN_Agency_mysteryitem_notification": {
+    "English": "Agency Mysterious items notification",
+    "Italiano": "Notifiche Oggetti misteriosi agenzia",
+    "Français": "",
+    "Español": "",
+    "Português": ""
+  },
   "button main sell option": {
     "English": "Sell {block_type} for {currency_sym}",
     "Italiano": "Vendi {block_type} per {currency_sym}",
@@ -2024,15 +2031,21 @@
     "Français": "",
     "Español": ""
   },
+  "CP notify storehouse house": {
+    "English": "Someone landed on your house in Coinopoly! You won these cryptos: {cryptos}!",
+    "Italiano": "Qualcuno è arrivato sulla tua casa in Coinopoly! Hai vinto queste crypto: {cryptos}!",
+    "Français": "",
+    "Español": ""
+  },
   "CP landon house": {
-    "English": "\nSomeone has a house on this cell, and they just won blocks... You should probably buy one yourself!",
-    "Italiano": "\nQualcuno ha una casa in questa casella, e ha appena vinto dei blocchi... Dovresti proprio comprarne una pure tu!",
+    "English": "\nSomeone has a house on this cell... You should probably buy one yourself!",
+    "Italiano": "\nQualcuno ha una casa in questa casella... Dovresti proprio comprarne una pure tu!",
     "Français": "",
     "Español": ""
   },
   "CP landon your house": {
-    "English": "\nYou landed on your house, here's {blocks} blocks!",
-    "Italiano": "\nSei arrivato in casa tua, eccoti {blocks} blocchi!",
+    "English": "\nYou landed on your house!",
+    "Italiano": "\nSei arrivato in casa tua!",
     "Français": "",
     "Español": ""
   },

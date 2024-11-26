@@ -191,7 +191,7 @@ def up_global_production(cur, new_hourly_production_rate):
     print("dbw", cur, "up_global_production")
     di.item_update(
         di.tabname_general, {'name': {"S": cur}}, "hourly_production_rate",
-        {"N": new_hourly_production_rate})
+        {"S": str(new_hourly_production_rate)})
     ch.global_production[cur] = new_hourly_production_rate
 
     return "Ok"

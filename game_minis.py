@@ -2042,6 +2042,15 @@ cp_map = [
 ]
 
 
+def CP_storehouse_crypto_counts(cell):
+    counts = {}
+    for cell_num in range(cell + 1, cell + 16):
+        if cp_map[cell_num] not in counts:
+            counts[cp_map[cell_num]] = 0
+        counts[cp_map[cell_num]] += 1
+    return counts
+
+
 def CP_base_player_value(chat_id):
     return best.get_base_production(chat_id)
 
@@ -2135,13 +2144,12 @@ def ui_CP_player_action(chat_id, action):
             game_data = dbr.mini_get_general("Coinopoly")
             cur_house = game_data["Houses"][
                 str(player_data["position"])]
-            storehouses = [game_data["Houses"][str(i)] for i in [
-                           0, 16, 32, 48]]
+            inflation_multiplier = (1 + max(0, economy_inflation(chat_id)) / 100)
             new_level = int(
-                cur_house["level"] * (1 + max(0, economy_inflation(chat_id)) / 100) +
+                cur_house["level"] * inflation_multiplier +
                 19) // 10 * 10
-            money_to_pay = CP_base_player_value(
-                chat_id) * cur_house["level"] // 600
+            money_to_pay = int(CP_base_player_value(chat_id) *
+                               cur_house["level"] * inflation_multiplier / 600)
             money_to_pay = best.apply_discount(
                 money_to_pay,
                 best.get_types_of(chat_id)["currency"]
@@ -2252,10 +2260,10 @@ def ui_CP_player_action(chat_id, action):
         if new_cell_type == "storehouse":
             coin_count = 0
             for coin in player_data["Coins"]:
-                if float.fromhex(player_data["Coins"][coin]) > cp_min_val:
-                    coin_count += 1
+                if float.fromhex(player_data["Coins"][coin]) > 2:
+                    coin_count += int(math.log2(float.fromhex(player_data["Coins"][coin])))
             if coin_count > 0:
-                prize = coin_count * 3 * dice_used
+                prize = coin_count * dice_used
                 dbw.add_block(
                     chat_id, best.get_types_of(chat_id)["currency"],
                     best.apply_block_bonus(
@@ -2272,8 +2280,11 @@ def ui_CP_player_action(chat_id, action):
             notifications = []
             game_data = dbr.mini_get_general("Coinopoly")
             cur_house = game_data["Houses"][str(player_data["position"])]
+
+            # Storehouse owner prize
             if cur_house["level"] > 0 and cur_house["chat_id"] > 0:
                 message += uistr.get(chat_id, "CP landon house")
+                """ # Old block prize for storehouse owner
                 storehouses = [
                     game_data["Houses"][str(i)] for i in [0, 16, 32, 48]]
                 blocks_won = (cur_house["level"] + 9) // 10 * 5  # base prize
@@ -2285,37 +2296,54 @@ def ui_CP_player_action(chat_id, action):
                 blocks_won *= int(multiplier)
                 blocks_won = best.apply_block_bonus(
                     blocks_won * dice_used, chat_id=cur_house["chat_id"], deal=True)
+                """
                 game_data["Houses"][str(player_data["position"])][
-                    "level"] -= tv.CP_house_degrade() * dice_used
+                    "level"] -= tv.CP_house_degrade() * dice_used * max(
+                        1, game_data["Houses"][str(player_data["position"])][
+                            "level"] // 100)
                 dbw.mini_up_general(game_data)
                 if cur_house["chat_id"] == chat_id:
                     message += uistr.get(
-                        chat_id, "CP landon your house").format(
-                        blocks=blocks_won
-                    )
+                        chat_id, "CP landon your house")
                     if random.random() < (.2 *
                        best.mystery_item_base_probability(chat_id)):
                         best.inventory_give(chat_id, "mystery_item", 1)
                         message += "\n\n" + uistr.get(
                             chat_id, "found mystery item")
-                else:
+                else:  # Land on somebody else's house
                     if tv.is_on("CP Dice Pity"):
                         if random.random() < .3:
                             best.inventory_give(chat_id, "dice", 1)
                             message += uistr.get(
                                 chat_id, "mystery prize dice").format(qty=1)
+                    shcp = CP_storehouse_crypto_counts(player_data["position"])
+                    owner_data = best.mini_get_player(cur_house["chat_id"], "Coinopoly")
+                    exchanged_message = ""
+                    for coin in shcp:
+                        exchanged_value = shcp[coin] * float.fromhex(player_data["Coins"][coin]) / 100
+                        if exchanged_value < cp_min_val:
+                            continue
+                        float.fromhex(player_data["Coins"][cell_type])
+                        player_data["Coins"][coin] = float.hex(float.fromhex(player_data["Coins"][coin]) - exchanged_value)
+                        owner_data["Coins"][coin] = float.hex(float.fromhex(owner_data["Coins"][coin]) + exchanged_value)
+                        if len(exchanged_message) > 0:
+                            exchanged_message += ", "
+                        exchanged_message += ui_CP_cryptoprint(exchanged_value) + " " + coin
+                    if len(exchanged_message) > 0:
+                        best.mini_up_player(chat_id, "Coinopoly", player_data)
+                        best.mini_up_player(chat_id, "Coinopoly", owner_data)
+                    else:
+                        exchanged_message = "0"
                     if dbr.login(cur_house["chat_id"])[
                             "settings"]["CP_notification"]:
                         notifications = [{
                             "chat_id": cur_house["chat_id"],
                             "message": uistr.get(
                                 cur_house["chat_id"],
-                                "CP notify house").format(
-                                    blocks=blocks_won
+                                "CP notify storehouse house").format(
+                                    cryptos=exchanged_message
                             )
                         }]
-                dbw.add_block(cur_house["chat_id"], best.get_types_of(
-                    cur_house["chat_id"])["currency"], blocks_won)
             return message, notifications
         else:  # not storehouse
             message += uistr.get(chat_id, "CP landon crypto")
@@ -2569,11 +2597,10 @@ def ui_CP_main_screen(chat_id):
         elif player_data["state"] == "landed":
             cur_house = game_data["Houses"][
                 str(player_data["position"])]
-            storehouses = [game_data["Houses"][str(i)] for i in [
-                0, 16, 32, 48]]
             new_level = (cur_house["level"] + 19) // 10 * 10
-            money_to_pay = CP_base_player_value(
-                chat_id) * cur_house["level"] // 600
+            inflation_multiplier = (1 + max(0, economy_inflation(chat_id)) / 100)
+            money_to_pay = int(CP_base_player_value(chat_id) *
+                               cur_house["level"] * inflation_multiplier / 600)
             money_to_pay = best.apply_discount(
                 money_to_pay,
                 best.get_types_of(chat_id)["currency"]
@@ -2759,6 +2786,9 @@ def SR_position():
             print(time.time() - start_time, "GSR passing station", i + 1)
             game_data["current_station"] = (game_data["current_station"] +
                                             1) % len(sr_data["itinerary"])
+            do_degrade = False
+            if game_data["interactions"] > 0:
+                do_degrade = True
             if game_data["interactions"] > 0 and sr_data["itinerary"][
                     game_data["current_station"]]["type"] == "capital":
                 market_section = conv.name(membership=sr_data["itinerary"][
@@ -2778,7 +2808,7 @@ def SR_position():
                         "fid": fid,
                         "qty": int(factory["value"] * base_dividend)
                     })
-                    if True:  # random.random()*7 < 1:
+                    if do_degrade:  # random.random()*7 < 1:
                         season_days_left = gut.time_till_next_season() // (60 * 60 * 24)
                         degrade_rate = (season_days_left / 100.0) ** 2
                         factory["value"] -= max(
@@ -2794,7 +2824,7 @@ def SR_position():
             market_data = dbr.get_market_data(section)
             market_data["blocks"] += blocks_for_market[section]
             dbw.market_update(section, market_data)
-        if best.get_market_impulse() < 0.5:
+        if best.get_market_impulse() < .6:
             for award in money_awards:
                 print(time.time() - start_time,
                       "GSR player factory awarding", str(
@@ -3093,7 +3123,8 @@ def SR_prices_prizes(chat_id, fid, deal=False):
     base_pim, advanced_pim = SR_factories_investment_multipliers(chat_id)
     pim = base_pim * advanced_pim
     prpr = {
-        "price_building": int(max(50, 10 * value)),
+        "price_building": int(max(50, value * max(10, value * 9))),
+        "value_rise": max(10, value * 9),
         "city_block_type": block_type,
         "price_investing": best.apply_discount(
             max(10, value * player_prod * pim *
@@ -3114,7 +3145,8 @@ def SR_prices_prizes(chat_id, fid, deal=False):
         "investments_use": advanced_pim
     }
     if fid == "S":
-        prpr["price_building"] = int(max(200, prpr["price_building"] * 2))
+        prpr["price_building"] = int(max(200, value * max(20, value * 19)))
+        prpr["value_rise"] = max(20, value * 19)
         prpr["prize_city_block"] = best.apply_block_bonus(
             int((value * pim) * 3 // 10 + 1),
             chat_id=chat_id,
@@ -3641,10 +3673,7 @@ def ui_SR_factories_action(chat_id, sel_fid, action):
         # General action in all cases
         game_data["Factories"][
             str(cid) + sel_fid]["owner_chat_id"] = chat_id
-        if sel_fid == "S":
-            game_data["Factories"][str(cid) + sel_fid]["value"] += 20
-        else:
-            game_data["Factories"][str(cid) + sel_fid]["value"] += 10
+        game_data["Factories"][str(cid) + sel_fid]["value"] += prpr["value_rise"]
         dbw.pay_block(
             chat_id, current_faction["currency"], prpr["price_building"])
         dbw.mini_up_general(game_data)
@@ -3833,14 +3862,9 @@ def SC_player_total_shops(chat_id):
 
 def SC_hire(chat_id, qty):
     _, player_data = SC_game_and_player_data(chat_id)
-    tot_shops = SC_player_total_shops(chat_id)
-    if player_data["employees"] >= tot_shops * 10:
-        return False
     player_data["employees"] = max(
         10,
-        min(
-            player_data["employees"] + qty,
-            tot_shops * 10)
+        player_data["employees"] + qty
     )
     best.mini_up_player(chat_id, "Shop Chain", player_data)
     return True
@@ -3922,19 +3946,19 @@ def ui_SC_wage_pay(chat_id):
     bpf = {}
     tot_score = 0
     for faction in gut.list["membership"]:
-        bpf[faction] = int(
+        bpf[faction] = min(int(
             .5 +
             player_data["employees"] *
             math.log2(player_data["shops_" + faction] + 1) *
             multiplier
-        )
+        ), 10**35)
         tot_score += bpf[faction]
         dbw.add_block(
             chat_id, conv.name(membership=faction)["currency"],
             bpf[faction]
         )
 
-    if tot_score > player_data["highscore"] or player_data["game_timestamp"] < 1703874597:  # ***
+    if tot_score > player_data["highscore"] or player_data["game_timestamp"] < 1703874597:
         player_data["highscore"] = tot_score
         if game_data["general_highscore"] != chat_id:
             if player_data["highscore"] > SC_game_and_player_data(game_data["general_highscore"])[1]["highscore"]:
@@ -3943,14 +3967,21 @@ def ui_SC_wage_pay(chat_id):
 
     # Change number of employees
     paid_wages = sum(x > 0 for x in player_data["history"])
+    tot_shops = SC_player_total_shops(chat_id)
+    employees = player_data["employees"]
+    ten_times_shops = tot_shops * 10
     if paid_wages == 1:
-        SC_hire(chat_id, int(player_data["employees"] * (-.15)))
+        SC_hire(chat_id, int(employees * (-.10)))
     elif paid_wages == 2:
-        SC_hire(chat_id, int(player_data["employees"] * (-.05)))
+        SC_hire(chat_id, int(employees * (-.05)))
+    elif paid_wages == 3:
+        SC_hire(chat_id, int(employees * (-.02)))
+    elif paid_wages == 4:
+        SC_hire(chat_id, int(min(ten_times_shops, employees) * (.02)))
     elif paid_wages == 5:
-        SC_hire(chat_id, int(.5 + player_data["employees"] * (.03)))
+        SC_hire(chat_id, max(3, int(.5 + min(ten_times_shops, employees) * (.05))))
     elif paid_wages == 6:
-        SC_hire(chat_id, max(3, int(.5 + player_data["employees"] * (.10))))
+        SC_hire(chat_id, max(3, int(.5 + ten_times_shops * (.05))))
 
     best.mini_up_player(chat_id, "Shop Chain", player_data)
 
