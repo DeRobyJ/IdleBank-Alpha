@@ -60,7 +60,6 @@ def login(chat_id):
     if "shut_valves" not in ch.active_users[chat_id]:  # migration guard
         ch.active_users[chat_id]["shut_valves"] = 0
     data["shut_valves"] = ch.active_users[chat_id]["shut_valves"]
-    data["saved_balance"] = ch.active_users[chat_id]["saved_balance"]
     data["balance_timestamp"] = ch.active_users[chat_id]["balance_timestamp"]
     if user_balance_type(cached=ch.active_users[chat_id]) == "new":
         data["balance"] = gut.balance(
@@ -71,6 +70,7 @@ def login(chat_id):
             ch.active_users[chat_id]["saved_balance"],
             ch.active_users[chat_id]["balance_timestamp"]
         )
+        data["saved_balance"] = ch.active_users[chat_id]["saved_balance"]
     else:
         data["balance"] = gut.complete_balance(
             ch.active_users[chat_id]["membership"],
@@ -136,7 +136,7 @@ def get_currencies_status():
                 di.tabname_general,
                 {"name": {"S": cur_name}},
                 "hourly_production_rate",
-                "N"
+                "S"
             )))
     return ch.global_production
 
