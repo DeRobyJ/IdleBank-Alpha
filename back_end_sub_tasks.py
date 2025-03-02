@@ -140,24 +140,32 @@ def apply_discount(qty, cur=None, chat_id=None, deal=False):
     return new_qty
 
 
-# Note: current_price_multiplier_pcent is an int between 5 and 100
+# current_price_multiplier_pcent is an int between 0 and 100
+# It should represent an interval centered at 3m
+#  that is divided by 3 at 0 and multiplied by 3 at 100
 def get_market_base_price(chat_id, section):
     viewer_level = dbr.login(chat_id)["production_level"]
-    ref_lvl = viewer_level // 100 * 100 + 50
+    if viewer_level < 50:
+        ref_lvl = viewer_level
+    else:
+        ref_lvl = viewer_level // 100 * 100 + 50
     ref_production_rate = gut.hourly_production_rate_of_level(ref_lvl)
     ref_production_rate = int(
         ref_production_rate * get_gear_multiplier(chat_id))
     market_data = dbr.get_market_data(section)
-    base_price = max(
+    center_price = ref_production_rate // 20
+    calc_price = center_price * math.pow(
+        3,
+        market_data["current_price_multiplier_pcent"] / 50.0 - 1
+    )
+    base_price = max(10, calc_price)
+    '''base_price = max(
         10,
         min(
-            (
-                ref_production_rate *
-                market_data["current_price_multiplier_pcent"]
-            ) // 100,
+            calc_price,
             int(market_data["money_limit"] * 1.01 / market_data["block_limit"])
         )
-    )
+    )'''
     return base_price
 
 

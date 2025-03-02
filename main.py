@@ -23,7 +23,7 @@ print(instance_time, "\n", time.gmtime(instance_time))
 
 
 def is_player_allowed(chat_id):
-    if os.environ["TABLES_PREFIX"] == "IdleBank_testing":
+    if os.environ["TABLE_NAME"] == "idlebank_alpha_testing":
         return chat_id in [int(os.environ["ADMIN_CHAT_ID"])]
     else:
         return True

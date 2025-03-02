@@ -4,6 +4,7 @@ import json
 import game_dbread as dbr
 import conversions as conv
 import time
+from db_chdata import pioneers
 
 
 f = open("localisation_strings.json")
@@ -149,8 +150,17 @@ def nickname(reader_id, player_id, nick_data, compress=True):
         chr(314): "🌟"
     }
 
+    badge_line = ""
+    if player_id in pioneers:
+        if pioneers[player_id]["gear_level"] >= 1000:
+            badge_line += "🌐"
+        elif pioneers[player_id]["gear_level"] >= 100:
+            badge_line += "🎩"
+        elif pioneers[player_id]["gear_level"] >= 10:
+            badge_line += "👒"
+        elif pioneers[player_id]["gear_level"] >= 1:
+            badge_line += "🧢"
     if compress:
-        badge_line = ""
         if "badge_line" in nick_data:
             supergears = len(nick_data["badge_line"]) // 100
             cumul_badges_value = max(
@@ -170,11 +180,10 @@ def nickname(reader_id, player_id, nick_data, compress=True):
             for badge in shortened_badge_line:
                 badge_line += badgemoji[badge]
     else:
-        badge_line = ""
         supergears = len(nick_data["badge_line"]) // 100
         if supergears > 0:
             superbadges = supergear_badges(player_id, supergears)
-            badge_line += "Super: "
+            badge_line = "Super: " + badge_line
             for badge in superbadges:
                 badge_line += badgemoji[badge]
             badge_line += "\n"
@@ -216,12 +225,14 @@ def all_badges(raw_line, summary=True):
             j += 1
             if i + j >= len(raw_line):
                 break
-        i += j
-        if j > 3:
+        if j in [2, 3]:
+            badge_line += badgemoji[raw_line[i]] * (j - 1)
+        elif j > 3:
             badge_line += "x" + str(j)
             badges_in_line += 1 + len(str(j))
+        i += j
         badges_in_line += 1
-        if badges_in_line >= 10:
+        if badges_in_line >= 14:
             badges_in_line = 0
             badge_line += '\n'
     return badge_line + "\n"
@@ -270,7 +281,7 @@ def get_tutorial_line(chat_id, player_level):
     tut_keys = [
         "Newcomer",  # 0
         "Block Selling",  # 1
-        "Money Cap",  # 2
+        "",
         "Global Production",  # 3
         "Leaderboard",  # 4
         "Minigame Daily News",  # 5
@@ -284,7 +295,7 @@ def get_tutorial_line(chat_id, player_level):
     emojis = [
         "🆙",  # "Newcomer",                 #0
         "♻️",  # "Block Selling",            #1
-        "⏹",  # "Money Cap",                #2
+        "",
         "🌐",  # "Global Production",        #3
         "🌐👥",  # "Leaderboard",              #4
         "🎮📰",  # "Minigame Daily News",      #5
@@ -300,10 +311,8 @@ def get_tutorial_line(chat_id, player_level):
         0: 0,
         1: 0,
         2: 1,
-        3: 1,  # disabled money cap
-        # 3: 2,
-        # 4: 2,
-        5: 4,  # dosabled global production on main screen
+        3: 1,
+        5: 4,
         6: 4,
         # 8: 4,
         # 9: 4,

@@ -27,59 +27,25 @@ list["crypto"] = [
 
 def time_s():
     real_time = time.time_ns() // 1000000000
-    if os.environ["TABLES_PREFIX"] == "IdleBank_testing":
+    if os.environ["TABLE_NAME"] == "idlebank_alpha_testing":
         return int(real_time + 60 * 60 * 24 * 7)
     return int(real_time)
 
 
 def hourly_production_rate_of_level(lvl):
-    if lvl == 0:
-        return 0
-    elif lvl < 5000:
-        return 90 + lvl * 10 + (lvl // 16) * (lvl - 15)
-    return lvl**2 // 16
+    return lvl * 720
 
 
 def block_cost_formula(lvl):
-    if lvl == 1:
-        tot_blocks = 1
-    elif lvl <= 5000:
-        tot_blocks = lvl // 10000
-        lvl = lvl + 1000
-        while lvl > 1000:
-            blk = (lvl - 1000 + 9) // 10
-            if lvl % 10 == 0:
-                blk = blk
-            elif lvl % 5 == 0:
-                blk = blk // 2
-            elif lvl % 2 == 0:
-                blk = blk // 5
-            else:
-                blk = blk // 10
-            blk = min(10, blk)
-            tot_blocks += blk
-            lvl //= 2
-    else:
-        tot_blocks = lvl // 100
-    return tot_blocks
+    return lvl // 10 + 1
 
 
 def money_cost_formula(lvl):
     if lvl == 1:
-        mon = 15
-    elif lvl <= 5000:
-        cur_hprod = hourly_production_rate_of_level(lvl - 1)
-        mover = (
-            (math.pow(((lvl % 100) / 100 * 1.75 + (lvl % 10) / 10 * 0.25) / 2, 4) +
-             math.pow(lvl, 0.25) / 25)
-        )
-        coeff = 100
-        mon = int(cur_hprod * (((math.sqrt(lvl + coeff * coeff) - coeff) / 2 * mover) +
-                  math.sqrt(lvl // 50 + 1) / 12)
-                  )
+        mon = 2
     else:
         cur_hprod = hourly_production_rate_of_level(lvl - 1)
-        mon = cur_hprod * 8
+        mon = cur_hprod * lvl // 240  # aka: 3 * lvl**2
     return mon
 
 
@@ -90,18 +56,18 @@ def production_upgrade_costs(lvl):
     }
 
 
-# For Money Applies SUM of k^2/2 for k from base_lvl+1 to target_lvl
 def bulk_upgrade_costs(base_lvl, target_lvl, block_cost_mult):
-    if base_lvl < 5000:
-        return "No!"
+    # Both formulas are slightly imprecise, they overextimate a bit, and it's ok
     money = (
         target_lvl * (target_lvl + 1) * (2 * target_lvl + 1) -
         base_lvl * (base_lvl + 1) * (2 * base_lvl + 1)
-    ) // 12
+    ) // 2
     blocks = (
-        target_lvl * (target_lvl + 1) -
-        base_lvl * (base_lvl + 1)
-    ) * block_cost_mult // 200
+        (
+            target_lvl * (target_lvl + 1) -
+            base_lvl * (base_lvl + 1)
+        ) // 20 + target_lvl - base_lvl
+    ) * block_cost_mult
     return {
         "Blocks": blocks,
         "Money": money
@@ -109,10 +75,21 @@ def bulk_upgrade_costs(base_lvl, target_lvl, block_cost_mult):
 
 
 def bulk_upgradability(base_lvl, money, blocks, block_cost_mult):
-    if base_lvl < 5000:
-        return "No!"
-    money_max_lvl = int(math.pow(base_lvl**3 + 6 * money, 1 / 3))
-    blocks_max_lvl = int(math.pow(base_lvl**2 + 200 * blocks / block_cost_mult, 1 / 2))
+    # estimate
+    money_max_lvl = int(math.pow(
+        base_lvl * (base_lvl + 1) * (2 * base_lvl + 1) / 2 + money,
+        1 / 3
+    ))
+    # exact
+    blocks_max_lvl = int(
+        (
+            math.sqrt(
+                441 + 4 * (
+                    base_lvl**2 + 21 * base_lvl + 20 * (blocks // block_cost_mult)
+                )
+            ) - 21
+        ) / 2
+    )
     return min(money_max_lvl, blocks_max_lvl)
 
 
@@ -159,37 +136,6 @@ def current_balance(production_level, saved_balance, timestamp, multiplier=1):
     produced = (hourly_production_rate_of_level(production_level) *
                 multiplier * time_since_ts / (60 * 60))
     return int(saved_balance + produced)
-
-
-def money_cap(production_level, money, get_cap=False):
-    upgrade_cost = production_upgrade_costs(production_level + 1)["Money"]
-    cur_production_rate = hourly_production_rate_of_level(production_level)
-    # cap = int(upgrade_cost * (2 + production_level / 100))
-    cap = max(
-        int(upgrade_cost * (10 + production_level / 100)),
-        cur_production_rate * 10)
-
-    if get_cap:
-        return cap
-
-    return min(money, cap)
-
-
-# deprecated
-def complete_balance(membership, production_level,
-                     gear_level, balances, timestamp):
-    res = {}
-    for cur in ["Dollar", "Euro", "Yuan"]:
-        if cur == conv.name(membership=membership)["currency"]:
-            if gear_level >= 0:  # disables money cap
-                res[cur] = current_balance(
-                    production_level, balances[cur], timestamp)
-            else:
-                res[cur] = money_cap(production_level, current_balance(
-                    production_level, balances[cur], timestamp))
-        else:
-            res[cur] = balances[cur]
-    return res
 
 
 # Deprecated
@@ -248,8 +194,6 @@ def balance(membership, production_level, gear_level,
 
     res = current_balance(production_level, saved_balance,
                           balance_timestamp, multiplier)
-    if gear_level < 0:  # disables money cap, which was removed
-        res = money_cap(production_level, res)
     # return min(res, (10 ** 10)-1)
     return res
 
@@ -594,3 +538,17 @@ def check_time_change(old_ts, new_ts, period):
     print("Period time pass:",
           old_ts / period, "to", new_ts / period, "::", period)
     return old_ts // period < new_ts // period
+
+
+# pcent value to be applied to 3 minutes of production, in a range of 1m-9m
+def market_target_price(m, b):
+    # m is current ratio of money / target_money
+    # b is current ration of blocks / target_blocks
+    # Where "target" is half the storage size
+    m = max(0, min(1, m / 2))
+    b = max(0, min(1, b / 2))
+    p = int(
+        (1 - b) * 100 -
+        2 * abs(m - .5) * 20
+    )
+    return max(0, min(100, p))

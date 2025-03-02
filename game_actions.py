@@ -28,12 +28,6 @@ def check_account(chat_id):
     }
 
 
-# Checks the type of balance for the account, for migration of users
-# coming from the pre-single balance era
-def check_balance_type(chat_id):
-    return dbr.user_balance_type(chat_id)
-
-
 def get_member_counts():
     r = dbr.get_member_counts()
     if len(r) < 0:
@@ -97,7 +91,7 @@ def load_main_menu(chat_id):
         data["nickname"])
     data["gear_level"] = ru["gear_level"]
     account_creation_struct_t = time.gmtime(ru["account_creation_timestamp"])
-    data["account_creation_datastr"] = str(
+    data["account_creation_datestr"] = str(
         account_creation_struct_t.tm_mday) + " " + uistr.get(
         chat_id, "Month")[account_creation_struct_t.tm_mon - 1] + " " + str(
         account_creation_struct_t.tm_year
@@ -200,10 +194,7 @@ def can_upgrade(chat_id):
         user_data["membership"])
 
     can = True
-    if check_balance_type(chat_id) == "new":
-        balance = user_data["balance"]
-    else:
-        balance = user_data["balance"][cur]
+    balance = user_data["balance"]
 
     if costs["Money"] > balance:
         can = False
@@ -275,7 +266,7 @@ def upgrade_money_printer(chat_id):
         return uistr.get(chat_id, "Insufficient balance")
     if not can_upgrade(chat_id)[0]:
         return uistr.get(chat_id, "Insufficient blocks")
-    dbw.up_money_printer(chat_id, costs, check_balance_type(chat_id))
+    dbw.up_money_printer(chat_id, costs)
     extra_costs = best.upgrade_extra_costs(new_level, user_data["membership"])
     for block_type in extra_costs:
         dbw.pay_block(
@@ -321,10 +312,7 @@ def calculate_bulk_upgrade(chat_id):
     if start_level < 35 and user_data["gear_level"] < 1:
         return {"levels_done": 0}
     player_cur = conv.name(membership=user_data["membership"])["currency"]
-    if check_balance_type(chat_id) == "new":
-        start_balance = user_data["balance"]
-    else:
-        start_balance = user_data["balance"][player_cur]
+    start_balance = user_data["balance"]
     start_blocks = user_data["blocks"][player_cur]
 
     hash_id = (str(chat_id) + "_" +
@@ -459,7 +447,6 @@ def bulk_upgrade(chat_id):
     dbw.up_money_printer(
         chat_id,
         {"Money": data["money"], "Blocks": data["blocks"]},
-        check_balance_type(chat_id),
         data["levels_done"])
     for block_type in data["tot_extra_costs"]:
         dbw.pay_block(
@@ -603,30 +590,30 @@ target_storage_rate = 1000
 # stagnant metagame and in an explosive one, with sudden exponential growths
 def market_general_update(force_target=False):
     global last_target_sr_check_ts, target_storage_rate
-    if gut.time_s() - last_target_sr_check_ts > 3 * 60 or force_target:
-        target_storage_rate = gut.prod_mean(
-            {section: (dbr.get_market_data(section)["money_limit"] /
-                       dbr.get_market_data(section)["block_limit"])
-                for section in gut.list["block"]}
-        )
-        target_storage_rate = max(1000, target_storage_rate)
-        last_target_sr_check_ts = gut.time_s()
+    if dbr.get_market_data("mAmb") != "Create Market":
+        if gut.time_s() - last_target_sr_check_ts > 3 * 60 or force_target:
+            target_storage_rate = gut.prod_mean(
+                {section: (dbr.get_market_data(section)["money_limit"] /
+                           dbr.get_market_data(section)["block_limit"])
+                    for section in gut.list["block"]}
+            )
+            target_storage_rate = max(1000, target_storage_rate)
+            last_target_sr_check_ts = gut.time_s()
 
     for section in gut.list["block"]:
         data = dbr.get_market_data(section)
         if data == "Create Market":
-            data = {
-                "type": section,
-                "money": 5 * 10**8,
-                "money_limit": 10**9,
-                "blocks": 5000,
-                "block_limit": 10000,
-                "current_price_multiplier_pcent": 100,
-                "timestamp": 1630703700
-            }
-        if "money_limit" not in data:  # migration shield
-            data["money_limit"] = 10**9
-            data["block_limit"] = 10000
+            for sect in gut.list["block"]:
+                data = {
+                    "key": sect,
+                    "money": 5 * 10**8,
+                    "money_limit": 10**9,
+                    "blocks": 100000,
+                    "block_limit": 200000,
+                    "current_price_multiplier_pcent": 50,
+                    "timestamp": 1630703700
+                }
+                dbw.market_update(sect, data)
         data["money_limit"] = max(1000000, data["money_limit"])
         data["block_limit"] = max(1000, data["block_limit"])
         target = {
@@ -635,18 +622,16 @@ def market_general_update(force_target=False):
         }
         Vmoney = min(data["money"], 2 * target["money"]) / target["money"]
         Vblocks = min(data["blocks"], 2 * target["blocks"]) / target["blocks"]
-        target_price_multiplier_pcent = int(
-            100 - Vblocks * 46 *                          # Stays in [8,100]
-            min(1,  # (only takes action if visualized pcent in 0-24 or 76-100)
-                (1 - (abs(1 - Vmoney) - 0.5) * 2 * 3 / 8))  # disco upto -37.5%
-        )
+        target_price_multiplier_pcent = gut.market_target_price(Vmoney, Vblocks)
         temperature = best.get_market_temperature()
         temperature = min(1, temperature * 2)  # in [0 (0% markets), 1 (>50%)]
+        '''
         # multiplier for money storage shrinking
         temperature_mult = (
             temperature * 1 +
             (1 - temperature) * .1**(1 / (24 * 12))
         )  # maximum shrinking: 90% a day
+        '''
         up_period = 5 * 60
 
         any_update = False
@@ -657,21 +642,21 @@ def market_general_update(force_target=False):
 
             money_rate = data["money"] / data["money_limit"]
             block_rate = data["blocks"] / data["block_limit"]
-            if money_rate > .55:
+            if money_rate > .70:
                 qty = int(max(50, data["money"] * money_rate / 50))
                 qty = min(qty, data["money_limit"] // 2)
                 data["money_limit"] += qty
                 data["money"] -= qty
-            if money_rate < .45 and data["money_limit"] > 1000000:
+            if money_rate < .30 and data["money_limit"] > 1000000:
                 qty = int(max(50, (data["money_limit"] - data["money"]) * (1 - money_rate) / 50))
                 data["money_limit"] -= qty
                 data["money"] += qty
-            if block_rate > .55:
+            if block_rate > .70:
                 qty = int(data["blocks"] * block_rate / 50)
                 qty = min(qty, data["block_limit"] // 2)
                 data["block_limit"] += qty
                 data["blocks"] -= qty
-            if block_rate < .45 and data["block_limit"] > 1000:
+            if block_rate < .30 and data["block_limit"] > 1000:
                 qty = int((data["block_limit"] - data["blocks"]) * (1 - block_rate) / 50)
                 data["block_limit"] -= qty
                 data["blocks"] += qty
@@ -684,12 +669,13 @@ def market_general_update(force_target=False):
                 rate_step_mult = (target_storage_rate / self_rate) ** .03
                 data["money_limit"] = int(data["money_limit"] * rate_step_mult)
                 data["block_limit"] = int(data["block_limit"] / rate_step_mult)
-
+            '''
             data["money_limit"] = int(data["money_limit"] * temperature_mult)
 
             # Automatic Cooling
             for v in ["money", "money_limit"]:  # , "blocks", "block_limit"]:
                 data[v] -= int(data[v] * random.random() * 0.002)
+            '''
 
             data["timestamp"] += up_period
             any_update = True
@@ -713,11 +699,7 @@ def market_upget(chat_id, section):
     data["money"] = max(data["money"], 0)
     Vmoney = min(data["money"], 2 * target["money"]) / target["money"]
     Vblocks = min(data["blocks"], 2 * target["blocks"]) / target["blocks"]
-    target_price_multiplier_pcent = int(
-        100 - Vblocks * 46 *                          # Stays in [8,100]
-        min(1,  # (only takes action if visualized pcent in 0-24 or 76-100)
-            (1 - (abs(1 - Vmoney) - 0.5) * 2 * 3 / 8))  # disco upto -37.5%
-    )
+    target_price_multiplier_pcent = gut.market_target_price(Vmoney, Vblocks)
     impulse = target_price_multiplier_pcent - \
         data["current_price_multiplier_pcent"]
     final_price = best.get_market_final_price(chat_id, section)
@@ -1085,45 +1067,15 @@ def set_nickname(chat_id, nick_data):
     return uistr.get(chat_id, "Done")
 
 
-# The game featured a money cap, now it doesn't,
-# but the code isn't all clean yet, so this is kept just in case
-def is_money_capped(chat_id):
-    return False  # disables money cap
-    data = load_main_menu(chat_id)["user"]
-    if data["gear_level"] > 0:
-        return False
-    if check_balance_type(chat_id) == "new":
-        player_balance = data["balance"]
-    else:
-        return False
-    if player_balance == gut.money_cap(data["production_level"], 0,
-                                       get_cap=True):
-        return True
-    return False
-
-
 gear_cost_cache = {}
 
 
 def gear_up_level_cost(base, to):
-    level_cost = 0
-    for g in range(base + 1, to + 1):
-        if g not in gear_cost_cache:
-            gear_cost_cache[g] = 0
-            supergears = (g - 1) // 100
-            gear_cost_cache[g] += 100 * 100 * (supergears ** ((supergears // 10) + 1)) * (supergears + 1) // 2
-            if (g - 1) % 100 == 0:
-                gear_cost_cache[g] += 50 * (supergears + 1)
-            gear_cost_cache[g] += ((g - 1) % 100) * 100 * (supergears + 1)
-        level_cost += gear_cost_cache[g]
-    return level_cost
+    return 25 * (to * (to + 1) - base * (base + 1))
 
 
 def gear_up_block_prize(base, to):
-    block_prize = 0
-    for gear in range(base + 1, to + 1):
-        block_prize += (gear - 1) * 100
-    return block_prize
+    return gear_up_level_cost(base, to) // 5
 
 
 def can_gear_up(chat_id):
@@ -1135,8 +1087,6 @@ def can_gear_up(chat_id):
 
     cur_prod_level = user_data["production_level"]
 
-    if check_balance_type(chat_id) == "old":
-        return False, level_cost, block_prize
     if cur_prod_level <= level_cost:
         return False, level_cost, block_prize
     return True, level_cost, block_prize
@@ -1148,33 +1098,17 @@ def check_max_gear_up(chat_id):
     user_data = dbr.login(chat_id)
     cur_gear_level = user_data["gear_level"]
     cur_prod_level = user_data["production_level"]
-    if cur_gear_level < 30:
+    if cur_gear_level < 10:
         return 0
     if user_data["membership"] == "ACB":
         return 0
 
-    next_cost = gear_up_level_cost(cur_gear_level, cur_gear_level + 1)
-    estimate = min(cur_prod_level // next_cost, 10000)
-
-    done = False
-    halving = True
-    while not done:
-        cost = gear_up_level_cost(cur_gear_level, cur_gear_level + estimate)
-        if cost + 1 > cur_prod_level:
-            done = False
-            if halving:
-                halfcost = gear_up_level_cost(
-                    cur_gear_level,
-                    cur_gear_level + estimate // 2
-                )
-                if halfcost + 1 > cur_prod_level:
-                    estimate //= 2
-                else:
-                    halving = False
-            estimate -= 1
-        else:
-            done = True
-    return estimate
+    max_gear = int((
+        math.sqrt(
+            1 + 4 * (cur_prod_level / 25 + cur_gear_level * (cur_gear_level + 1))
+        ) - 1) / 2
+    )
+    return max_gear
 
 
 # When gearing up, all money goes to player's faction market
@@ -1202,12 +1136,15 @@ def gearup_money_to_market(chat_id):
 
 
 def passes_season_gearup_limit(chat_id):
+    user_data = dbr.login(chat_id)
+    if user_data["gear_level"] < 5:
+        return True
     season_data = best.season_upget()
     best.user_season_upget(chat_id)  # Almost no cost, checks for squash!
     if gut.time_s() < gut.season_to_ts(season_data[
        "current_season"]) + 60 * 60 * 24 * 14:
         return True
-    user_data = dbr.login(chat_id)
+
     faction_ranking = tv.get_faction_ranking()
     if user_data["membership"] not in [
        faction_ranking[0][0], faction_ranking[1][0]]:
@@ -1410,7 +1347,6 @@ def gearup_effects(chat_id):
             effects["new_superbadge"] = "💍 → 👑"
         else:
             effects["new_superbadge"] = "👑 → ???"
-        effects["super_multiplier"] = 1 + 2 * new_supergear
     return effects
 
 
@@ -1435,7 +1371,7 @@ def edb_screen(chat_id, money_qty, block_qty, faction):
     prices["market"] = best.get_market_final_price(chat_id, base_block_type)
 
     prices["IP_capitalist"] = best.apply_discount(
-        (player_prod * 3) * 100, chat_id=chat_id) // best.apply_block_bonus(
+        (player_prod // 6) * 100, chat_id=chat_id) // best.apply_block_bonus(
         (4) * 100, chat_id=chat_id)
 
     currencies_status = dbr.get_currencies_status()
@@ -1447,17 +1383,17 @@ def edb_screen(chat_id, money_qty, block_qty, faction):
     player_cur = best.get_types_of(chat_id)["currency"]
     faction_denominator = denominators[player_cur]
     prices["IP_socialist"] = best.apply_discount(
-        (player_prod * 3 / faction_denominator) * 100, chat_id=chat_id
+        ((player_prod // 6) / faction_denominator) * 100, chat_id=chat_id
     ) // best.apply_block_bonus((4) * 100, chat_id=chat_id)
 
     prices["GSRF_nobonus"] = best.apply_discount(
-        (player_prod * 45 // 60) * 100, chat_id=chat_id
+        (player_prod * 5 // 60) * 100, chat_id=chat_id
     ) // best.apply_block_bonus((1) * 100, chat_id=chat_id)
     prices["GSRF_withbonus"] = best.apply_discount(
-        (player_prod * 45 // 60) * 100, chat_id=chat_id
+        (player_prod * 5 // 60) * 100, chat_id=chat_id
     ) // best.apply_block_bonus((1.1) * 100, chat_id=chat_id)
     prices["GSRF_withbonus_S"] = best.apply_discount(
-        (player_prod * 45 // 60) * 100, chat_id=chat_id
+        (player_prod * 5 // 60) * 100, chat_id=chat_id
     ) // best.apply_block_bonus((1.3) * 100, chat_id=chat_id)
     return conversions, discounted, bonussed, prices
 
@@ -1684,10 +1620,10 @@ def use_mystery_item(chat_id, qty=1):
                 player_agency = ag
                 break
         if player_agency:
-            if len(dn_data_agencies[player_agency]) >= int(player_agency.split("_")[0]):
-                if player_agency.split("_")[0] == "2":
+            if len(dn_data_agencies[player_agency]) >= 2:
+                if len(dn_data_agencies[player_agency]) == 2:
                     dna_quantity = int(quantity / 2.0 + .5)
-                else:
+                elif len(dn_data_agencies[player_agency]) == 3:
                     dna_quantity = (quantity // 4) + 1
                 for member_id in dn_data_agencies[player_agency]:
                     if chat_id == member_id:
@@ -1858,6 +1794,22 @@ def operate_valves(chat_id, op):
 
 
 # admin actions ====================================
+
+def game_start():
+    import dynamodb_interface as di
+    res = di.item_get(
+        di.pre_board,
+        {"key": {"S": "Afro"}},
+        "members", "N")
+    if res is not None:
+        return "Game has already started!"
+    for currency in gut.list["currency"]:
+        dbw.up_global_production(currency, 0)
+        dbw.up_member_count(currency, 0)
+
+    return "Game Started!"
+
+
 def admin_action(actionstr):
     if actionstr == "delch":
         dbw.ch.active_users = {}
@@ -1898,9 +1850,6 @@ def admin_action(actionstr):
         if res["status"] == "Not Activated":
             return "This account doesn't exist!"
         data = load_main_menu(chat_id)["user"]
-        if check_balance_type(chat_id) == "old":
-            upgrade_to_single_balance(chat_id)
-            return "Player upgraded to single balance"
         if data["nickname"] != "-":
             if "badge_line" in data["nickname"]:
                 if data["gear_level"] != len(data["nickname"]["badge_line"]):
@@ -1931,6 +1880,9 @@ def admin_action(actionstr):
             pdata = load_main_menu(pid)["user"]
             message += "/view@" + pid + " " + put.readable(
                 pdata["gear_level"]) + " - " + pdata[
-                "account_creation_datastr"] + "\n"
+                "account_creation_datestr"] + "\n"
         return message
+    # Use this to set initial data for game start
+    if actionstr == "start":
+        return game_start()
     return "Wrong command"

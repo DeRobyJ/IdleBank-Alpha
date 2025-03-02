@@ -86,12 +86,8 @@ def format_main_menu(chat_id, user_data, currencies_data):
         money_print = put.readable(user_data["balance"])
     else:
         money_print = put.pretty(user_data["balance"])
-    if game.is_money_capped(chat_id):
-        message += uistr.get(chat_id, "MM main balance").format(
-            value=user_data["balance"], sym=player_cursym + " \[ ! ]")  # noqa: W605
-    else:
-        message += uistr.get(chat_id, "MM main balance").format(
-            value=money_print, sym=player_cursym)
+    message += uistr.get(chat_id, "MM main balance").format(
+        value=money_print, sym=player_cursym)
 
     others = cur_order.copy()
     others.remove(player_cur)
@@ -231,15 +227,14 @@ def main_menu_keyboard_for(chat_id, user_data, minis_emoji):
             )
 
         keyboard.append({button_string: "Upgrade Production"})
-        if game.check_balance_type(chat_id) == "new":
-            bulk_calculation = game.calculate_bulk_upgrade(chat_id)
-            if "levels_done" in bulk_calculation:
-                if bulk_calculation["levels_done"] > 1:
-                    keyboard.append(
-                        {"⏫ " + uistr.get(chat_id, "button upgrade prod bulk").format(
-                            levels=bulk_calculation["levels_done"]
-                        ):
-                            "Upgrade Production Bulk"})
+        bulk_calculation = game.calculate_bulk_upgrade(chat_id)
+        if "levels_done" in bulk_calculation:
+            if bulk_calculation["levels_done"] > 1:
+                keyboard.append(
+                    {"⏫ " + uistr.get(chat_id, "button upgrade prod bulk").format(
+                        levels=bulk_calculation["levels_done"]
+                    ):
+                        "Upgrade Production Bulk"})
     print(time.time() - start_time, "MMK Upgrades done")
 
     if lvl_limit(player_level, player_gear, "Block Selling"):
@@ -760,16 +755,10 @@ def market_screen(chat_id, section_selection):
             money_pcent=money_pcent,
             block_pcent=block_pcent)
     if len(sections) == 1:
-        if game.is_money_capped(chat_id):
-            message += uistr.get(chat_id, "MM main balance").format(
-                value=put.readable(
-                    game.load_main_menu(chat_id)["user"]["balance"]),
-                sym=cur_sym + " \[ ! ]")  # noqa
-        else:
-            message += uistr.get(chat_id, "MM main balance").format(
-                value=put.readable(
-                    game.load_main_menu(chat_id)["user"]["balance"]),
-                sym=cur_sym)
+        message += uistr.get(chat_id, "MM main balance").format(
+            value=put.readable(
+                game.load_main_menu(chat_id)["user"]["balance"]),
+            sym=cur_sym)
 
         block_type = conv.name(block=section)["currency"]
         message += (uistr.get(chat_id, "MM blocks") + put.readable(
@@ -1168,6 +1157,7 @@ def temporal_variations_screen(chat_id, delta_month):
 
 
 def personal_page(viewer_id, chat_id, page):
+    from db_chdata import pioneers
     user_data = game.load_main_menu(chat_id)["user"]
     user_level = user_data["production_level"]
     user_gear = user_data["gear_level"]
@@ -1181,8 +1171,19 @@ def personal_page(viewer_id, chat_id, page):
     message += uistr.get(viewer_id, "PP SC highscore").format(
         score=put.pretty(minis.SC_get_personal_points_record(chat_id))
     )
+    if chat_id in pioneers:
+        pioneer_struct_t = time.gmtime(pioneers[chat_id]["account_creation_timestamp"])
+        pioneer_datestr = str(
+            pioneer_struct_t.tm_mday) + " " + uistr.get(
+            chat_id, "Month")[pioneer_struct_t.tm_mon - 1] + " " + str(
+            pioneer_struct_t.tm_year
+        )
+        message += uistr.get(viewer_id, "PP Pioneer info").format(
+            creation_date=pioneer_datestr,
+            gear_level=pioneers[chat_id]["gear_level"]
+        )
     message += uistr.get(viewer_id, "PP Info").format(
-        creation_date=user_data["account_creation_datastr"],
+        creation_date=user_data["account_creation_datestr"],
         lastlogin_date=user_data["last_login_datestr"])
     if viewer_id == chat_id:
         message += uistr.get(viewer_id, "PP Inventory").format(
@@ -1295,8 +1296,12 @@ def exe_and_reply(query, chat_id):
     if query == "Main menu":
         r = game.check_account(chat_id)
         if r["status"] == "Not Activated":
-            message = uistr.get(chat_id, "Welcome screen") + \
-                uistr.get(chat_id, "help message")
+            from db_chdata import pioneers
+            if chat_id in pioneers:
+                message = uistr.get(chat_id, "Welcome back pioneer")
+            else:
+                message = uistr.get(chat_id, "Welcome screen")
+            message += uistr.get(chat_id, "help message")
             keyboard = [
                 {memb: "Activate " + memb for memb in r["data"][:3]},
                 {memb: "Activate " + memb for memb in r["data"][3:]},
@@ -1309,9 +1314,6 @@ def exe_and_reply(query, chat_id):
             r = game.load_main_menu(chat_id)
             if not r:
                 message = uistr.get(chat_id, "Internal error")
-            elif game.check_balance_type(chat_id) == "old":
-                game.upgrade_to_single_balance(chat_id)
-                return exe_and_reply("Main menu", chat_id)
             else:
                 if r["user"]["nickname"] == "-":
                     message = uistr.get(chat_id, "nick not set")

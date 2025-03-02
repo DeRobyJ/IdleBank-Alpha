@@ -14,7 +14,8 @@ import math
 import print_util as put
 import temporal_variations as tv
 
-origin_timestamp = int(time.mktime((2021, 6, 4, 0, 0, 0, 0, 0, 0)))
+# origin_timestamp = int(time.mktime((2021, 6, 4, 0, 0, 0, 0, 0, 0)))
+origin_timestamp = int(time.mktime((2025, 2, 6, 0, 0, 0, 0, 0, 0)))
 
 
 # Currently available inventory items
@@ -123,12 +124,17 @@ dn_extra_prizes = [
 
 
 def DN_game_start(timestamp, countries_count):
-    agencies = dbr.mini_get_general("Daily News")["Agencies"]
+    prev_data = dbr.mini_get_general("Daily News")
+    if "Agencies" not in prev_data:
+        agencies = {}
+    else:
+        agencies = prev_data["Agencies"]
+
     countries_count += tv.DN_options_increment()
     game_data = {
         "Agencies": agencies
     }
-    game_data["name"] = "Daily News"
+    game_data["key"] = "Daily News"
     game_data["game_timestamp"] = timestamp
     game_data["Countries"] = {}
 
@@ -142,6 +148,7 @@ def DN_game_start(timestamp, countries_count):
             "all_voters": [],
         }
     dbw.mini_up_general(game_data)
+    return game_data
 
 
 def DN_prize(game_data):
@@ -162,7 +169,7 @@ def DN_prize(game_data):
         prize_money_mult = 6 * total_players
     else:
         prize_money_mult = (6 + (total_players // 10)) * total_players
-    prize_blocks = 10 * total_players
+    prize_blocks = 100 * total_players
     return prize_money_mult, prize_blocks, most_votes, least_votes, total_players
 
 
@@ -175,7 +182,7 @@ def DN_player_money_prize(chat_id, prize_money_mult):
 def ui_DN_extra_prize_onwin(chat_id, country_id):
     extra = dn_extra_prizes[int(country_id)]
     if extra == "money":
-        prize_money = int(best.get_production(chat_id) * 5)
+        prize_money = int(best.get_production(chat_id) * 2)
         player_cursym = best.get_types_of(chat_id)["symbol"]
 
         dbw.give_money(chat_id, prize_money)
@@ -212,13 +219,13 @@ def ui_DN_extra_prize_onwin(chat_id, country_id):
                 coins=prize_qty
             )
     if extra == "CP_extraturn":
-        best.inventory_give(chat_id, "dice", 5)
+        best.inventory_give(chat_id, "dice", 10)
         return uistr.get(
             chat_id, "DN extra onwin CP_extraturn")
     if extra == "OM_protection":
         player_OMdata = best.mini_get_player(chat_id, "Ore Miner")
         if len(player_OMdata) != 0:
-            player_OMdata["protections"] += 10
+            player_OMdata["protections"] += 30
             best.mini_up_player(chat_id, "Ore Miner", player_OMdata)
             return uistr.get(
                 chat_id, "DN extra onwin OM_protection")
@@ -397,34 +404,30 @@ def ui_DN_time_left(chat_id):
 
 def DN_check_game():
     game_data = dbr.mini_get_general("Daily News")
-    if "Agencies" not in game_data:
-        game_data["Agencies"] = {}
-    winners = []
     if len(game_data) == 0:
-        DN_game_start(gut.time_s(), 3)
-        game_data = dbr.mini_get_general("Daily News")
+        game_data = DN_game_start(gut.time_s(), 3)
+    winners = []
     if game_data["game_timestamp"] == 0:
-        DN_game_start(gut.time_s(), 3)
-        game_data = dbr.mini_get_general("Daily News")
+        game_data = DN_game_start(gut.time_s(), 3)
     elif gut.time_s() > game_data["game_timestamp"] + dn_period:
         total_players, winners = DN_game_end(game_data)
         if total_players <= 20:
-            DN_game_start(gut.time_s(), 3)
+            new_options = 3
         elif total_players <= 50:
-            DN_game_start(gut.time_s(), 4)
+            new_options = 4
         elif total_players <= 100:
-            DN_game_start(gut.time_s(), 5)
+            new_options = 5
         elif total_players <= 150:
-            DN_game_start(gut.time_s(), 6)
+            new_options = 6
         elif total_players <= 200:
-            DN_game_start(gut.time_s(), 7)
+            new_options = 7
         elif total_players <= 250:
-            DN_game_start(gut.time_s(), 8)
+            new_options = 8
         elif total_players <= 300:
-            DN_game_start(gut.time_s(), 9)
+            new_options = 9
         else:
-            DN_game_start(gut.time_s(), 10)
-        game_data = dbr.mini_get_general("Daily News")
+            new_options = 10
+        game_data = DN_game_start(gut.time_s(), new_options)
     return game_data, winners
 
 
@@ -462,7 +465,7 @@ def ui_DN_main_screen(chat_id):
 def ui_DN_extra_prize_onvote(chat_id, sel_id):
     extra = dn_extra_prizes[int(sel_id)]
     if extra == "money":
-        prize_money = int(best.get_production(chat_id) / 3)
+        prize_money = int(best.get_production(chat_id) / 6)
         player_cursym = best.get_types_of(chat_id)["symbol"]
 
         dbw.give_money(chat_id, prize_money)
@@ -509,7 +512,7 @@ def ui_DN_extra_prize_onvote(chat_id, sel_id):
     if extra == "OM_protection":
         player_OMdata = best.mini_get_player(chat_id, "Ore Miner")
         if len(player_OMdata) != 0:
-            player_OMdata["protections"] += 1
+            player_OMdata["protections"] += 5
             best.mini_up_player(chat_id, "Ore Miner", player_OMdata)
             return uistr.get(
                 chat_id, "DN thanks") + "\n" + uistr.get(
@@ -564,7 +567,7 @@ def ui_DN_select_country(chat_id, sel_id):
 
     player_agency = DN_agencies_player(chat_id, game_data["Agencies"])
     if player_agency:
-        if len(game_data["Agencies"][player_agency]) >= int(player_agency.split("_")[0]):
+        if len(game_data["Agencies"][player_agency]) >= 2:
             all_in = True
             for member_id in game_data["Agencies"][player_agency]:
                 if member_id not in game_data["Countries"][sel_id]["all_voters"]:
@@ -725,7 +728,7 @@ Query data
     6 - Hammer Precision
 
     querylen 01234567890123456789012345678901234567 -> 37 chars for deep game
-    example: "OM game [120,1000,5000,50,10,30,4000]"
+    example: "OM game_[120,1000,5000,50,10,30,4000]"
 
 Actions
     game: nothing, initial action
@@ -816,7 +819,7 @@ def OM_ore_conversion(chat_id, ores):
         "silver": max(40, best.get_base_production(chat_id) * 24 // 100000),
         "platinum": max(60, sc_data["shops_" + p_faction] // 5),
         "gold": max(75, SR_factories_dividend(
-            dbr.mini_get_general("Global Steel Road")["current_station"]
+            SR_position()[0]
         ) // 100000)
     }
 
@@ -980,7 +983,8 @@ def ui_OM_prizes(chat_id, lvl, damage, layer_hp, layer_hpmax, action):
 
 
 def OM_query_compile(action, data):
-    return "OM " + action + " " + json.dumps([data[i] for i in [
+    # adding a symbol to break compatibility at reset!
+    return "OM " + action + "_" + json.dumps([data[i] for i in [
         "level",
         "damage",
         "strength",
@@ -991,10 +995,10 @@ def OM_query_compile(action, data):
 
 
 def OM_query_decompile(query, chat_id):
-    raw_data = json.loads(query[len("OM game"):])
+    raw_data = json.loads(query[len("OM game_"):])
     if len(raw_data) < 6:  # compatibility with 0.4
         raw_data.append(0)
-    if len(raw_data) < 7:  # compatibility with 0.5
+    if len(raw_data) < 7 or "_" not in query:  # compatibility with 0.5 | reset
         raw_data.append(0)
         raw_data[0] = 1
         raw_data[1] = 0
@@ -1021,7 +1025,7 @@ def ui_OM_main_screen(chat_id):
             player_data["mined_" + block_type] = 0
         best.mini_up_player(chat_id, "Ore Miner", player_data)
     if len(game_data) == 0:
-        game_data = {"name": "Ore Miner"}
+        game_data = {"key": "Ore Miner"}
         game_data["blocks_mined"] = {
             str(i): 0 for i in [5, 10, 15, 20, 25, 30, 35, 40]}
         game_data["top_level"] = 0
@@ -1358,7 +1362,7 @@ def IP_get_gamemode():
 
 
 def IP_game_start(start_time):
-    game_data = {"Companies": {}, "name": "Investment Plan"}
+    game_data = {"Companies": {}, "key": "Investment Plan"}
     game_data["game_timestamp"] = start_time
     for company in "ABCDEFGHIJKL":
         game_data["Companies"][company] = {
@@ -1407,26 +1411,26 @@ def IP_player_prices(chat_id, companies="ABCDEFGHIJKL", deal=0):
     player_prod = best.get_production(chat_id)
 
     # To multiply to the company level
-    linear_price = player_prod * 3 / faction_denominator * tv.IP_price_pity(
+    linear_price = (player_prod // 6) / faction_denominator * tv.IP_price_pity(
         chat_id)
 
-    low_bound = sum([
+    low_bound = int(max([
         game_data["Companies"][comp]["level"]
         for comp in game_data["Companies"]
-    ]) / 12
+    ]) * .8)
 
-    # To multiply to (difference between mean lvl and selected lvl)^exponent
-    exp_price = player_prod * 3 / faction_denominator * tv.IP_price_pity(
+    # To multiply to (difference between low_bound and selected lvl)^exponent
+    exp_price = (player_prod // 6) / faction_denominator * tv.IP_price_pity(
         chat_id)
 
     if len(companies) > 1:
         prices = {}
         for cy in companies:
             try:
-                diff_to_mean = max(game_data["Companies"][cy]["level"] - low_bound, 0)
+                diff_to_bound = max(game_data["Companies"][cy]["level"] - low_bound, 0)
                 prices[cy] = best.apply_discount(
                     game_data["Companies"][cy]["level"] * linear_price +
-                    diff_to_mean ** (1 + diff_to_mean / 200) * exp_price,
+                    diff_to_bound ** (1 + diff_to_bound / 200) * exp_price,
                     chat_id=chat_id)
             except OverflowError:
                 prices[cy] = dbr.login(chat_id)["balance"] + dbr.login(
@@ -1434,10 +1438,10 @@ def IP_player_prices(chat_id, companies="ABCDEFGHIJKL", deal=0):
         return prices
     else:
         try:
-            diff_to_mean = max(game_data["Companies"][companies]["level"] - low_bound, 0)
+            diff_to_bound = max(game_data["Companies"][companies]["level"] - low_bound, 0)
             return best.apply_discount(
                 (game_data["Companies"][companies]["level"] * linear_price +
-                 diff_to_mean ** (1 + diff_to_mean / 200) * exp_price) * max(1, deal),
+                 diff_to_bound ** (1 + diff_to_bound / 200) * exp_price) * max(1, deal),
                 chat_id=chat_id, deal=(deal > 0))
         except OverflowError:
             return dbr.login(chat_id)["balance"] + dbr.login(
@@ -1564,7 +1568,7 @@ def IP_check_game():
         while current_time > new_time + ip_period:
             new_time += ip_period
         IP_game_start(new_time)
-        game_timestamp = dbr.mini_get_general("Investment Plan")
+        game_data = dbr.mini_get_general("Investment Plan")
     if "last_line_timestamp" not in game_data:
         game_data["last_line_timestamp"] = current_time
         dbw.mini_up_general(game_data)
@@ -1924,6 +1928,7 @@ def ui_IP_invest(chat_id, sel_id):
         tris_prize = 0
 
     if game_data["Companies"][sel_id]["faction"] != "No":
+        '''
         if best.get_market_impulse() < 0.5:
             market_section = conv.name(
                 membership=game_data["Companies"][sel_id]["faction"])["block"]
@@ -1931,6 +1936,7 @@ def ui_IP_invest(chat_id, sel_id):
             market_data["money"] += int(price // 2)
             market_data["money_limit"] += int(price - price // 2)
             dbw.market_update(market_section, market_data)
+        '''
         dbw.pay_money(chat_id, price)  # Should be free if it were "No"
 
     game_data["Companies"][sel_id]["faction"] = membership
@@ -2060,11 +2066,12 @@ def CP_crypto_sell_value(chat_id, coin_stock, coins):
     return int((coins * 10 * player_prod / 12) / coin_stock)
 
 
-def CP_buy_crypto(chat_id, coin_name, delta):
+def CP_buy_crypto(chat_id, coin_name, delta, money_spent_by_player):
     game_data = dbr.mini_get_general("Coinopoly")
     coin_stock = float.fromhex(game_data["Coins"][coin_name])
 
     game_data["Coins"][coin_name] = float.hex(max(coin_stock - delta, 0))
+    game_data["Money"][coin_name] += max(money_spent_by_player, 0)
     dbw.mini_up_general(game_data)
     return uistr.get(chat_id, "Done")
 
@@ -2076,6 +2083,7 @@ def CP_sell_crypto(chat_id, coin_name, quantity):
     prize_money = CP_crypto_sell_value(chat_id, coin_stock, quantity)
     dbw.give_money(chat_id, prize_money)
     game_data["Coins"][coin_name] = float.hex(coin_stock + quantity)
+    game_data["Money"][coin_name] -= min(prize_money, game_data["Money"][coin_name] // 2)
     dbw.mini_up_general(game_data)
     return uistr.get(chat_id, "Done")
 
@@ -2134,6 +2142,25 @@ def CP_house_data(chat_id, coin_name, cur_level):
     return building_cost, target_build_level, payment_to_stock, block_prize
 
 
+def CP_sell_quantity(chat_id, cur_cell, cur_house, in_pocket):
+    game_data = dbr.mini_get_general("Coinopoly")
+    if cur_house["chat_id"] == chat_id:
+        quantity = in_pocket
+    else:
+        building_cost, _, _, _ = CP_house_data(chat_id, cur_cell, cur_house["level"])
+        if abs(building_cost - in_pocket) < cp_min_val:
+            quantity = in_pocket
+        else:
+            quantity = min(building_cost, in_pocket)
+
+    stored_money = game_data["Money"][cur_cell]
+    coin_stock = float.fromhex(game_data["Coins"][cur_cell])
+    coin_price = CP_crypto_sell_value(chat_id, coin_stock, 1)
+
+    max_sellable = float(stored_money // 2) / coin_price
+    return min(quantity, max_sellable)
+
+
 def ui_CP_player_action(chat_id, action):
     player_data = best.mini_get_player(chat_id, "Coinopoly")
     available_actions = CP_player_available_actions(chat_id, player_data)
@@ -2163,6 +2190,9 @@ def ui_CP_player_action(chat_id, action):
                 "chat_id": chat_id,
                 "level": new_level
             }
+            shcp = CP_storehouse_crypto_counts(player_data["position"])
+            for coin in shcp:
+                game_data["Money"][coin] += shcp[coin] * money_to_pay // 16
             dbw.mini_up_general(game_data)
             return uistr.get(chat_id, "Done"), None
 
@@ -2210,7 +2240,7 @@ def ui_CP_player_action(chat_id, action):
         )
         player_data["state"] = "acted"
         best.mini_up_player(chat_id, "Coinopoly", player_data)
-        return CP_buy_crypto(chat_id, cell_type, delta), None
+        return CP_buy_crypto(chat_id, cell_type, delta, converted_price), None
 
     if action == "mine" and "mine" in available_actions:
         mining_prize = CP_mine()
@@ -2223,19 +2253,15 @@ def ui_CP_player_action(chat_id, action):
             qty=ui_CP_cryptoprint(mining_prize)), None
 
     if action == "sell" and "sell" in available_actions:
-        quantity = float.fromhex(player_data["Coins"][cell_type])
+        in_pocket = float.fromhex(player_data["Coins"][cell_type])
         game_data = dbr.mini_get_general("Coinopoly")
         cur_house = game_data["Houses"][str(player_data["position"])]
-        if cur_house["chat_id"] == chat_id:
+        quantity = CP_sell_quantity(chat_id, cell_type, cur_house, in_pocket)
+        new_player_pocket = in_pocket - quantity
+        if new_player_pocket < cp_min_val:
             player_data["Coins"][cell_type] = float.hex(0.0)
         else:
-            building_cost, _, _, _ = CP_house_data(chat_id, cell_type, cur_house["level"])
-            if abs(building_cost - quantity) < cp_min_val:
-                player_data["Coins"][cell_type] = float.hex(0.0)
-            else:
-                current_owned = quantity
-                quantity = min(quantity, building_cost)
-                player_data["Coins"][cell_type] = float.hex(current_owned - quantity)
+            player_data["Coins"][cell_type] = float.hex(new_player_pocket)
         player_data["state"] = "acted"
         best.mini_up_player(chat_id, "Coinopoly", player_data)
         return CP_sell_crypto(chat_id, cell_type, quantity), None
@@ -2284,23 +2310,12 @@ def ui_CP_player_action(chat_id, action):
             # Storehouse owner prize
             if cur_house["level"] > 0 and cur_house["chat_id"] > 0:
                 message += uistr.get(chat_id, "CP landon house")
-                """ # Old block prize for storehouse owner
-                storehouses = [
-                    game_data["Houses"][str(i)] for i in [0, 16, 32, 48]]
-                blocks_won = (cur_house["level"] + 9) // 10 * 5  # base prize
-                multiplier = 0
-                for house in storehouses:
-                    if house["chat_id"] == cur_house["chat_id"]:
-                        multiplier += 1
-                        multiplier += ((cur_house["level"] + 9) // 10) / 10
-                blocks_won *= int(multiplier)
-                blocks_won = best.apply_block_bonus(
-                    blocks_won * dice_used, chat_id=cur_house["chat_id"], deal=True)
-                """
-                game_data["Houses"][str(player_data["position"])][
-                    "level"] -= tv.CP_house_degrade() * dice_used * max(
-                        1, game_data["Houses"][str(player_data["position"])][
-                            "level"] // 100)
+                chl = game_data["Houses"][str(player_data["position"])]["level"]
+                game_data["Houses"][str(player_data["position"])]["level"] = max(
+                    chl - tv.CP_house_degrade() * dice_used *
+                    max(1, chl // 100),
+                    chl // 1000
+                )
                 dbw.mini_up_general(game_data)
                 if cur_house["chat_id"] == chat_id:
                     message += uistr.get(
@@ -2354,11 +2369,12 @@ def ui_CP_player_action(chat_id, action):
                 blocks_won = best.apply_block_bonus(
                     blocks_won * dice_used, chat_id=cur_house["chat_id"], deal=True)
                 # Level of the previous storehouse, top in the board view
-                storehouse_ref = game_data["Houses"][
+                storehouse_ref = 1 + game_data["Houses"][
                     str((player_data["position"] // 16) * 16)]["level"]
                 if random.random() < cur_house["level"] / storehouse_ref:
+                    chl = game_data["Houses"][str(player_data["position"])]["level"]
                     game_data["Houses"][str(player_data["position"])][
-                        "level"] -= tv.CP_house_degrade() * dice_used
+                        "level"] = max(chl - tv.CP_house_degrade() * dice_used, chl // 10)
                     dbw.mini_up_general(game_data)
                 notifications = []
                 if cur_house["chat_id"] == chat_id:
@@ -2499,7 +2515,8 @@ def ui_CP_menu_list(chat_id, page):
         )
         if page == "Stock":
             coin_stock = float.fromhex(game_data["Coins"][coin_name])
-            message += ui_CP_cryptoprint(coin_stock)
+            crpr = ui_CP_cryptoprint(coin_stock)
+            message += crpr + " " * (8 - len(crpr)) + put.pretty(game_data["Money"][coin_name]) + " M"
         elif page == "Wallet":
             owned = float.fromhex(player_data["Coins"][coin_name])
             message += ui_CP_cryptoprint(owned)
@@ -2559,7 +2576,7 @@ def ui_CP_main_screen(chat_id):
     game_data = dbr.mini_get_general("Coinopoly")
     player_cursym = best.get_types_of(chat_id)["symbol"]
     if len(game_data) == 0:
-        game_data["name"] = "Coinopoly"
+        game_data["key"] = "Coinopoly"
         game_data["Coins"] = {
             coin_name: float.hex(1000.0) for coin_name in [
                 "Bitcoin", "Ether", "Ada", "Dogecoin",
@@ -2572,6 +2589,16 @@ def ui_CP_main_screen(chat_id):
         game_data["Houses"] = {
             str(cell): {
                 "chat_id": 0, "level": 0} for cell in range(len(cp_map))
+        }
+        dbw.mini_up_general(game_data)
+    if "Money" not in game_data:
+        game_data["Money"] = {
+            coin_name: 1000000 for coin_name in [
+                "Bitcoin", "Ether", "Ada", "Dogecoin",
+                "Polkadot", "Litecoin", "Solana",
+                "IdleCoin", "Filecoin", "Terra",
+                "Shiba", "BitTorrent", "Tether"
+            ]
         }
         dbw.mini_up_general(game_data)
     player_data = best.mini_get_player(chat_id, "Coinopoly")
@@ -2650,25 +2677,19 @@ def ui_CP_main_screen(chat_id):
                         cur_sym=player_cursym
                     ): "CP buy 1/2"
                 })
-            if in_pocket > cp_min_val:
-                cur_house = game_data["Houses"][str(player_data["position"])]
-                if cur_house["chat_id"] == chat_id:
-                    quantity = in_pocket
-                else:
-                    building_cost, _, _, _ = CP_house_data(chat_id, cur_cell, cur_house["level"])
-                    if abs(building_cost - in_pocket) < cp_min_val:
-                        quantity = in_pocket
-                    else:
-                        quantity = min(building_cost, in_pocket)
-                keyboard.append({
-                    uistr.get(chat_id, "CP button sell").format(
-                        prize=put.pretty(
-                            CP_crypto_sell_value(
-                                chat_id, stored, quantity)),
-                        cur_sym=player_cursym
-                    ): "CP sell"
-                })
             cur_house = game_data["Houses"][str(player_data["position"])]
+            if in_pocket > cp_min_val:
+                quantity = CP_sell_quantity(chat_id, cur_cell, cur_house, in_pocket)
+                if quantity > cp_min_val:
+                    keyboard.append({
+                        uistr.get(chat_id, "CP button sell").format(
+                            qty=ui_CP_cryptoprint(quantity),
+                            prize=put.pretty(
+                                CP_crypto_sell_value(
+                                    chat_id, stored, quantity)),
+                            cur_sym=player_cursym
+                        ): "CP sell"
+                    })
             building_cost, _, _, _ = CP_house_data(chat_id, cur_cell, cur_house["level"])
             if float.fromhex(player_data[
                     "Coins"][cur_cell]) > building_cost:
@@ -2741,7 +2762,7 @@ def SR_factories_dividend(station, redo=False):
 def SR_position():
     game_data = dbr.mini_get_general("Global Steel Road")
     if len(game_data) == 0:
-        game_data["name"] = "Global Steel Road"
+        game_data["key"] = "Global Steel Road"
         game_data["interactions"] = 0
         game_data["sold_materials"] = 0
         game_data["current_station"] = 0
@@ -3128,7 +3149,7 @@ def SR_prices_prizes(chat_id, fid, deal=False):
         "city_block_type": block_type,
         "price_investing": best.apply_discount(
             max(10, value * player_prod * pim *
-                45 // 60 * tv.GSRF_frenzy_invest_price_multiplier()),
+                5 // 60 * tv.GSRF_frenzy_invest_price_multiplier()),
             chat_id=chat_id,
             deal=deal
         ),
@@ -3159,6 +3180,8 @@ def SR_factory_award_money(cid, fid, qty):
     game_data = dbr.mini_get_general("Global Steel Road")
     owner_chat_id = game_data["Factories"][
         str(cid) + fid]["owner_chat_id"]
+
+    '''
     market_section = best.get_types_of(owner_chat_id)["block"]
 
     market_data = dbr.get_market_data(market_section)
@@ -3174,6 +3197,8 @@ def SR_factory_award_money(cid, fid, qty):
     market_data["money"] += int(market_part // 2)
     market_data["money_limit"] += int(market_part - market_part // 2)
     dbw.market_update(market_section, market_data)
+    '''
+    dbw.give_money(owner_chat_id, int(qty))
 
 
 sr_cached_awards = {
@@ -3189,6 +3214,7 @@ def SR_factory_cache_awards(cid, fid, qty):
         str(cid) + fid]["owner_chat_id"]
     if owner_chat_id == 0:
         return
+    '''
     market_section = best.get_types_of(owner_chat_id)["block"]
     market_data = dbr.get_market_data(market_section)
 
@@ -3215,9 +3241,14 @@ def SR_factory_cache_awards(cid, fid, qty):
         market_section] += int(market_part // 2)
     sr_cached_awards["market_money_limit"][
         market_section] += int(market_part - market_part // 2)
+    '''
+    if owner_chat_id not in sr_cached_awards["players"]:
+        sr_cached_awards["players"][owner_chat_id] = 0
+    sr_cached_awards["players"][owner_chat_id] += int(qty)
 
 
 def SR_factory_give_cached_awards(start_time):
+    '''
     for section in sr_cached_awards["market_money"]:
         print(time.time() - start_time,
               "GSR cached market", section)
@@ -3227,6 +3258,7 @@ def SR_factory_give_cached_awards(start_time):
         market_data["money_limit"] += sr_cached_awards[
             "market_money_limit"][section]
         dbw.market_update(section, market_data)
+    '''
     for chat_id in sr_cached_awards["players"]:
         print(time.time() - start_time,
               "GSR cached player", chat_id)
@@ -3296,7 +3328,7 @@ def ui_SR_factories_keyboard(chat_id):
                 build_button_text: "SR build " + fid,
                 invest_button_text: "SR invest " + fid
             })
-    return keyboard
+    return keyboard, prpr["city_block_type"]
 
 
 def ui_SR_main_screen(chat_id):
@@ -3397,17 +3429,27 @@ def ui_SR_main_screen(chat_id):
                 message += uistr.get(chat_id, "SR investment passes").format(
                     passes=passes
                 )
-            keyboard += ui_SR_factories_keyboard(chat_id)
+            gsrf_keyboard, city_block_type = ui_SR_factories_keyboard(chat_id)
+            keyboard += gsrf_keyboard
             cur_sym = conv.name(membership=dbr.login(
                 chat_id)["membership"])["symbol"]
             own_faction_blocks = conv.name(membership=dbr.login(
                 chat_id)["membership"])["block"]
             message += "\n\n" + uistr.get(chat_id, "MM main balance").format(
                 value=put.pretty(dbr.login(chat_id)["balance"]), sym=cur_sym)
-            block_type = conv.name(block=own_faction_blocks)["currency"]
-            message += (uistr.get(chat_id, "MM blocks") + put.pretty(
-                dbr.login(chat_id)["blocks"][block_type]) +
-                " " + own_faction_blocks)
+            own_cur = conv.name(block=own_faction_blocks)["currency"]
+            city_cur = conv.name(block=city_block_type)["currency"]
+            message += (
+                uistr.get(chat_id, "MM blocks") +
+                put.pretty(dbr.login(chat_id)["blocks"][own_cur]) +
+                " " + own_faction_blocks
+            )
+            if own_faction_blocks != city_block_type:
+                message += (
+                    ", " +
+                    put.pretty(dbr.login(chat_id)["blocks"][city_cur]) +
+                    " " + city_block_type
+                )
 
     if SR_player_mode(chat_id) == "Market":
         keyboard.append({
@@ -3732,7 +3774,13 @@ def ui_SR_factories_action(chat_id, sel_fid, action):
             game_data["Factories"][str(cid) + sel_fid]["value"] += 1 * pim
         SR_factories_count_new_investments(chat_id, prpr["investments_use"])
 
-        dbw.pay_money(chat_id, prpr["price_investing"])
+        if game_data["Factories"][str(cid) + sel_fid]["owner_chat_id"] == chat_id and best.get_market_impulse() < 0.5:
+            dbw.pay_money(chat_id, prpr["price_investing"] * 9 // 10)
+        elif best.get_market_impulse() < 0.5:
+            dbw.pay_money(chat_id, prpr["price_investing"])
+            SR_factory_award_money(cid, sel_fid, prpr["price_investing"] // 10)
+        else:
+            dbw.pay_money(chat_id, prpr["price_investing"])
         # block bonus already applied in prpr
         dbw.add_block(
             chat_id,
@@ -3740,8 +3788,6 @@ def ui_SR_factories_action(chat_id, sel_fid, action):
             prpr["prize_self_blocks"])
         dbw.add_block(
             chat_id, current_faction["currency"], prpr["prize_city_block"])
-        if best.get_market_impulse() < 0.5:
-            SR_factory_award_money(cid, sel_fid, prpr["price_investing"])
 
         dbw.mini_up_general(game_data)  # This takes 100-1000ms, it slows everyone down if spammed
         best.mini_up_player(chat_id, "Global Steel Road", player_data)
@@ -3773,7 +3819,7 @@ def SC_game_and_player_data(chat_id):
     player_data = best.mini_get_player(chat_id, "Shop Chain")
     if len(game_data) == 0:
         game_data = {
-            "name": "Shop Chain",
+            "key": "Shop Chain",
             "general_highscore": chat_id,
             "faction_employers": {f: {0} for f in gut.list["membership"]}
         }
@@ -3814,6 +3860,9 @@ def SC_game_and_player_data(chat_id):
 
 def economy_inflation(chat_id):
     _, player_data = SC_game_and_player_data(chat_id)
+    paid_wages = sum(x > 0 for x in player_data["history"])
+    if paid_wages < 4:
+        return 0
     return (
         math.log10(max(1, sum(player_data["history"]))) +
         (
@@ -3928,12 +3977,14 @@ def ui_SC_wage_pay(chat_id):
     game_data, player_data = SC_game_and_player_data(chat_id)
     if player_data["history"][-1] > 0:
         return uistr.get(chat_id, "SC already paid")
-    price = player_data["payment_amount"] * player_data["employees"]
+    player_prod = best.get_production(chat_id)
+    salary = player_data["payment_amount"] * player_prod // 30000
+    price = salary * player_data["employees"]
     if not dbr.check_payment(chat_id, price):
         return uistr.get(chat_id, "Insufficient balance")
     dbw.pay_money(chat_id, price)
 
-    player_data["history"][-1] = player_data["payment_amount"]
+    player_data["history"][-1] = salary
     faction_wages = SC_faction_upget(chat_id, dbr.login(chat_id)["membership"])
     if len(faction_wages) < 3:
         multiplier = 1
@@ -4052,11 +4103,13 @@ def ui_SC_main_screen(chat_id):
         current_wage=put.pretty(sum(player_data["history"])),
         recent_payments=recent_payments_line
     )
+    player_prod = best.get_production(chat_id)
+    salary = player_data["payment_amount"] * player_prod // 30000
     keyboard = []
     keyboard.append({
         uistr.get(chat_id, "SC button pay").format(
-            amount=put.pretty(player_data["payment_amount"]),
-            price=put.pretty(player_data["employees"] * player_data["payment_amount"])
+            amount=put.pretty(salary),
+            price=put.pretty(player_data["employees"] * salary)
         ): "SC pay"
     })
     keyboard.append({

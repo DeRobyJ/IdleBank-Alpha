@@ -4,28 +4,10 @@ import conversions as conv
 import db_chdata as ch
 
 
-def user_balance_type(chat_id=None, cached=None):
-    if not cached:
-        cached = ch.active_users[chat_id]
-    if "cur_Dollar" not in cached:
-        return "new"
-    if "saved_balance" not in cached:
-        return "old"
-    if cached["saved_balance"] > 0:
-        cached["cur_Dollar"] = 0
-        cached["cur_Euro"] = 0
-        cached["cur_Yuan"] = 0
-        return "new"
-    if True in [cached[cur] > 0
-                for cur in ["cur_Dollar", "cur_Euro", "cur_Yuan"]]:
-        return "old"
-    return "new"
-
-
 def login(chat_id):
     if chat_id not in ch.active_users:
-        ch.active_users[chat_id] = di.object_get(di.tabname_user,
-                                                 {"chat_id": {"N": chat_id}})
+        ch.active_users[chat_id] = di.object_get(di.pre_user,
+                                                 {"key": {"S": chat_id}})
     if chat_id not in ch.active_users:
         return {"account_status": "Not Activated"}
     if not ch.active_users[chat_id]:
@@ -61,26 +43,15 @@ def login(chat_id):
         ch.active_users[chat_id]["shut_valves"] = 0
     data["shut_valves"] = ch.active_users[chat_id]["shut_valves"]
     data["balance_timestamp"] = ch.active_users[chat_id]["balance_timestamp"]
-    if user_balance_type(cached=ch.active_users[chat_id]) == "new":
-        data["balance"] = gut.balance(
-            ch.active_users[chat_id]["membership"],
-            ch.active_users[chat_id]["production_level"],
-            ch.active_users[chat_id]["gear_level"],
-            gut.get_badge_line(data["nickname"]),
-            ch.active_users[chat_id]["saved_balance"],
-            ch.active_users[chat_id]["balance_timestamp"]
-        )
-        data["saved_balance"] = ch.active_users[chat_id]["saved_balance"]
-    else:
-        data["balance"] = gut.complete_balance(
-            ch.active_users[chat_id]["membership"],
-            ch.active_users[chat_id]["production_level"],
-            ch.active_users[chat_id]["gear_level"],
-            {"Dollar": ch.active_users[chat_id]["cur_Dollar"],
-             "Euro": ch.active_users[chat_id]["cur_Euro"],
-             "Yuan": ch.active_users[chat_id]["cur_Yuan"]},
-            ch.active_users[chat_id]["balance_timestamp"]
-        )
+    data["balance"] = gut.balance(
+        ch.active_users[chat_id]["membership"],
+        ch.active_users[chat_id]["production_level"],
+        ch.active_users[chat_id]["gear_level"],
+        gut.get_badge_line(data["nickname"]),
+        ch.active_users[chat_id]["saved_balance"],
+        ch.active_users[chat_id]["balance_timestamp"]
+    )
+    data["saved_balance"] = ch.active_users[chat_id]["saved_balance"]
     if "settings" not in ch.active_users[chat_id]:  # migration guard
         ch.active_users[chat_id]["settings"] = gut.default_settings
     data["settings"] = gut.settings_unpack(
@@ -133,8 +104,8 @@ def get_currencies_status():
     if len(ch.global_production) == 0:
         for cur_name in gut.list["currency"]:
             ch.global_production[cur_name] = abs(int(di.item_get(
-                di.tabname_general,
-                {"name": {"S": cur_name}},
+                di.pre_board,
+                {"key": {"S": cur_name}},
                 "hourly_production_rate",
                 "S"
             )))
@@ -145,8 +116,8 @@ def get_member_counts():
     if len(ch.member_count) == 0:
         for cur_name in gut.list["currency"]:
             ch.member_count[conv.name(currency=cur_name)["membership"]] = int(
-                di.item_get(di.tabname_general,
-                            {"name": {"S": cur_name}},
+                di.item_get(di.pre_board,
+                            {"key": {"S": cur_name}},
                             "members", "N")
             )
     return ch.member_count
@@ -156,8 +127,8 @@ def get_leaderboard_raw_data():
     if len(ch.leaderboard_data) == 0:
         for cur_name in gut.list["currency"]:
             ch.leaderboard_data[cur_name] = di.item_get(
-                di.tabname_general,
-                {"name": {"S": cur_name}},
+                di.pre_board,
+                {"key": {"S": cur_name}},
                 "leaderboard",
                 "NS")
             if not ch.leaderboard_data[cur_name]:
@@ -168,10 +139,10 @@ def get_leaderboard_raw_data():
 def get_multiplayer_info():
     if len(ch.multiplayer_info) == 0:
         ch.multiplayer_info = di.ezget_item(
-            di.tabname_general, {"name": "multiplayer_info"})
+            di.pre_board, {"key": "multiplayer_info"})
     if len(ch.multiplayer_info) == 0:  # initialization
         ch.multiplayer_info = {
-            "name": "multiplayer_info",
+            "key": "multiplayer_info",
             "players_activity": {},
             "top_gear": {},
             "top_production": {}
@@ -182,10 +153,10 @@ def get_multiplayer_info():
 def get_season_info():
     if len(ch.season_info) == 0:
         ch.season_info = di.ezget_item(
-            di.tabname_general, {"name": "season_info"})
+            di.pre_board, {"key": "season_info"})
     if len(ch.season_info) == 0:  # initialization
         ch.season_info = {
-            "name": "season_info",
+            "key": "season_info",
             "current_season": "1_2022",
             "variations_timestamp": 0,
             "faction": {i: {
@@ -221,7 +192,7 @@ def check_any_block(chat_id, qty=1):
 
 def get_market_data(section):
     if section not in ch.market_data:
-        db_res = di.object_get(di.tabname_market, {"type": {"S": section}})
+        db_res = di.object_get(di.pre_market, {"key": {"S": section}})
         if not db_res:
             return "Create Market"
         if len(db_res) == 0:
@@ -233,8 +204,8 @@ def get_market_data(section):
 def check_event_count(chat_id, event_name):
     if chat_id not in ch.events_data:
         ch.events_data[chat_id] = {}
-        db_res = di.item_get(di.tabname_event, {"chat_id": {
-                             "N": chat_id}}, event_name, "N")
+        db_res = di.item_get(di.pre_event, {"key": {
+                             "S": chat_id}}, event_name, "N")
         if db_res:
             ch.events_data[chat_id][event_name] = int(db_res)
         else:
@@ -245,15 +216,20 @@ def check_event_count(chat_id, event_name):
 def mini_get_general(game_name):
     if game_name not in ch.mini_general:
         ch.mini_general[game_name] = di.ezget_item(
-            di.tabname_minis, {"name": game_name})
-    if not ch.mini_general[game_name]:
-        ch.mini_general[game_name] = {}
+            di.pre_minis, {"key": game_name})
+        if not ch.mini_general[game_name]:
+            ch.mini_general[game_name] = {}
+
+        elif game_name == "Coinopoly" and "Money" in ch.mini_general[game_name]:
+            for coin in ch.mini_general[game_name]["Money"]:
+                ch.mini_general[game_name]["Money"][coin] = int(ch.mini_general[game_name]["Money"][coin])
+
     return ch.mini_general[game_name]
 
 
 def mini_get_player(chat_id, game_name):
     if chat_id not in ch.mini_player:
-        raw_data = di.ezget_item(di.tabname_miniplayers, {"chat_id": chat_id})
+        raw_data = di.ezget_item(di.pre_miniplayers, {"key": chat_id})
         ch.mini_player[chat_id] = {
             "inventory": {},
             "Daily News": {},

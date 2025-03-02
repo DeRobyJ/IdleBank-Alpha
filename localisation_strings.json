@@ -341,6 +341,13 @@
     "Español": "",
     "Português": "Bem ao IdleBank Alpha!\nPara começar a jogar, escolha um banco central entre:\n- Federal Reserve (FED)\n- Banco Central Europeu (ECB)\n- Banco da População Chinesa (PBC)\n- Reserve Bank of Australia (RBA)\n- Banco Central do Brasil (CBB)\n- Reserve Bank of India (RBI)\n\n"
   },
+  "Welcome back pioneer": {
+    "English": "Wlecome back, pioneer! The top players of IdleBank Alpha decided to start a new game! Please choose a central bank between:\n- Federal Reserve (FED)\n- European Central Bank (ECB)\n- People's Bank of China (PBC)\n- Reserve Bank of Australia (RBA)\n- Central Bank of Brazil (CBB)\n- Reserve Bank of India (RBI)\n\n",
+    "Italiano": "Bentornato pioniere! I giocatori top hanno deciso di iniziare una nuova partita! Scegli una banca centrale tra:\n- Federal Reserve (FED)\n- Banca Centrale Europea (ECB)\n- Banca Popolare Cinese (PBC)\n- Banca Nazionale dell'Australia (RBA)\n- Banca Centrale del Brasile (CBB)\n- Reserve Bank of India (RBI)\n\n",
+    "Français": "",
+    "Español": "",
+    "Português": "Bem ao IdleBank Alpha!\nPara começar a jogar, escolha um banco central entre:\n- Federal Reserve (FED)\n- Banco Central Europeu (ECB)\n- Banco da População Chinesa (PBC)\n- Reserve Bank of Australia (RBA)\n- Banco Central do Brasil (CBB)\n- Reserve Bank of India (RBI)\n\n"
+  },
   "faction FED": {
     "English": "Federal Reserve",
     "Italiano": "",
@@ -506,9 +513,7 @@
     "Italiano": "Hai selezionato l'Italiano!",
     "Français": "",
     "Español": "",
-    "Português": "Você escolheu Português!",
-    "Français": "",
-    "Español": ""
+    "Português": "Você escolheu Português!"
   },
   "Event AlphaPioneer": {
     "English": "Thank you for being one of the pioneers of the game!\nTo celebrate, you will get 20 blocks of your membership. This also serves as a compensation for some of the recent changes!",
@@ -572,8 +577,8 @@
     "Português_gender": ["f","m","f","f","m","f",                                "m","m","m", "f","m","m",                                       "f","f","m","m","m","m",                                    "m","m","f","m",               "m",    "m",        "m",       "f",     "f",        "m",    "f",      "m",      "f",              "f",    "m",      "m",    "m",              "m",      "m",    "m", "f",      "m",   "f",  "f",            "f",  "m",          "f",        "m",  "m",                "m",        "m",        "f",    "m",        "m",        "m",        "f",         "m",         "m",        "m",        "f",        "m",       "m",     "m",      "m",      "m"]
   },
   "nick not set": {
-    "English":"Would you like to create a nickname, or will you just use a random one for now?\nYou can always change later!",
-    "Italiano":"Ti va di creare un soprannome? Altrimenti puoi anche usarne uno generato casualmente.\nPotrai sempre cambiarlo in seguito!",
+    "English":"Would you like to create a nickname, or will you just use a random one for now?\nYou can always change later!\n\nThen, please wait a few seconds and your game will start!",
+    "Italiano":"Ti va di creare un soprannome? Altrimenti puoi anche usarne uno generato casualmente.\nPotrai sempre cambiarlo in seguito!\n\nDopo, aspetta qualche secondo e la tua partità avrà inizio!",
     "Français": "",
     "Español": "",
     "Português":"Você gostaria de criar um apelido, ou usaria um aleatório por enquanto?\nVocê sempre pode mudar depois!"
@@ -690,8 +695,8 @@
     "Español": ""
   },
   "multiplayer info": {
-    "English": "Here's what we got:\n{last_24h} players in the last 24 hours,\n{last_7d} players in the last 7 days,\n{last_30d} players in the last 30 days;\n{tot_accounts} activated accounts in total.\n\nTop Gear obtained: {top_gear} by\n{top_gear_nick}\n\nShop Chain Highscore: {shopchain_highscore} by\n{shopchain_highscore_nick}",
-    "Italiano": "Ecco qua:\n{last_24h} giocatori nelle ultime 24 ore,\n{last_7d} giocatori negli ultimi 7 giorni,\n{last_30d} giocatori negli ultimi 30 giorni;\n{tot_accounts} account totali attivati.\n\nMiglior Gear ottenuto: {top_gear} da\n{top_gear_nick}\n\nPunteggio Record Catena di Negozi: {shopchain_highscore} da\n{shopchain_highscore_nick}",
+    "English": "Here's what we got:\n{last_24h} players in the last 24 hours,\n{last_7d} players in the last 7 days,\n{last_30d} players in the last 30 days;\n{tot_accounts} activated accounts on the second game.\n671 pioneers.\n\nTop Gear obtained: {top_gear} by\n{top_gear_nick}\n\nShop Chain Highscore: {shopchain_highscore} by\n{shopchain_highscore_nick}",
+    "Italiano": "Ecco qua:\n{last_24h} giocatori nelle ultime 24 ore,\n{last_7d} giocatori negli ultimi 7 giorni,\n{last_30d} giocatori negli ultimi 30 giorni;\n{tot_accounts} account attivati nella seconda partita.\n671 pionieri.\n\nMiglior Gear ottenuto: {top_gear} da\n{top_gear_nick}\n\nPunteggio Record Catena di Negozi: {shopchain_highscore} da\n{shopchain_highscore_nick}",
     "Français": "",
     "Español": ""
   },
@@ -1501,13 +1506,6 @@
       "Español": "",
       "Português": ""
     },
-    "Money Cap" : {
-      "English": "Please note that you can't store infinite money of your currency! You won't produce money after a while, so come back and upgrade!",
-      "Italiano": "Fai attenzione: non puoi tenere infiniti soldi della tua valuta! Dopo un po', non ne verranno prodotti più, finché non migliori la produzione!",
-      "Français": "",
-      "Español": "",
-      "Português": ""
-    },
     "Global Production" : {
       "English": "You can now see the global production of all the currencies! As you might guess, you're playing with a whole team of people! Together, your faction races against the others to be the most productive one.",
       "Italiano": "Ora puoi vedere la produzione globale per tutte le valute! Infatti stai giocando insieme a un intero gruppo di persone! Insieme, la tua fazione gareggia contro le altre per essere la più produttiva.",
@@ -1586,13 +1584,6 @@
     "Español": "",
     "Português": ""
   },
-  "Event moneycap_compensation": {
-    "English": "With the introduction of the money cap feature, a lot of us will lose a considerable amount of money for our own currency.\nThis is made to balance the game for everyone, especially to prevent new players to upgrade from 0 to 40 in a single hour!\n\nTo compensate for the money loss, and to test the new balance with a fresh start, here's 20 blocks for everyone!",
-    "Italiano": "Con l'introduzione del money cap, ossia di un tetto all'accumulo di moneta della propria valuta, molti di noi perderanno una grossa quantità di soldi.\nQuesta funzione servirà a bilanciare il gioco per tutti, specialmente per i nuovi giocatori che attualmente possono passare da livello 0 a 40 in un'ora! Per compensare questa perdita, e per testare il nuovo bilanciamento con un nuovo inizio, ecco 20 blocchi per tutti!",
-    "Français": "",
-    "Español": "",
-    "Português": ""
-  },
   "Gearup not ready": {
     "English": "You need more levels to gear up! Get to level {needed_level} and come back!",
     "Italiano": "Servono più livelli per salire di marcia! Raggiungi il livello {needed_level} e riprova!",
@@ -1650,12 +1641,6 @@
   "Gearup effect weekly_to_daily": {
     "English": "Natural block growth: 1 every week → 1 every day\n(Bonuses for faction balancing may be applied)",
     "Italiano": "Crescita naturale blocchi: 1 a settimana → 1 al giorno\n(Possono essere applicati bonus di bilanciamento tra le fazioni)",
-    "Français": "",
-    "Español": ""
-  },
-  "Gearup effect no_money_cap": {
-    "English": "You will no longer be restricted by the money cap!",
-    "Italiano": "Non verrai più limitato dal money cap!",
     "Français": "",
     "Español": ""
   },
@@ -1990,8 +1975,8 @@
     "Español": ""
   },
   "CP button sell": {
-    "English": "Sell coins for {prize}{cur_sym}",
-    "Italiano": "Vendi monete per {prize}{cur_sym}",
+    "English": "Sell {qty} coins for {prize}{cur_sym}",
+    "Italiano": "Vendi {qty} monete per {prize}{cur_sym}",
     "Français": "",
     "Español": ""
   },
@@ -3026,6 +3011,12 @@
   "PP SC highscore": {
     "English": "Shop Chain highscore: {score}\n\n",
     "Italiano": "Record punteggio Catena di Negozi: {score}\n\n",
+    "Français": "",
+    "Español": ""
+  },
+  "PP Pioneer info": {
+    "English": "Pioneer since {creation_date}\nPioneer gear level {gear_level}\n",
+    "Italiano": "Pioniere dal {creation_date}\nLivello marcia da pioniere {gear_level}\n",
     "Français": "",
     "Español": ""
   },
