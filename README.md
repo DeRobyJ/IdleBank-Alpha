@@ -44,3 +44,5 @@ In November 2023, a "squash" was introduced to soft-reset players' items at the 
 In April 2024, a partner feature for groups of 2 or 3 players was introduced inside the Daily News minigame.
 
 The game was released as open source on the 28th of April 2024
+
+In February 2025, the top players and the admin decided to reset the game. All pioneers, with at least a gear on the first game, received a special symbol for the new game, and the admin took the chance to completely review the game economy and to switch to just one AWS dynamoDB table.
