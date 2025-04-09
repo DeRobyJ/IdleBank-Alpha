@@ -5,7 +5,7 @@ import uistr
 import time
 import conversions as conv
 import random
-
+import minimal
 
 current_event = {
     "name": "moneycap_compensation",
@@ -67,6 +67,9 @@ def check_event(chat_id):
 
 # returns message and keyboard!
 def do_event(chat_id):
+    april_fools = minimal.april_fools(chat_id)
+    if april_fools:
+        return april_fools
     account_creation = dbr.login(chat_id)["account_creation_timestamp"]
     # if chat_id not in current_allowlist:
     if account_creation > max_creation_timestamp:

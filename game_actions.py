@@ -155,7 +155,6 @@ def load_main_menu(chat_id):
 def get_float_balance(chat_id):
     user_data = dbr.login(chat_id)
     return gut.float_balance(
-        user_data["membership"],
         user_data["production_level"],
         user_data["gear_level"],
         gut.get_badge_line(user_data["nickname"]),
@@ -1070,20 +1069,12 @@ def set_nickname(chat_id, nick_data):
 gear_cost_cache = {}
 
 
-def gear_up_level_cost(base, to):
-    return 25 * (to * (to + 1) - base * (base + 1))
-
-
-def gear_up_block_prize(base, to):
-    return gear_up_level_cost(base, to) // 5
-
-
 def can_gear_up(chat_id):
     user_data = dbr.login(chat_id)
     cur_gear_level = user_data["gear_level"]
 
-    level_cost = gear_up_level_cost(cur_gear_level, cur_gear_level + 1)
-    block_prize = gear_up_block_prize(cur_gear_level, cur_gear_level + 1)
+    level_cost = gut.gear_up_level_cost(cur_gear_level, cur_gear_level + 1)
+    block_prize = gut.gear_up_block_prize(cur_gear_level, cur_gear_level + 1)
 
     cur_prod_level = user_data["production_level"]
 
@@ -1108,7 +1099,7 @@ def check_max_gear_up(chat_id):
             1 + 4 * (cur_prod_level / 25 + cur_gear_level * (cur_gear_level + 1))
         ) - 1) / 2
     )
-    return max_gear
+    return max_gear - cur_gear_level
 
 
 # When gearing up, all money goes to player's faction market
@@ -1267,8 +1258,8 @@ def bulk_gear_up(chat_id, gears):
     if user_data["membership"] == "ACB":
         return uistr.get(chat_id, "Gearup ACB rule")
 
-    level_cost = gear_up_level_cost(cur_gear_level, cur_gear_level + gears)
-    block_prize = gear_up_block_prize(cur_gear_level, cur_gear_level + gears)
+    level_cost = gut.gear_up_level_cost(cur_gear_level, cur_gear_level + gears)
+    block_prize = gut.gear_up_block_prize(cur_gear_level, cur_gear_level + gears)
     if level_cost + 1 > cur_prod_level:
         return uistr.get(chat_id, "Gearup not available")
 
@@ -1818,10 +1809,12 @@ def admin_action(actionstr):
         dbw.ch.events_data = {}
         dbw.ch.leaderboard_data = {}
         dbw.ch.member_count = {}
-        dbw.ch.mini_general = {}
-        dbw.ch.mini_player = {}
         dbw.ch.multiplayer_info = {}
         dbw.ch.season_info = {}
+        dbw.ch.mini_general = {}
+        dbw.ch.mini_player = {}
+        dbw.ch.minimal_user = {}
+        dbw.ch.minimal_general = {}
         return "Done"
     if "reglob" in actionstr:
         # pretty sure this will fail when too many players get processed

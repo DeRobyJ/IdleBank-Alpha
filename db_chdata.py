@@ -12,6 +12,8 @@ multiplayer_info = {}
 season_info = {}
 mini_general = {}
 mini_player = {}
+minimal_user = {}
+minimal_general = {}
 
 
 ''' tables  # might be a lil outdated
@@ -47,9 +49,6 @@ user_data
         account_creation_timestamp: N
         last_login_timestamp: N
         production_level: N
-        cur_Euro: N (deprecated)
-        cur_Dollar: N (deprecated)
-        cur_Yuan: N (deprecated)
         blocks_Euro: N
         blocks_Dollar: N
         blocks_Yuan: N

@@ -188,7 +188,7 @@ def total_multiplier_from_nick(nick_data):
     return tot_multiplier
 
 
-def balance(membership, production_level, gear_level,
+def balance(production_level, gear_level,
             gear_badges, saved_balance, balance_timestamp):
     multiplier = total_multiplier(gear_badges)
 
@@ -198,7 +198,7 @@ def balance(membership, production_level, gear_level,
     return res
 
 
-def float_balance(membership, production_level, gear_level,
+def float_balance(production_level, gear_level,
                   gear_badges, saved_balance, balance_timestamp):
     multiplier = total_multiplier(gear_badges)
 
@@ -552,3 +552,21 @@ def market_target_price(m, b):
         2 * abs(m - .5) * 20
     )
     return max(0, min(100, p))
+
+
+def gear_up_level_cost(base, to):
+    return 25 * (to * (to + 1) - base * (base + 1))
+
+
+def gear_up_block_prize(base, to):
+    return gear_up_level_cost(base, to) // 5
+
+
+def get_titlecode_forlvl(level):
+    code = 0
+    for tier_level in [
+            10, 20, 30, 40, 50, 70, 100, 150, 200, 300, 450, 600, 1000]:
+        if level < tier_level:
+            return code
+        code += 1
+    return code

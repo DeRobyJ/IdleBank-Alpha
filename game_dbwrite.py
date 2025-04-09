@@ -163,7 +163,6 @@ def consolidate_balance(chat_id):
     else:
         badge_line = nick_data["badge_line"]
     player_balance = gut.balance(
-        ch.active_users[chat_id]["membership"],
         ch.active_users[chat_id]["production_level"],
         ch.active_users[chat_id]["gear_level"],
         badge_line,
@@ -461,3 +460,17 @@ def set_valves(chat_id, new_valve_count, new_production_level):
         chat_id)}}, "production_level", {"N": new_production_level})
     ch.active_users[chat_id]["production_level"] = new_production_level
     return "Ok"
+
+
+def up_minimal_user(chat_id, user_data):
+    print("dbw", chat_id, "minimal_user")
+    user_data["key"] = chat_id
+    ch.minimal_user[chat_id] = user_data
+    di.ezput_item(di.pre_minimal_user, user_data)
+
+
+def up_minimal_general_data(data):
+    print("dbw", "minimal_general")
+    data["key"] = "Game"
+    ch.minimal_general = data
+    di.ezput_item(di.pre_minimal_general, data)

@@ -44,7 +44,6 @@ def login(chat_id):
     data["shut_valves"] = ch.active_users[chat_id]["shut_valves"]
     data["balance_timestamp"] = ch.active_users[chat_id]["balance_timestamp"]
     data["balance"] = gut.balance(
-        ch.active_users[chat_id]["membership"],
         ch.active_users[chat_id]["production_level"],
         ch.active_users[chat_id]["gear_level"],
         gut.get_badge_line(data["nickname"]),
@@ -301,3 +300,19 @@ def mini_get_player(chat_id, game_name):
             for faction in gut.list["membership"]:
                 ch.mini_player[chat_id]["Shop Chain"]["shops_" + faction] = raw_data["SC::shops_" + faction]
     return ch.mini_player[chat_id][game_name]
+
+
+def get_minimal_user(chat_id):
+    if chat_id not in ch.minimal_user:
+        ch.minimal_user[chat_id] = di.ezget_item(di.pre_minimal_user, {"key": chat_id})
+        if not ch.minimal_user[chat_id]:
+            ch.minimal_user[chat_id] = {}
+    return ch.minimal_user[chat_id]
+
+
+def get_minimal_general_data():
+    if "key" not in ch.minimal_general:
+        ch.minimal_general = di.ezget_item(di.pre_minimal_general, {"key": "Game"})
+        if not ch.minimal_general:
+            ch.minimal_general = {}
+    return ch.minimal_general

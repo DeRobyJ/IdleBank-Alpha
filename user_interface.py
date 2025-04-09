@@ -9,6 +9,7 @@ import conversions as conv
 import print_util as put
 import random
 import temporal_variations as tv
+import minimal
 import math
 import time
 start_time = time.time()
@@ -41,16 +42,6 @@ def lvl_limit(lvl, gear, name, get_level=False):
     return False
 
 
-def get_titlecode_forlvl(level):
-    code = 0
-    for tier_level in [
-            10, 20, 30, 40, 50, 70, 100, 150, 200, 300, 450, 600, 1000]:
-        if level < tier_level:
-            return code
-        code += 1
-    return code
-
-
 def format_main_menu(chat_id, user_data, currencies_data):
     player_level = user_data["production_level"]
     player_gear = user_data["gear_level"]
@@ -77,7 +68,7 @@ def format_main_menu(chat_id, user_data, currencies_data):
         "faction_badges"] + "\n"
 
     message += "[" + put.readable(player_level) + " - " + uistr.get(
-        chat_id, "MM titles")[get_titlecode_forlvl(player_level)] + "]\n\n"
+        chat_id, "MM titles")[game.gut.get_titlecode_forlvl(player_level)] + "]\n\n"
     user_can_upgrade, costs, extra_costs, missing_extra, _ = game.can_upgrade(
         chat_id)
     money_to_up = costs["Money"] - user_data["balance"]
@@ -1148,11 +1139,20 @@ def temporal_variations_screen(chat_id, delta_month):
     keyboard = [{
         "<": "Temporal Variations " + str(delta_month - 1),
         ">": "Temporal Variations " + str(delta_month + 1)
-    }, {
-        uistr.get(
-            chat_id, "button season leaderboard"): "Season Leaderboard",
-        uistr.get(chat_id, "button back"): "Main menu"
     }]
+    if minimal.can_player_access(chat_id):
+        keyboard += [{
+            uistr.get(
+                chat_id, "button season leaderboard"): "Season Leaderboard",
+            uistr.get(chat_id, "button minimal"): "mnm Main menu",
+            uistr.get(chat_id, "button back"): "Main menu"
+        }]
+    else:
+        keyboard += [{
+            uistr.get(
+                chat_id, "button season leaderboard"): "Season Leaderboard",
+            uistr.get(chat_id, "button back"): "Main menu"
+        }]
     return message, keyboard
 
 
@@ -1288,11 +1288,24 @@ current_request_type = {}
 user_last_menu = {}
 
 
+def check_april_fools(chat_id):
+    if not minimal.can_player_access(chat_id):
+        return False
+    return minimal.april_fools(chat_id)
+
+
 def exe_and_reply(query, chat_id):
     start_time = time.time()
     message = ""
     keyboard = None
     notifications = None
+
+    if "mnm" not in query and "Settings" not in query and "Language" not in query and "langsel" not in query and "Player Page" not in query and "OM " not in query:
+        af_res = check_april_fools(chat_id)
+        if af_res:  # not False and not None, aka it's the event day
+            if game.check_account(chat_id)["status"] == "Activated" and game.load_main_menu(chat_id)["user"]["nickname"] != "-":
+                query = "mnm Main menu"
+
     if query == "Main menu":
         r = game.check_account(chat_id)
         if r["status"] == "Not Activated":
@@ -1338,7 +1351,6 @@ def exe_and_reply(query, chat_id):
                     keyboard = main_menu_keyboard_for(
                         chat_id, r["user"], minis_emoji)
                     print(time.time() - start_time, "MM keyboard created")
-                # print(keyboard)
 
     elif "Activate" in query:
         r = game.check_account(chat_id)
@@ -1375,6 +1387,16 @@ def exe_and_reply(query, chat_id):
     elif "Nicksave" in query:
         message = game.set_nickname(
             chat_id, uistr.nick_query_unpack(query, "Nicksave"))
+
+    elif query == "mnm Back":
+        if minimal.april_fools(chat_id):
+            message = uistr.get(chat_id, "mnm April Fools Back")
+        else:
+            user_last_menu[chat_id] = "Main menu"
+            return exe_and_reply("Main menu", chat_id)
+    elif query[:3] == "mnm":
+        user_last_menu[chat_id] = "mnm Main menu"
+        message, keyboard = minimal.exe_and_reply(query[4:], chat_id)
 
     elif query == "Upgrade Production":
         try:
@@ -1666,14 +1688,20 @@ def handle_message(chat_id, mex):
         elif mex == "/credits":
             return game_credits(chat_id)
         elif mex == "/gear":
+            if check_april_fools(chat_id):
+                return exe_and_reply("mnm Main menu", chat_id)
             if (game.check_account(chat_id)["status"] == "Activated" and
                (game.load_main_menu(chat_id)["user"][
                 "production_level"] > 35 or
                game.load_main_menu(chat_id)["user"]["gear_level"] > 0)):
                 return gear_menu(chat_id)
         elif mex == "/mi":
+            if check_april_fools(chat_id):
+                return exe_and_reply("mnm Main menu", chat_id)
             return mystery_item_screen(chat_id)
         elif mex == "/valve":
+            if check_april_fools(chat_id):
+                return exe_and_reply("mnm Main menu", chat_id)
             if (game.check_account(chat_id)["status"] == "Activated" and
                (game.load_main_menu(chat_id)["user"][
                 "production_level"] > 35 or

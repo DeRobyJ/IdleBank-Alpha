@@ -140,7 +140,8 @@ pre_market = "market_"
 pre_event = "event_"
 pre_minis = "minigame_"
 pre_miniplayers = "p_"
-
+pre_minimal_user = "mnm_u_"
+pre_minimal_general = "mnm_board_"
 
 # Counters for logging
 tab_puts = {i: 0 for i in [
@@ -149,5 +150,7 @@ tab_puts = {i: 0 for i in [
     pre_market,
     pre_event,
     pre_minis,
-    pre_miniplayers
+    pre_miniplayers,
+    pre_minimal_user,
+    pre_minimal_general
 ]}

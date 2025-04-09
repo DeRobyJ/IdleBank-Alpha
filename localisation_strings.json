@@ -3097,5 +3097,109 @@
     "Italiano": "Tu",
     "Français": "",
     "Español": ""
+  },
+  "button minimal": {
+    "English": "Boot up",
+    "Italiano": "Avvia"
+  },
+  "button up generator": {
+    "English": "gener. ",
+    "Italiano": "gener. "
+  },
+  "button start generator": {
+    "English": "Start block generator for ",
+    "Italiano": "Avvia generatore blocchi per "
+  },
+  "button up board": {
+    "English": "board ",
+    "Italiano": "tavola "
+  },
+  "mnm Board empty": {
+    "English": "No blocks to take from the board!",
+    "Italiano": "Non ci sono blocchi da prendere dalla tavola!"
+  },
+  "mnm Market": {
+    "English": "Here are the current requests.\nYou can either offer more money to request blocks, or sell blocks to the best offers.\n\n",
+    "Italiano": "Ecco le richieste correnti.\nPuoi offrire di più per richiedere blocchi, o vendere blocchi alla migliore offerta.\n\n"
+  },
+  "mnm Market empty": {
+    "English": "There are no requests",
+    "Italiano": "Non ci sono richieste"
+  },
+  "mnm Market offer button one": {
+    "English": "Offer {price} for 1 block",
+    "Italiano": "Offri {price} per 1 blocco"
+  },
+  "mnm Market offer button many": {
+    "English": "Offer {price} for {blocks} blocks",
+    "Italiano": "Offri {price} per {blocks} blocchi"
+  },
+  "mnm Market sell button": {
+    "English": "Sell a block for {price}",
+    "Italiano": "Vendi un blocco per {price}"
+  },
+  "mnm April Fools": {
+    "English": "Did you enjoy the season? Because it was the last!\n\nThe game became too complex, so I decided to make it simple again, surprise!\nNo more seasons, no more factions, and most importatly no more minigames!\nIn this new, perfected version of IdleBank Alpha, blocks are generated!\nOh and I almost forgot, screw the automated market, let's go back to block requests, like the good old times!\n\nI hope you enjoy the new IB Alpha, because we won't go back!",
+    "Italiano": "Ti è piaciuta la stagione? Perché era l'ultima!\n\nQuesto gioco è troppo complesso, ho deciso di ridurlo all'osso, sorpresa!\nBasta con le stagioni, basta con le fazioni, e non se ne può più dei minigiochi!\nQuesta nuova versione perfezionata di IdleBank Alpha ha un generatore di blocchi!\nAh e quasi dimenticavo, ho mandato il mercato automatizzato a quel paese, si torna alle richieste di blocchi, come ai vecchi tempi!\n\nSpero ti piaccia il nuovo IB Alpha, perché non si torna indietro!"
+  },
+  "mnm April Fools button": {
+    "English": "Aye aye Captain!",
+    "Italiano": "Sì signor Capitano!"
+  },
+  "mnm April Fools Back": {
+    "English": "Breaking news! Tomorrow will last 24 hours",
+    "Italiano": "Previsioni del tempo: domani ci saranno 24 ore"
+  },
+  "mnm Shard Screen button": {
+    "English": "Shard Recycling",
+    "Italiano": "Riciclo Cocci"
+  },
+  "mnm Board Claim base blocks": {
+    "English": "You got {qty} blocks from the board",
+    "Italiano": "Hai preso {qty} blocchi dalla tavola"
+  },
+  "mnm Board Claim shard start": {
+    "English": "You cleaned the generator and got ",
+    "Italiano": "Hai pulito il generatore e ottenuto "
+  },
+  "mnm Board Claim shard part": {
+    "English": "\n- {qty} {shard_type} shards",
+    "Italiano": "\n - {qty} cocci {shard_type}"
+  },
+  "mnm Board Claim contribution money": {
+    "English": "You put them in the correct recycling bins and received {qty} L",
+    "Italiano": "Li hai offerti per il riciclaggio, ricevendo in cambio {qty} L"
+  },
+  "mnm shard name red": {
+    "English": "SunRed",
+    "Italiano": "RossoSole"
+  },
+  "mnm shard name green": {
+    "English": "HillGreen",
+    "Italiano": "VerdeColle"
+  },
+  "mnm shard name blue": {
+    "English": "SeaBlue",
+    "Italiano": "BlueMare"
+  },
+  "mnm shard name yellow": {
+    "English": "SandYellow",
+    "Italiano": "GialloSabbia"
+  },
+  "mnm shard name cyan": {
+    "English": "JadeCyan",
+    "Italiano": "CianoGiada"
+  },
+  "mnm shard name magenta": {
+    "English": "BloomMagenta",
+    "Italiano": "MagentaFiore"
+  },
+  "mnm shard name silver": {
+    "English": "ChestSilver",
+    "Italiano": "ArgentoScrigno"
+  },
+  "mnm shard name gold": {
+    "English": "ViceGold",
+    "Italiano": "OroVizio"
   }
 }

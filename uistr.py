@@ -29,8 +29,8 @@ dn_flags = [
 
 
 def dn_country(chat_id, country_id):
-    return get(chat_id, "DN countries")[int(
-        country_id)] + " " + dn_flags[int(country_id)]
+    return dn_flags[int(country_id)] + " " + get(chat_id, "DN countries")[int(
+        country_id)]
 
 
 def sr_product(chat_id, item_code):
@@ -125,6 +125,7 @@ def nickname(reader_id, player_id, nick_data, compress=True):
         "B": conv.name(membership="CBB")["badgemoji"],
         "I": conv.name(membership="RBI")["badgemoji"],
         "A": conv.name(membership="ACB")["badgemoji"],
+        "L": "🍪",
         "1": "1️⃣",
         "2": "2️⃣",
         "3": "3️⃣",

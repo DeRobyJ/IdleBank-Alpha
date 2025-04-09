@@ -154,7 +154,7 @@ def DN_game_start(timestamp, countries_count):
 def DN_prize(game_data):
     total_players = 0
     most_votes = 0
-    least_votes = 0
+    least_votes = float('inf')
     for country in game_data["Countries"]:
         total_players += game_data["Countries"][country]["vote_count"]
         if game_data["Countries"][country]["vote_count"] > most_votes:
@@ -360,15 +360,22 @@ def DN_game_end(game_data):
 
 
 def DN_country_keyboard(chat_id, countries):
-    if len(countries) < 6:  # 3,4,5
+    if len(countries) < 4:  # 3,4,5
         return [{uistr.dn_country(chat_id, i): (
             "DN vote " + str(i)) for i in countries}]
-    elif len(countries) % 2 == 0:  # 6,8,10
+    elif len(countries) % 2 == 0:  # 4,6,8,10
         return [
             {uistr.dn_country(chat_id, i): "DN vote " + str(i)
                 for i in countries[:len(countries) // 2]},
             {uistr.dn_country(chat_id, i): "DN vote " + str(i)
                 for i in countries[len(countries) // 2:]}
+        ]
+    elif len(countries) == 5:
+        return [
+            {uistr.dn_country(chat_id, i): "DN vote " + str(i)
+                for i in countries[:3]},
+            {uistr.dn_country(chat_id, i): "DN vote " + str(i)
+                for i in countries[3:]}
         ]
     elif len(countries) == 7:
         return [
@@ -613,9 +620,22 @@ def ui_DN_agencies_screen(chat_id):
     # If in agency, show info on members (last DN vote, mystery items available)
     if player_agency:
         message += ui_DN_agency_info_text(chat_id, player_agency) + "\n"
+
+        all_voted = True
+        if len(game_data["Agencies"][player_agency]) < 2:
+            all_voted = False
         for member_id in game_data["Agencies"][player_agency]:
-            last_vote_timestamp = player_data = best.mini_get_player(member_id, "Daily News")["vote_timestamp"]
+            if best.mini_get_player(member_id, "Daily News")["vote_timestamp"] < game_data["game_timestamp"]:
+                all_voted = False
+                break
+        for member_id in game_data["Agencies"][player_agency]:
+            last_vote_timestamp = best.mini_get_player(member_id, "Daily News")["vote_timestamp"]
             last_vote_date_str = uistr.date_string(member_id, last_vote_timestamp)
+            if all_voted:
+                for country_id in game_data["Countries"]:
+                    if member_id in game_data["Countries"][country_id]["all_voters"]:
+                        last_vote_date_str += " - " + uistr.dn_country(chat_id, country_id)
+                        break
             mi_available = best.inventory_get(member_id, "mystery_item")
             message += uistr.get(chat_id, "DN Agencies member").format(
                 name=uistr.nickname(chat_id, member_id, dbr.get_nickname(member_id)),
@@ -1352,12 +1372,32 @@ User data
 '''
 
 
+ip_period = (60 * (60 * 36 + 9) + 27)  # 36h, 9m, 27 secs
+# ip_period = (20*60)  # test time
+player_base_period = (60 * (60 * 1 + 45))  # 1h, 45m
+# player_base_period = (2*60)  # test time
+ipv3_origin_timestamp = int(time.mktime((2022, 4, 28, 22, 0, 0, 0, 0, 0)))
+# test time
+# ipv3_origin_timestamp = int(time.mktime((2022, 4, 28, 0, 0, 0, 0, 0, 0)))
+
+gamemode_cycle_period = 8
+
+
 def IP_get_gamemode():
-    game_ts = dbr.mini_get_general("Investment Plan")["game_timestamp"]
-    rgen = random.Random(game_ts)
+    game_id = (
+        (dbr.mini_get_general("Investment Plan")["game_timestamp"] - ipv3_origin_timestamp) //
+        (ip_period)
+    )
+    cycle_id = game_id // gamemode_cycle_period
+    rgen = random.Random(cycle_id)
+    time_mode = ["Timed", "Instant"] * (gamemode_cycle_period // 2)
+    econ_mode = ["Capitalist", "Socialist"] * (gamemode_cycle_period // 2)
+    rgen.shuffle(time_mode)
+    rgen.shuffle(econ_mode)
+    mode_id = game_id % gamemode_cycle_period
+
     return (
-        rgen.choice(["Timed", "Instant"]),
-        rgen.choice(["Capitalist", "Socialist"])
+        time_mode[mode_id], econ_mode[mode_id]
     )
 
 
@@ -1542,15 +1582,6 @@ def IP_game_end():
         market_data = dbr.get_market_data(market)
         market_data["blocks"] += prizes[conv.name(block=market)["membership"]]
         dbw.market_update(market, market_data)
-
-
-ip_period = (60 * (60 * 36 + 9) + 27)  # 36h, 9m, 27 secs
-# ip_period = (20*60)  # test time
-player_base_period = (60 * (60 * 1 + 45))  # 1h, 45m
-# player_base_period = (2*60)  # test time
-ipv3_origin_timestamp = int(time.mktime((2022, 4, 28, 22, 0, 0, 0, 0, 0)))
-# test time
-# ipv3_origin_timestamp = int(time.mktime((2022, 4, 28, 0, 0, 0, 0, 0, 0)))
 
 
 def IP_check_game():
@@ -2155,10 +2186,14 @@ def CP_sell_quantity(chat_id, cur_cell, cur_house, in_pocket):
 
     stored_money = game_data["Money"][cur_cell]
     coin_stock = float.fromhex(game_data["Coins"][cur_cell])
-    coin_price = CP_crypto_sell_value(chat_id, coin_stock, 1)
-
-    max_sellable = float(stored_money // 2) / coin_price
-    return min(quantity, max_sellable)
+    if in_pocket > 1:
+        coin_price = float(CP_crypto_sell_value(chat_id, coin_stock, in_pocket)) / in_pocket
+    else:
+        coin_price = CP_crypto_sell_value(chat_id, coin_stock, 1)
+    if coin_price > 0:
+        max_sellable = float(stored_money // 2) / coin_price
+        quantity = min(quantity, max_sellable)
+    return quantity
 
 
 def ui_CP_player_action(chat_id, action):
@@ -2346,7 +2381,7 @@ def ui_CP_player_action(chat_id, action):
                         exchanged_message += ui_CP_cryptoprint(exchanged_value) + " " + coin
                     if len(exchanged_message) > 0:
                         best.mini_up_player(chat_id, "Coinopoly", player_data)
-                        best.mini_up_player(chat_id, "Coinopoly", owner_data)
+                        best.mini_up_player(cur_house["chat_id"], "Coinopoly", owner_data)
                     else:
                         exchanged_message = "0"
                     if dbr.login(cur_house["chat_id"])[
