@@ -1,25 +1,132 @@
 # Handle for the AWS lambda functions
-# The telegram bot logic is kinda spaghetti, but I'm Italian so I have a license to do it
-
-# No ok kidding this needs cleaning
-# 																						Like Italian politics
-
-# Ok let's say this: the day the Italian Parliament and Government will be free of
-# fascists and people with mafia allegations, I'll clean this code.
-# Otherwise, Spaghetti Cacio e Pepe it is
 import os
-import telegram
 import json
-import user_interface as ui
-import uistr
 import traceback
 import time
+
+import urllib.request
+import urllib.error
+import socket
+
+import user_interface as ui
+import uistr
+
+
+TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_TOKEN"]
+TELEGRAM_API_URL = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}"
 
 
 maintenance = False
 instance_time = time.time()
 start_time = time.time()
 print(instance_time, "\n", time.gmtime(instance_time))
+
+
+def post_to_telegram(url, data):
+    data_encoded = urllib.parse.urlencode(data).encode("utf-8")
+    req = urllib.request.Request(url, data=data_encoded)
+
+    try:
+        with urllib.request.urlopen(req, timeout=5) as response:
+            return json.loads(response.read())
+
+    except urllib.error.HTTPError as e:
+        error_body = e.read().decode("utf-8")
+        try:
+            error_data = json.loads(error_body)
+        except json.JSONDecodeError:
+            error_data = {"description": error_body}
+
+        status_code = e.code
+        description = error_data.get("description", "No description")
+
+        if status_code == 429:
+            retry_after = error_data.get("parameters", {}).get("retry_after", "?")
+            print(f"[429] Flood control: retry after {retry_after}s.")
+            return "Flood"
+        elif status_code == 400:
+            print("[400] Bad Request:", description)
+            return False
+        elif status_code == 403:
+            print("[403] Unauthorized - bot cannot message this user.")
+            return False
+        else:
+            print(f"[{status_code}] Unexpected HTTP error:", description)
+            return False
+
+    except urllib.error.URLError as e:
+        print("Network error:", e.reason)
+        return False
+
+    except socket.timeout:
+        print("Request timed out.")
+        return False
+
+    except Exception as e:
+        print("Unexpected error:", e)
+        return False
+
+
+# a list of dictionaries, each dict is a row {"string" : "querydata"}
+def create_keyboard(kblist):
+    inline_keyboard = []
+    for row in kblist:
+        inline_keyboard.append([])
+        for element in row:
+            inline_keyboard[-1].append({"text": element,  "callback_data": row[element]})
+    return {"inline_keyboard": inline_keyboard}
+
+
+def respond_with_keyboard(chat_id, text, keyboard=None, update=False, update_message_id=None,  ignore_markdown=False):
+    url = TELEGRAM_API_URL + ("/editMessageText" if update else "/sendMessage")
+    
+    payload = {
+        "chat_id": chat_id,
+        "text": text,
+    }
+    if keyboard:
+        payload["reply_markup"] = json.dumps(create_keyboard(keyboard))
+    if not ignore_markdown:
+        payload["parse_mode"] = "Markdown"
+
+    if update:
+        if update_message_id is None:
+            raise ValueError("update_message_id must be provided when update=True")
+        payload["message_id"] = update_message_id
+
+    post_to_telegram(url, data=payload)
+    return True
+
+
+def acknowledge_callback(callback_query_id):
+    url = TELEGRAM_API_URL + "/answerCallbackQuery"
+    post_to_telegram(
+        url, 
+        data={
+            "callback_query_id": callback_query_id, 
+            #"text": "",
+            #"show_alert": False
+        }
+    )
+
+
+def delete_message(chat_id,  message_id):
+    post_to_telegram(
+            TELEGRAM_API_URL + "/deleteMessage",
+            data={
+                "chat_id": chat_id,
+                "message_id": message_id
+            }
+        )
+
+
+def get_username(update):
+    if "callback_query" in update:
+        return update["callback_query"]["from"].get("username")
+    elif "message" in update:
+        return update["message"]["from"].get("username")
+    else:
+        return None
 
 
 def is_player_allowed(chat_id):
@@ -29,24 +136,12 @@ def is_player_allowed(chat_id):
         return True
 
 
-# a list of dictionaries, each dict is a row {"string" : "querydata"}
-def create_keyboard(kblist):
-    keyboard = []
-    for row in kblist:
-        keyboard.append([])
-        for element in row:
-            keyboard[-1].append(telegram.InlineKeyboardButton(element,
-                                callback_data=row[element]))
-    return telegram.InlineKeyboardMarkup(keyboard)
-
-
-def manage_notifications(bot, mesKeyNot):
-    print(time.time() - start_time, "Managing notifications")
-    if len(mesKeyNot) < 3:
+def manage_notifications(notifications):
+    if not notifications:
+        print(time.time() - start_time,  "No notifications to manage")
         return
-    # print(mesKeyNot[2])
-    for notification in mesKeyNot[2]:
-        # print(time.time() - start_time)
+    print(time.time() - start_time, "Managing notifications")
+    for notification in notifications:
         notification_keyboard = []
         if "context_keyboard" in notification:
             notification_keyboard += notification["context_keyboard"]
@@ -54,168 +149,123 @@ def manage_notifications(bot, mesKeyNot):
             {uistr.get(notification["chat_id"], "button dismiss notification"):
              "Main menu",
              "✖️": "delete message"}]
-        try:
-            bot.sendMessage(
-                chat_id=notification["chat_id"],
-                text=notification["message"],
-                reply_markup=create_keyboard(notification_keyboard),
-                parse_mode='markdown')
-        except telegram.error.Unauthorized:
-            pass
+        respond_with_keyboard(
+            chat_id=notification["chat_id"],
+            text=notification["message"],
+            keyboard=notification_keyboard
+        )
     print(time.time() - start_time, "Notifications managed")
 
 
-def update_text(pre_text, mesKeyNot):
+def update_text(pre_text, message):
     if not pre_text:
         pre_text = "."
     if len(pre_text) == 0:
         pre_text = "."
-    if len(mesKeyNot) < 3:
-        return (pre_text + mesKeyNot[0], mesKeyNot[1])
-    return (pre_text + mesKeyNot[0], mesKeyNot[1], mesKeyNot[2])
+    return pre_text + "\n" + "-" * 60 + "\n" + message
+
+
+def fill_output(mes_key_not):
+    if len(mes_key_not) == 1:
+        return mes_key_not[0], None,  None
+    if len(mes_key_not) == 2:
+        return mes_key_not[0],  mes_key_not[1], None
+    return mes_key_not[0],  mes_key_not[1],  mes_key_not[2]
 
 
 def bot_handler(event, context):
-    # print(event)
-    if event["httpMethod"] == "POST":
-        bot = telegram.Bot(token=os.environ["TELEGRAM_TOKEN"])
-        try:
-            update = telegram.Update.de_json(json.loads(event["body"]), bot)
-            if update.callback_query:
-                query = update.callback_query
-                if not hasattr(query.message, "chat"):
-                    print("no attr chat")
-                    return {'statusCode': 200}
-                if query.message.chat.type != "private":
-                    return {'statusCode': 200}
-                chat_id = query.from_user.id
-                # See https://core.telegram.org/bots/api#callbackquery
-                try:
-                    query.answer()
-                except telegram.error.BadRequest:
-                    return {'statusCode': 200}
-
-                if maintenance or not is_player_allowed(chat_id):
-                    query.edit_message_text(text=uistr.get(
-                        chat_id, "Maintenance message"))
-                    return {'statusCode': 200}
-
-                if query.data == "delete message":
-                    try:
-                        bot.deleteMessage(chat_id, query.message.message_id)
-                    except telegram.error.BadRequest:
-                        pass
-                    return {'statusCode': 200}
-                if "feedback" in query.data:
-                    feedback_emoji = query.data[len("feedback "):]
-                    user_identification = str(chat_id)
-                    if query.from_user.username:
-                        user_identification = "@" + query.from_user.username
-                    bot.sendMessage(
-                        chat_id=int(os.environ["ADMIN_CHAT_ID"]),
-                        text=("Feedback from " + user_identification +
-                              ": " + feedback_emoji + "\n\n/start")
-                    )
-                    mesKeyNot = ui.exe_and_reply("Main menu", chat_id)
-                else:
-                    mesKeyNot = ui.exe_and_reply(query.data, chat_id)
-                manage_notifications(bot, mesKeyNot)
-                if mesKeyNot[1] is None:
-                    pre_text = mesKeyNot[0]
-                    if pre_text:
-                        mesKeyNot = ui.last_menu(chat_id)
-                        manage_notifications(bot, mesKeyNot)
-                        if type(pre_text) is not str:
-                            mesKeyNot = update_text(
-                                "." + "\n" + "-" * 60 + "\n", mesKeyNot)
-                            print(pre_text)
-                            bot.sendMessage(
-                                chat_id=int(os.environ["ADMIN_CHAT_ID"]),
-                                text="strange pre_text: " + str(pre_text))
-                        else:
-                            mesKeyNot = update_text(
-                                pre_text + "\n" + "-" * 60 + "\n", mesKeyNot)
-                if mesKeyNot[1] is not None:
-                    try:
-                        query.edit_message_text(
-                            text=mesKeyNot[0],
-                            reply_markup=create_keyboard(mesKeyNot[1]),
-                            parse_mode='markdown')
-                    except telegram.error.TimedOut:
-                        bot.sendMessage(chat_id=chat_id, text=uistr.get(
-                            chat_id, "timeout"))
-                        bot.sendMessage(chat_id=int(
-                            os.environ["ADMIN_CHAT_ID"]),
-                            text="Timeout from /view@" + str(chat_id)
-                        )
-                        return {'statusCode': 200}
-                    except telegram.error.BadRequest:
-                        return {'statusCode': 200}
-                    return {'statusCode': 200}
-
-            elif update.message:
-                if not hasattr(update.message, "chat"):
-                    return {'statusCode': 200}
-                if update.message.chat.type != "private":
-                    return {'statusCode': 200}
-                chat_id = update.message.chat.id
-                if maintenance or not is_player_allowed(chat_id):
-                    bot.sendMessage(chat_id=chat_id, text=uistr.get(
-                        chat_id, "Maintenance message"))
-                    return {'statusCode': 200}
-                if update.message.text:
-                    mesKeyNot = ui.handle_message(chat_id, update.message.text)
-                    manage_notifications(bot, mesKeyNot)
-                else:
-                    try:
-                        bot.forwardMessage(
-                            chat_id=int(os.environ["ADMIN_CHAT_ID"]),
-                            from_chat_id=chat_id,
-                            message_id=update.message.message_id
-                        )
-                    except telegram.error.BadRequest:
-                        bot.sendMessage(chat_id=int(
-                            os.environ["ADMIN_CHAT_ID"]),
-                            text="Media forwarding fail\n\n" +
-                            traceback.format_exc()
-                        )
-                    mesKeyNot = ui.handle_message(chat_id, "/start")
-                    manage_notifications(bot, mesKeyNot)
-            else:
+    if event["httpMethod"] != "POST":
+        return {"statusCode": 400}
+    
+    try:
+        body = json.loads(event["body"])
+        # Handling messages (such as "/start")
+        if "message" in body:
+            message = body["message"]
+            query = body["message"].get("text", "")
+            is_button = False
+        # Handling buttons
+        elif "callback_query" in body:
+            message = body["callback_query"]["message"]
+            query = body["callback_query"]["data"]
+            acknowledge_callback(body["callback_query"]["id"])
+            is_button = True
+        else:
+            return {"statusCode": 400}
+        chat_id = message["chat"]["id"]
+        chat_type = message["chat"]["type"]
+        message_id = message["message_id"]
+        
+        if query == "delete message":
+            delete_message(chat_id,  message_id)
+            return {"statusCode": 200}
+        
+        if maintenance or not is_player_allowed(chat_id):
+                respond_with_keyboard(
+                    chat_id=chat_id, 
+                    text=uistr.get(chat_id, "Maintenance message")
+                )
                 return {'statusCode': 200}
-
-            if mesKeyNot[1] is None:
-                if mesKeyNot[0] is None:
+          
+        
+        if chat_type == "private":
+            # happens when somebody sends media to the bot
+            if len(query) == 0:
+                query = "/start"
+            
+            # Special response for feedback query
+            if "feedback" in query:
+                feedback_emoji = query[len("feedback "):]
+                user_identification = str(chat_id)
+                username = get_username(body)
+                if username:
+                    user_identification = "@" + username
+                respond_with_keyboard(
+                    chat_id=int(os.environ["ADMIN_CHAT_ID"]),
+                    text=("Feedback from " + user_identification +
+                          ": " + feedback_emoji + "\n\n/start"), 
+                    ignore_markdown=True
+                )
+                query = "Main menu"
+            
+            # Normal input
+            if is_button:
+                r_message,  r_keyboard,  r_notifications = fill_output(ui.exe_and_reply(query, chat_id))
+            else:
+                r_message,  r_keyboard,  r_notifications = fill_output(ui.handle_message(chat_id, query))
+            
+            manage_notifications(r_notifications)
+            
+            # Confirmation messages
+            if r_keyboard is None:
+                if not r_message or len(r_message) == 0:
                     return {'statusCode': 200}
-                if len(mesKeyNot[0]) == 0:
-                    return {'statusCode': 200}
-                bot.sendMessage(chat_id=chat_id,
-                                text=mesKeyNot[0], parse_mode='markdown')
-                mesKeyNot = ui.exe_and_reply("Main menu", chat_id)
-                manage_notifications(bot, mesKeyNot)
-            bot.sendMessage(
-                chat_id=chat_id,
-                text=mesKeyNot[0],
-                reply_markup=create_keyboard(mesKeyNot[1]),
-                parse_mode='markdown')
-        except telegram.error.RetryAfter:
-            mesKeyNot = ui.handle_message(chat_id, "/start")
-            manage_notifications(bot, mesKeyNot)
-            bot.sendMessage(
-                chat_id=chat_id,
-                text=("Telegram Flood Control!\n" +
-                      "-" * 60 + "\n" + mesKeyNot[0]),
-                parse_mode='markdown')
-        except Exception:
-            bot.sendMessage(chat_id=int(
-                os.environ["ADMIN_CHAT_ID"]),
-                text=traceback.format_exc() + "\n/fixed_" + str(chat_id)
-            )
-            bot.sendMessage(
-                chat_id=chat_id,
-                text=("Bug!\n/start -> try again\n" +
-                      "/help -> Ask for help in the public channel!")
-            )
+                pre_text = r_message
+                r_message,  r_keyboard,  r_notifications = fill_output(ui.last_menu(chat_id))
+                r_message = update_text(pre_text,  r_message)
+                manage_notifications(r_notifications)
+                
+            # Normal output
+            result = respond_with_keyboard(chat_id,  r_message,  r_keyboard,  is_button,  message_id)
+            
+            if result == "Flood":
+                r_message,  r_keyboard,  r_notifications = fill_output(ui.handle_message(chat_id, "/start"))
+                manage_notifications(r_notifications)
+                pre_text = "Telegram Flood Control!"
+                r_message = update_text(pre_text,  r_message)
+                respond_with_keyboard(chat_id, r_message, r_keyboard)
+        
+    except Exception:
+        respond_with_keyboard(
+            chat_id=int(os.environ["ADMIN_CHAT_ID"]),
+            text=traceback.format_exc() + "\n/fixed_" + str(chat_id), 
+            ignore_markdown=True
+        )
+        respond_with_keyboard(
+            chat_id=chat_id,
+            text=("Bug!\n/start -> try again\n" +
+                  "/help -> Ask for help in the public channel!")
+        )
 
     print(time.time() - start_time, "Function done")
     return {'statusCode': 200}
