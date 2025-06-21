@@ -1212,7 +1212,7 @@ def personal_page(viewer_id, chat_id, page):
         for i in range(lpp):
             if i + page * lpp < len(badge_line_per_line):
                 message += badge_line_per_line[i + page * lpp] + "\n"
-    except InxedError as e:
+    except IndexError:
         message += str(badge_line_per_line)
 
     keyboard = []
@@ -1664,7 +1664,7 @@ def game_credits(chat_id):
     message += "Game design and implementation: Roberto Giaconia\n"
     message += "English UI and Italian translation: Roberto Giaconia\n"
     message += "Portuguese translation: Matheus Souza\n"
-    message += "\nMany thanks to friends and pioneer players for helping me test and begin this incredible adventure!\nThanks to the r / incremental\_games subreddit.\n"  # noqa
+    message += "\nMany thanks to friends and pioneer players for helping me test and begin this incredible adventure!\n"
     message += "\n_Se i giovani si organizzano, si impadroniscono di ogni ramo del sapere e lottano con i lavoratori e gli oppressi, non c’è scampo per un vecchio ordine fondato sul privilegio e sull’ingiustizia._ \n(~ Enrico Berlinguer)"  # noqa
     keyboard = [{uistr.get(chat_id, "button back"): "Main menu"}]
     return message, keyboard

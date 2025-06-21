@@ -3846,7 +3846,7 @@ User data
 
 '''
 
-sc_period = 60 * 60 * 4  # 4 hours
+sc_period = 60 * 60 * 8  # 4 hours
 
 
 def SC_game_and_player_data(chat_id):

@@ -2613,8 +2613,8 @@
     "Español": ""
   },
   "SC player data": {
-    "English": "You currently employ {employees} people at {current_wage} daily wage.\nYou own {tot_shops} shops, so divided:\n[{shops_FED} | {shops_ECB} | {shops_PBC} | {shops_RBA} | {shops_CBB} | {shops_RBI} | {shops_ACB}]\nRecent paiments:\nyesterday {recent_payments} now",
-    "Italiano": "Attualmente gestisci {employees} dipendenti ad un salario giornaliero di {current_wage}.\nHai {tot_shops} negozi, così divisi:\n[{shops_FED} | {shops_ECB} | {shops_PBC} | {shops_RBA} | {shops_CBB} | {shops_RBI} | {shops_ACB}]\nPagamenti recenti:\nieri {recent_payments} ora",
+    "English": "You currently employ {employees} people at {current_wage} daily wage.\nYou own {tot_shops} shops, so divided:\n[{shops_FED} | {shops_ECB} | {shops_PBC} | {shops_RBA} | {shops_CBB} | {shops_RBI} | {shops_ACB}]\nRecent paiments:\n2 days ago {recent_payments} now",
+    "Italiano": "Attualmente gestisci {employees} dipendenti ad un salario giornaliero di {current_wage}.\nHai {tot_shops} negozi, così divisi:\n[{shops_FED} | {shops_ECB} | {shops_PBC} | {shops_RBA} | {shops_CBB} | {shops_RBI} | {shops_ACB}]\nPagamenti recenti:\nl'altro ieri {recent_payments} ora",
     "Français": "",
     "Español": ""
   },
@@ -3141,6 +3141,10 @@
   "mnm April Fools": {
     "English": "Did you enjoy the season? Because it was the last!\n\nThe game became too complex, so I decided to make it simple again, surprise!\nNo more seasons, no more factions, and most importatly no more minigames!\nIn this new, perfected version of IdleBank Alpha, blocks are generated!\nOh and I almost forgot, screw the automated market, let's go back to block requests, like the good old times!\n\nI hope you enjoy the new IB Alpha, because we won't go back!",
     "Italiano": "Ti è piaciuta la stagione? Perché era l'ultima!\n\nQuesto gioco è troppo complesso, ho deciso di ridurlo all'osso, sorpresa!\nBasta con le stagioni, basta con le fazioni, e non se ne può più dei minigiochi!\nQuesta nuova versione perfezionata di IdleBank Alpha ha un generatore di blocchi!\nAh e quasi dimenticavo, ho mandato il mercato automatizzato a quel paese, si torna alle richieste di blocchi, come ai vecchi tempi!\n\nSpero ti piaccia il nuovo IB Alpha, perché non si torna indietro!"
+  },
+  "mnm Welcome": {
+    "English": "Welcome to the secret minimal game!\n\nHere we have no seasons, no factions, and most importatly no minigames!\nInstead ,you get a block generator and a block request market, like the good old times!\n\nI hope you enjoy IB Minimal!",
+    "Italiano": "Ti diamo il benvenuto nel gioco minimale segreto!\n\nQui non ci sono stagioni, fazioni, nè soprattutto minigiochi!\nInvece, hai un generatore di blocchi e un mercato basato sulla richieste di blocchi, come i vecchi tempi!\n\nSpero che IB Minimal ti piaccia!"
   },
   "mnm April Fools button": {
     "English": "Aye aye Captain!",
