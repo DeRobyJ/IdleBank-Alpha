@@ -205,12 +205,31 @@ def handle_new_group(body):
                     text=f"Bot was added to group '{chat.get('title')}' (ID: {chat['id']})", 
                     ignore_markdown=True
                 )
-                return True
+                return int(chat['id'])
+    
+    if "my_chat_member" in body:
+        member_update = body["my_chat_member"]
+        new_status = member_update["new_chat_member"]["status"]
+        is_bot = member_update["new_chat_member"]["user"]["is_bot"]
+        chat = member_update["chat"]
+
+        if new_status == "member" and is_bot:
+            print(f"✅ Bot added to group: {chat.get('title')} (ID: {chat['id']})")
+            respond_with_keyboard(
+                chat_id=int(os.environ["ADMIN_CHAT_ID"]), 
+                text=f"Bot was added to group '{chat.get('title')}' (ID: {chat['id']})", 
+                ignore_markdown=True
+            )
+            return int(chat['id'])
+    
     return False
 
 
 def bot_handler(event, context):
+    print("🚨 RAW EVENT:", json.dumps(event))
+    
     if event["httpMethod"] != "POST":
+        print("Received a non-POST request\n",  event)
         return {"statusCode": 400}
     
     try:
@@ -226,8 +245,19 @@ def bot_handler(event, context):
             query = body["callback_query"]["data"]
             acknowledge_callback(body["callback_query"]["id"])
             is_button = True
+        elif "channel_post" in body:
+            respond_with_keyboard(
+                chat_id=body["channel_post"]["chat"]["id"], 
+                text="Channels not supported"
+            )
+            return {'statusCode': 200}
         else:
-            return {"statusCode": 400}
+            new_group_id = handle_new_group(body)
+            if new_group_id:
+                game_set(f"g_{-new_group_id}")
+                game_start()
+                return {'statusCode': 200}
+            return {"statusCode": 200}
         chat_id = message["chat"]["id"]
         chat_type = message["chat"]["type"]
         message_id = message["message_id"]
