@@ -7,6 +7,17 @@ tabname = os.environ["TABLE_NAME"]
 dynamodb = boto3.client('dynamodb')
 dynatable = boto3.resource('dynamodb', region_name='eu-south-1').Table(tabname)
 
+game_code = "global"
+
+def game_set(new_game_code):
+    global game_code
+    game_code = new_game_code
+    
+
+def game_get():
+    global game_code
+    return game_code
+
 
 def item_update(prefix, selection_dict, up_attribute, up_value_dict):
     global dynamodb, tabname
