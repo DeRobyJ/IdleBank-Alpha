@@ -294,16 +294,28 @@ def bot_handler(event, context):
             respond_with_keyboard(respond_id, r_message, r_keyboard)
         
     except Exception:
-        respond_with_keyboard(
-            chat_id=int(os.environ["ADMIN_CHAT_ID"]),
-            text=traceback.format_exc() + "\n/fixed_" + str(respond_id), 
-            ignore_markdown=True
-        )
-        respond_with_keyboard(
-            chat_id=respond_id,
-            text=(f"@{username} " + "Bug!\n/start -> try again\n" +
-                  "/help -> Ask for help in the public channel!")
-        )
+        if is_private:
+            respond_with_keyboard(
+                chat_id=int(os.environ["ADMIN_CHAT_ID"]),
+                text=traceback.format_exc() + "\n/fixed_" + str(respond_id), 
+                ignore_markdown=True
+            )
+            respond_with_keyboard(
+                chat_id=respond_id,
+                text=("Bug!\n/start -> try again\n" +
+                      "/help -> Ask for help in the public channel!")
+            )
+        else:
+            respond_with_keyboard(
+                chat_id=int(os.environ["ADMIN_CHAT_ID"]),
+                text=traceback.format_exc() + "\n/fixed_g" + str(-respond_id) + "_" + str(chat_id), 
+                ignore_markdown=True
+            )
+            respond_with_keyboard(
+                chat_id=respond_id,
+                text=(f"@{username} " + "Bug!\n/start -> try again\n" +
+                      "/help -> Ask for help in the public channel!")
+            )
 
     print(time.time() - start_time, "Function done")
     return {'statusCode': 200}

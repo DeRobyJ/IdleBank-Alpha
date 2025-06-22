@@ -1714,6 +1714,18 @@ def handle_message(chat_id, mex):
                 faction = query_parts[1]
             return exe_and_reply("EDB " + faction + " 1000 10", chat_id)
         elif "/fixed_" in mex and chat_id == int(os.environ["ADMIN_CHAT_ID"]):
+            if "fixed_g" in mex:
+                _,  group_id,  user_id = mex.split("_")
+                group_id = - int(group_id[1:])
+                user_id = int(user_id)
+                nickname = uistr.nickname(user_id,  user_id,  game.get_nickname(user_id))
+                notifications = [{
+                    "chat_id": group_id,
+                    "message": nickname + "\nBugfix!"
+                }]
+                return "Sent bugfix confirmation to group " + str(
+                    group_id), None, notifications
+            
             user_id = mex[len("/fixed_"):]
             notifications = [{
                 "chat_id": user_id,
