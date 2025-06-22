@@ -9,6 +9,7 @@ import conversions as conv
 import print_util as put
 import random
 import temporal_variations as tv
+from dynamodb_interface import game_get 
 import minimal
 import math
 import time
@@ -1363,10 +1364,11 @@ def exe_and_reply(query, chat_id):
                 message = uistr.get(chat_id, "Activation error")
             else:
                 message = uistr.get(chat_id, "Have fun")
-                notifications = [{
-                    "chat_id": int(os.environ["ADMIN_CHAT_ID"]),
-                    "message": f"Activated account for /view@{chat_id}"
-                }]
+                if game_get() == "global":
+                    notifications = [{
+                        "chat_id": int(os.environ["ADMIN_CHAT_ID"]),
+                        "message": f"Activated account for /view@{chat_id}"
+                    }]
     elif query == "Account Upgrade":
         message = info_upgrade_account_to_single_balance(chat_id)
         keyboard = [{
@@ -1718,10 +1720,10 @@ def handle_message(chat_id, mex):
                 _,  group_id,  user_id = mex.split("_")
                 group_id = - int(group_id[1:])
                 user_id = int(user_id)
-                nickname = uistr.nickname(user_id,  user_id,  game.get_nickname(user_id))
+                # nickname = uistr.nickname(user_id,  user_id,  game.get_nickname(user_id))
                 notifications = [{
                     "chat_id": group_id,
-                    "message": nickname + "\nBugfix!"
+                    "message": "Bugfix!"  # nickname + "\nBugfix!"
                 }]
                 return "Sent bugfix confirmation to group " + str(
                     group_id), None, notifications

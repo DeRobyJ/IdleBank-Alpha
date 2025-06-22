@@ -9,8 +9,9 @@ import urllib.error
 import socket
 
 import user_interface as ui
-from game_actions import get_nickname
+from game_actions import get_nickname,  game_start
 import uistr
+from dynamodb_interface import game_set
 
 
 TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_TOKEN"]
@@ -162,7 +163,10 @@ def manage_notifications(notifications,  is_private,  respond_id):
                 keyboard=notification_keyboard
             )
         else:
-            nickname = uistr.nickname(notification["chat_id"],  notification["chat_id"], get_nickname(notification["chat_id"]))
+            try:
+                nickname = uistr.nickname(notification["chat_id"],  notification["chat_id"], get_nickname(notification["chat_id"]))
+            except TypeError:
+                nickname = ""
             message = nickname + "\n" + notification["message"]
             respond_with_keyboard(
                 chat_id=respond_id,
@@ -186,6 +190,18 @@ def fill_output(mes_key_not):
     if len(mes_key_not) == 2:
         return mes_key_not[0],  mes_key_not[1], None
     return mes_key_not[0],  mes_key_not[1],  mes_key_not[2]
+
+
+def handle_new_group(body):
+    bot_user_id = int(os.environ["BOT_CHAT_ID"])
+    
+    if "message" in body and "new_chat_members" in body["message"]:
+        for member in body["message"]["new_chat_members"]:
+            if member["id"] == bot_user_id:
+                chat = body["message"]["chat"]
+                print(f"✅ Bot was added to group '{chat.get('title')}' (ID: {chat['id']})")
+                return True
+    return False
 
 
 def bot_handler(event, context):
@@ -260,7 +276,14 @@ def bot_handler(event, context):
             query = "Main menu"
         
         # Setting game
-        ...
+        if is_private:
+            game_set("global")
+        else:
+            game_set(f"g_{-respond_id}")
+            if handle_new_group(body):
+                game_start()
+                return {'statusCode': 200}
+            
         
         # Normal input
         if is_button:

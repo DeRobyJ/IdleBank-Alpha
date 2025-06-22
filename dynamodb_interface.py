@@ -8,10 +8,12 @@ dynamodb = boto3.client('dynamodb')
 dynatable = boto3.resource('dynamodb', region_name='eu-south-1').Table(tabname)
 
 game_code = "global"
+game_prefix = ""
 
 def game_set(new_game_code):
-    global game_code
+    global game_code,  game_prefix
     game_code = new_game_code
+    game_prefix = f"{new_game_code}_" if new_game_code != "global" else ""
     
 
 def game_get():
@@ -19,12 +21,17 @@ def game_get():
     return game_code
 
 
+def fixpre(prefix):
+    global game_prefix
+    return game_prefix + prefix
+
+
 def item_update(prefix, selection_dict, up_attribute, up_value_dict):
     global dynamodb, tabname
     # if "chat_id" in selection_dict:
     #    selection_dict["chat_id"]["N"] = str(selection_dict["chat_id"]["N"])
     selection_dict = copy.deepcopy(selection_dict)
-    selection_dict["key"]["S"] = prefix + str(selection_dict["key"]["S"])
+    selection_dict["key"]["S"] =  fixpre(prefix) + str(selection_dict["key"]["S"])
     if "N" in up_value_dict:
         up_value_dict["N"] = str(up_value_dict["N"])
     if prefix == pre_user and up_attribute == "saved_balance":
@@ -47,7 +54,7 @@ def item_update(prefix, selection_dict, up_attribute, up_value_dict):
         ExpressionAttributeValues={':val1': up_value_dict}
     )
     tab_puts[prefix] += 1
-    print(prefix, "puts:", tab_puts[prefix])
+    print( fixpre(prefix), "puts:", tab_puts[prefix])
 # item_update('uselessbot-user_data', {'chat_id': {"N": str(chat_id)}},
 #             "Aa_allowed_action", {"S": action})
 
@@ -57,7 +64,7 @@ def item_get(prefix, selection_dict, get_attribute, get_type):
     # if "chat_id" in selection_dict:
     #     selection_dict["chat_id"]["N"] = str(selection_dict["chat_id"]["N"])
     selection_dict = copy.deepcopy(selection_dict)
-    selection_dict["key"]["S"] = prefix + str(selection_dict["key"]["S"])
+    selection_dict["key"]["S"] =  fixpre(prefix) + str(selection_dict["key"]["S"])
     res = dynamodb.get_item(TableName=tabname, Key=selection_dict)
     if "Item" in res:
         if get_attribute in res["Item"]:
@@ -73,7 +80,7 @@ def object_get(prefix, selection_dict):
     # if "chat_id" in selection_dict:
     #    selection_dict["chat_id"]["N"] = str(selection_dict["chat_id"]["N"])
     selection_dict_copy = copy.deepcopy(selection_dict)
-    selection_dict_copy["key"]["S"] = prefix + str(selection_dict_copy["key"]["S"])
+    selection_dict_copy["key"]["S"] =  fixpre(prefix) + str(selection_dict_copy["key"]["S"])
     res = dynamodb.get_item(TableName=tabname, Key=selection_dict_copy)
     if "Item" in res:
         ob = {}
@@ -120,7 +127,7 @@ def res_format(obj):
 def ezget_item(prefix, key_dict):
     global dynatable
     key_dict_copy = copy.deepcopy(key_dict)
-    key_dict_copy["key"] = prefix + str(key_dict_copy["key"])
+    key_dict_copy["key"] =  fixpre(prefix) + str(key_dict_copy["key"])
     response = dynatable.get_item(Key=key_dict_copy)
 
     if "Item" not in response:
@@ -133,7 +140,7 @@ def ezput_item(prefix, item):
     global dynatable
     item_copy = copy.deepcopy(item)
     assert prefix not in str(item_copy["key"])
-    item_copy["key"] = prefix + str(item_copy["key"])
+    item_copy["key"] =  fixpre(prefix) + str(item_copy["key"])
     if prefix == pre_market:
         money_exponent = max(0, len(str(max(item_copy["money"], item_copy["money_limit"]))) - 36)
         item_copy["money"] = item_copy["money"] // (10 ** money_exponent)
@@ -141,7 +148,7 @@ def ezput_item(prefix, item):
         item_copy["money_exponent"] = money_exponent
     dynatable.put_item(Item=item_copy)
     tab_puts[prefix] += 1
-    print(prefix, "puts:", tab_puts[prefix])
+    print(fixpre(prefix), "puts:", tab_puts[prefix])
 
 
 # Key prefixes

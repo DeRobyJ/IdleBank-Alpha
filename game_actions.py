@@ -1801,18 +1801,18 @@ def game_start():
 
 def admin_action(actionstr):
     if actionstr == "delch":
-        dbw.ch.active_users = {}
-        dbw.ch.market_data = {}
-        dbw.ch.global_production = {}
-        dbw.ch.events_data = {}
-        dbw.ch.leaderboard_data = {}
-        dbw.ch.member_count = {}
-        dbw.ch.multiplayer_info = {}
-        dbw.ch.season_info = {}
-        dbw.ch.mini_general = {}
-        dbw.ch.mini_player = {}
-        dbw.ch.minimal_user = {}
-        dbw.ch.minimal_general = {}
+        dbw.ch().active_users = {}
+        dbw.ch().market_data = {}
+        dbw.ch().global_production = {}
+        dbw.ch().events_data = {}
+        dbw.ch().leaderboard_data = {}
+        dbw.ch().member_count = {}
+        dbw.ch().multiplayer_info = {}
+        dbw.ch().season_info = {}
+        dbw.ch().mini_general = {}
+        dbw.ch().mini_player = {}
+        dbw.ch().minimal_user = {}
+        dbw.ch().minimal_general = {}
         return "Done"
     if "reglob" in actionstr:
         # pretty sure this will fail when too many players get processed
