@@ -2,18 +2,33 @@
 # This gets updated at every action, together with the db.
 # It would be cool if we could update the db right before the instance is killed by aws
 # but, to my understanding, we can't
-active_users = {}
-market_data = {}
-global_production = {}
-events_data = {}
-leaderboard_data = {}
-member_count = {}
-multiplayer_info = {}
-season_info = {}
-mini_general = {}
-mini_player = {}
-minimal_user = {}
-minimal_general = {}
+from dynamodb_interface import game_get 
+
+
+class CachedData:
+    def __init__(self):
+        self.active_users = {}
+        self.market_data = {}
+        self.global_production = {}
+        self.events_data = {}
+        self.leaderboard_data = {}
+        self.member_count = {}
+        self.multiplayer_info = {}
+        self.season_info = {}
+        self.mini_general = {}
+        self.mini_player = {}
+        self.minimal_user = {}
+        self.minimal_general = {}
+    
+game_caches = {}
+
+# Returns cache of current game
+def ch():
+    global game_caches
+    game_code = game_get()
+    if game_code not in game_caches:
+        game_caches[game_code] = CachedData()
+    return game_caches[game_code]
 
 
 ''' tables  # might be a lil outdated

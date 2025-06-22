@@ -148,20 +148,38 @@ def april_fools(chat_id):
         return None
 
 
-def get_upgrade_costs(chat_id):
-    user_data, _ = get_user_data(chat_id)
-    costs = gut.production_upgrade_costs(user_data["production_level"] + 1)
+upgrade_multipliers = {}
 
-    can = True
-    reason = ""
-    balance = get_balance(chat_id)
-    if costs["Money"] > balance:
-        can = False
-        reason = "money"
-    if costs["Blocks"] > user_data["blocks"]:
-        can = False
-        reason = "blocks"
-    return can, costs, reason
+
+def get_upgrade_costs(chat_id):
+    global upgrade_multipliers
+    user_data, _ = get_user_data(chat_id)
+    if chat_id not in upgrade_multipliers:
+        upgrade_multipliers[chat_id] = 1
+    else:
+        upgrade_multipliers[chat_id] *= 2
+
+    can = False
+    while not can:
+        can = True
+        if upgrade_multipliers[chat_id] == 1:
+            costs = gut.production_upgrade_costs(user_data["production_level"] + 1)
+        else:
+            costs = gut.bulk_upgrade_costs(user_data["production_level"], user_data["production_level"] + upgrade_multipliers[chat_id], 1)
+        reason = ""
+        balance = get_balance(chat_id)
+        if costs["Money"] > balance:
+            can = False
+            reason = "money"
+        if costs["Blocks"] > user_data["blocks"]:
+            can = False
+            reason = "blocks"
+        if not can:
+            if upgrade_multipliers[chat_id] == 1:
+                break
+            else:
+                upgrade_multipliers[chat_id] = 1 + (upgrade_multipliers[chat_id] // 10)
+    return can, costs, reason, upgrade_multipliers[chat_id]
 
 
 def get_generator_status(chat_id):
@@ -248,7 +266,7 @@ def main_menu(chat_id):
             sym="L",
             permin_rate=permin_rate_str)
 
-    user_can_upgrade, costs, _ = get_upgrade_costs(chat_id)
+    user_can_upgrade, costs, _, upgrade_multiplier = get_upgrade_costs(chat_id)
     if not user_can_upgrade:
         money_to_up = costs["Money"] - balance
         blocks_to_up = costs["Blocks"] - user_data["blocks"]
@@ -287,6 +305,7 @@ def main_menu(chat_id):
     keyboard = []
     if user_can_upgrade:
         button_string = (
+            ("" if upgrade_multiplier == 1 else f"{upgrade_multiplier}x") +
             "🔼 " + put.pretty(costs["Money"]) + " L" +
             " & " + put.pretty(costs["Blocks"]) + " " + "mLmb"
         )
@@ -356,7 +375,7 @@ def block_transfer(qty, from_id=None, to_id=None, commit=False):
 
 def upgrade_money_printer(chat_id):
     user_data, _ = get_user_data(chat_id)
-    _, costs, reason = get_upgrade_costs(chat_id)
+    _, costs, reason, upgrade_multiplier = get_upgrade_costs(chat_id)
     if reason == "money":
         return uistr.get(chat_id, "Insufficient balance")
     elif reason == "blocks":
@@ -366,7 +385,7 @@ def upgrade_money_printer(chat_id):
     block_transfer(costs["Blocks"], from_id=chat_id)
     user_data["saved_balance"] = get_balance(chat_id)
     user_data["balance_timestamp"] = gut.time_s()
-    user_data["production_level"] += 1
+    user_data["production_level"] += upgrade_multiplier
     set_user_data(chat_id, user_data)
     update_leaderboard(chat_id)
     return uistr.get(chat_id, "Done")
@@ -557,8 +576,6 @@ def shard_bin_screen(chat_id):
             sb_data_type = f"{shard_type}_prize"
         message += f" → {sb_data[sb_data_type]} mLmb"
 
-    shard_user_exp = get_user_data(chat_id)[0]["shard_exp"]
-
     message += "\n\n"
     message += f"`UrsLvl {uslvl} - [{float_to_residualbar(usres)}]`\n"
     message += f"`GlbLvl {gslvl} - [{float_to_residualbar(gsres)}]`"
@@ -657,7 +674,7 @@ def block_market_menu(chat_id):
 
     keyboard = []
     user_data, _ = get_user_data(chat_id)
-    _, costs, _ = get_upgrade_costs(chat_id)
+    _, costs, _, _ = get_upgrade_costs(chat_id)
     player_price = max(
         max_price + max_price // 10,
         get_production_rate(chat_id) // 12,  # 5 minutes of production
@@ -774,7 +791,10 @@ def exe_and_reply(query, chat_id):
     if query == "Main menu":
         _, is_user_new = get_user_data(chat_id)
         if is_user_new:
-            message, keyboard = april_fools(chat_id)
+            message = uistr.get(chat_id, "mnm Welcome")
+            keyboard = [{
+                uistr.get(chat_id, "mnm April Fools button"): "Main menu"
+            }]
         else:
             message, keyboard = main_menu(chat_id)
     if query == "Upgrade Production":

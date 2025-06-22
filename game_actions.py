@@ -66,7 +66,6 @@ def upgrade_to_single_balance(chat_id):
 # (meaning user data and global production of all currencies)
 def load_main_menu(chat_id):
     ru = dbr.login(chat_id)
-    last_login_time = ru["last_login_timestamp"]
     if ru["account_status"] == "Not Activated":
         print("Loading main menu on non activated account")
         return None
@@ -1271,7 +1270,6 @@ def bulk_gear_up(chat_id, gears):
     dbw.pay_money(chat_id, user_data["balance"])
 
     # Gearing up on same faction
-    old_production = best.get_production(chat_id)
     nick_data = get_nickname(chat_id)
     nick_data["badge_line"] += gears * conv.name(
         membership=user_data["membership"])["badge_letter"]
@@ -1803,18 +1801,18 @@ def game_start():
 
 def admin_action(actionstr):
     if actionstr == "delch":
-        dbw.ch.active_users = {}
-        dbw.ch.market_data = {}
-        dbw.ch.global_production = {}
-        dbw.ch.events_data = {}
-        dbw.ch.leaderboard_data = {}
-        dbw.ch.member_count = {}
-        dbw.ch.multiplayer_info = {}
-        dbw.ch.season_info = {}
-        dbw.ch.mini_general = {}
-        dbw.ch.mini_player = {}
-        dbw.ch.minimal_user = {}
-        dbw.ch.minimal_general = {}
+        dbw.ch().active_users = {}
+        dbw.ch().market_data = {}
+        dbw.ch().global_production = {}
+        dbw.ch().events_data = {}
+        dbw.ch().leaderboard_data = {}
+        dbw.ch().member_count = {}
+        dbw.ch().multiplayer_info = {}
+        dbw.ch().season_info = {}
+        dbw.ch().mini_general = {}
+        dbw.ch().mini_player = {}
+        dbw.ch().minimal_user = {}
+        dbw.ch().minimal_general = {}
         return "Done"
     if "reglob" in actionstr:
         # pretty sure this will fail when too many players get processed

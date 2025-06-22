@@ -9,6 +9,7 @@ import conversions as conv
 import print_util as put
 import random
 import temporal_variations as tv
+from dynamodb_interface import game_get 
 import minimal
 import math
 import time
@@ -1212,7 +1213,7 @@ def personal_page(viewer_id, chat_id, page):
         for i in range(lpp):
             if i + page * lpp < len(badge_line_per_line):
                 message += badge_line_per_line[i + page * lpp] + "\n"
-    except InxedError as e:
+    except IndexError:
         message += str(badge_line_per_line)
 
     keyboard = []
@@ -1363,10 +1364,11 @@ def exe_and_reply(query, chat_id):
                 message = uistr.get(chat_id, "Activation error")
             else:
                 message = uistr.get(chat_id, "Have fun")
-                notifications = [{
-                    "chat_id": int(os.environ["ADMIN_CHAT_ID"]),
-                    "message": f"Activated account for /view@{chat_id}"
-                }]
+                if game_get() == "global":
+                    notifications = [{
+                        "chat_id": int(os.environ["ADMIN_CHAT_ID"]),
+                        "message": f"Activated account for /view@{chat_id}"
+                    }]
     elif query == "Account Upgrade":
         message = info_upgrade_account_to_single_balance(chat_id)
         keyboard = [{
@@ -1664,7 +1666,7 @@ def game_credits(chat_id):
     message += "Game design and implementation: Roberto Giaconia\n"
     message += "English UI and Italian translation: Roberto Giaconia\n"
     message += "Portuguese translation: Matheus Souza\n"
-    message += "\nMany thanks to friends and pioneer players for helping me test and begin this incredible adventure!\nThanks to the r / incremental\_games subreddit.\n"  # noqa
+    message += "\nMany thanks to friends and pioneer players for helping me test and begin this incredible adventure!\n"
     message += "\n_Se i giovani si organizzano, si impadroniscono di ogni ramo del sapere e lottano con i lavoratori e gli oppressi, non c’è scampo per un vecchio ordine fondato sul privilegio e sull’ingiustizia._ \n(~ Enrico Berlinguer)"  # noqa
     keyboard = [{uistr.get(chat_id, "button back"): "Main menu"}]
     return message, keyboard
@@ -1714,6 +1716,18 @@ def handle_message(chat_id, mex):
                 faction = query_parts[1]
             return exe_and_reply("EDB " + faction + " 1000 10", chat_id)
         elif "/fixed_" in mex and chat_id == int(os.environ["ADMIN_CHAT_ID"]):
+            if "fixed_g" in mex:
+                _,  group_id,  user_id = mex.split("_")
+                group_id = - int(group_id[1:])
+                user_id = int(user_id)
+                # nickname = uistr.nickname(user_id,  user_id,  game.get_nickname(user_id))
+                notifications = [{
+                    "chat_id": group_id,
+                    "message": "Bugfix!"  # nickname + "\nBugfix!"
+                }]
+                return "Sent bugfix confirmation to group " + str(
+                    group_id), None, notifications
+            
             user_id = mex[len("/fixed_"):]
             notifications = [{
                 "chat_id": user_id,
