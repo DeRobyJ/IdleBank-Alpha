@@ -9,6 +9,7 @@ import urllib.error
 import socket
 
 import user_interface as ui
+from game_actions import get_nickname
 import uistr
 
 
@@ -140,7 +141,7 @@ def is_chat_allowed(chat_id):
         return True
 
 
-def manage_notifications(notifications):
+def manage_notifications(notifications,  is_private,  respond_id):
     if not notifications:
         print(time.time() - start_time,  "No notifications to manage")
         return
@@ -153,11 +154,21 @@ def manage_notifications(notifications):
             {uistr.get(notification["chat_id"], "button dismiss notification"):
              "Main menu",
              "✖️": "delete message"}]
-        respond_with_keyboard(
-            chat_id=notification["chat_id"],
-            text=notification["message"],
-            keyboard=notification_keyboard
-        )
+        
+        if is_private:
+            respond_with_keyboard(
+                chat_id=notification["chat_id"],
+                text=notification["message"],
+                keyboard=notification_keyboard
+            )
+        else:
+            nickname = uistr.nickname(notification["chat_id"],  notification["chat_id"], get_nickname(notification["chat_id"]))
+            message = nickname + "\n" + notification["message"]
+            respond_with_keyboard(
+                chat_id=respond_id,
+                text=message,
+                keyboard=notification_keyboard
+            )
     print(time.time() - start_time, "Notifications managed")
 
 
@@ -214,55 +225,12 @@ def bot_handler(event, context):
           
         
         if chat_type == "private":
-            # happens when somebody sends media to the bot
-            if len(query) == 0:
-                query = "/start"
-            
-            # Special response for feedback query
-            if "feedback" in query:
-                feedback_emoji = query[len("feedback "):]
-                user_identification = str(chat_id)
-                username = get_username(body)
-                if username:
-                    user_identification = "@" + username
-                respond_with_keyboard(
-                    chat_id=int(os.environ["ADMIN_CHAT_ID"]),
-                    text=("Feedback from " + user_identification +
-                          ": " + feedback_emoji + "\n\n/start"), 
-                    ignore_markdown=True
-                )
-                query = "Main menu"
-            
-            # Normal input
-            if is_button:
-                r_message,  r_keyboard,  r_notifications = fill_output(ui.exe_and_reply(query, chat_id))
-            else:
-                r_message,  r_keyboard,  r_notifications = fill_output(ui.handle_message(chat_id, query))
-            
-            manage_notifications(r_notifications)
-            
-            # Confirmation messages
-            if r_keyboard is None:
-                if not r_message or len(r_message) == 0:
-                    return {'statusCode': 200}
-                pre_text = r_message
-                r_message,  r_keyboard,  r_notifications = fill_output(ui.last_menu(chat_id))
-                r_message = update_text(pre_text,  r_message)
-                manage_notifications(r_notifications)
-                
-            # Normal output
-            result = respond_with_keyboard(chat_id,  r_message,  r_keyboard,  is_button,  message_id)
-            
-            if result == "Flood":
-                r_message,  r_keyboard,  r_notifications = fill_output(ui.handle_message(chat_id, "/start"))
-                manage_notifications(r_notifications)
-                pre_text = "Telegram Flood Control!"
-                r_message = update_text(pre_text,  r_message)
-                respond_with_keyboard(chat_id, r_message, r_keyboard)
-        
+            is_private = True
+            respond_id = chat_id
         elif chat_type in ["group",  "supergroup"]:
+            is_private = False
             # Getting correct chat_id from sender, and  collecting group_id and username
-            group_id = chat_id
+            respond_id = chat_id
             if is_button:
                 chat_id = body["callback_query"]["from"]["id"]
                 username = body["callback_query"]["from"].get("username")
@@ -271,63 +239,68 @@ def bot_handler(event, context):
                 username = message["from"].get("username")
             if not username:
                 username = no_username_emojis[chat_id%len(no_username_emojis)]
+        
+        # happens when somebody sends media to the bot
+        if len(query) == 0:
+            query = "/start"
+        
+        # Special response for feedback query
+        if "feedback" in query:
+            feedback_emoji = query[len("feedback "):]
+            user_identification = str(chat_id)
+            username = get_username(body)
+            if username:
+                user_identification = "@" + username
+            respond_with_keyboard(
+                chat_id=int(os.environ["ADMIN_CHAT_ID"]),
+                text=("Feedback from " + user_identification +
+                      ": " + feedback_emoji + "\n\n/start"), 
+                ignore_markdown=True
+            )
+            query = "Main menu"
+        
+        # Setting game
+        ...
+        
+        # Normal input
+        if is_button:
+            r_message,  r_keyboard,  r_notifications = fill_output(ui.exe_and_reply(query, chat_id))
+        else:
+            r_message,  r_keyboard,  r_notifications = fill_output(ui.handle_message(chat_id, query))
+        
+        manage_notifications(r_notifications,  is_private,  respond_id)
+        
+        # No-keyboard "confirmation " messages
+        if r_keyboard is None:
+            if not r_message or len(r_message) == 0:
+                return {'statusCode': 200}
+            pre_text = r_message
+            r_message,  r_keyboard,  r_notifications = fill_output(ui.last_menu(chat_id))
+            r_message = update_text(pre_text,  r_message)
+            manage_notifications(r_notifications,  is_private,  respond_id)
             
-            if len(query) == 0:
-                query = "/start"
-            
-            # Special response for feedback query
-            if "feedback" in query:
-                feedback_emoji = query[len("feedback "):]
-                user_identification = str(chat_id)
-                username = get_username(body)
-                if username:
-                    user_identification = "@" + username
-                respond_with_keyboard(
-                    chat_id=int(os.environ["ADMIN_CHAT_ID"]),
-                    text=("Feedback from " + user_identification +
-                          ": " + feedback_emoji + "\n\n/start"), 
-                    ignore_markdown=True
-                )
-                query = "Main menu"
-            
-            # Normal input
-            if is_button:
-                r_message,  r_keyboard,  r_notifications = fill_output(ui.exe_and_reply(query, chat_id))
-            else:
-                r_message,  r_keyboard,  r_notifications = fill_output(ui.handle_message(chat_id, query))
-            
-            manage_notifications(r_notifications)
-            
-            # Confirmation messages
-            if r_keyboard is None:
-                if not r_message or len(r_message) == 0:
-                    return {'statusCode': 200}
-                pre_text = r_message
-                r_message,  r_keyboard,  r_notifications = fill_output(ui.last_menu(chat_id))
-                r_message = update_text(pre_text,  r_message)
-                manage_notifications(r_notifications)
-            
+        # Normal output
+        if not is_private:
             r_message = f"@{username}\n" + r_message
-            
-            # Normal output
-            result = respond_with_keyboard(group_id,  r_message,  r_keyboard,  is_button,  message_id)
-            
-            if result == "Flood":
-                r_message,  r_keyboard,  r_notifications = fill_output(ui.handle_message(chat_id, "/start"))
-                manage_notifications(r_notifications)
-                pre_text = "Telegram Flood Control!"
-                r_message = update_text(pre_text,  r_message)
+        result = respond_with_keyboard(respond_id,  r_message,  r_keyboard,  is_button,  message_id)
+        
+        if result == "Flood":
+            r_message,  r_keyboard,  r_notifications = fill_output(ui.handle_message(chat_id, "/start"))
+            manage_notifications(r_notifications,  is_private,  respond_id)
+            pre_text = "Telegram Flood Control!"
+            r_message = update_text(pre_text,  r_message)
+            if not is_private:
                 r_message = f"@{username}\n" + r_message
-                respond_with_keyboard(group_id, r_message, r_keyboard)
+            respond_with_keyboard(respond_id, r_message, r_keyboard)
         
     except Exception:
         respond_with_keyboard(
             chat_id=int(os.environ["ADMIN_CHAT_ID"]),
-            text=traceback.format_exc() + "\n/fixed_" + str(group_id), 
+            text=traceback.format_exc() + "\n/fixed_" + str(respond_id), 
             ignore_markdown=True
         )
         respond_with_keyboard(
-            chat_id=group_id,
+            chat_id=respond_id,
             text=(f"@{username} " + "Bug!\n/start -> try again\n" +
                   "/help -> Ask for help in the public channel!")
         )
