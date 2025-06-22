@@ -2625,8 +2625,6 @@ def ui_CP_main_screen(chat_id):
             str(cell): {
                 "chat_id": 0, "level": 0} for cell in range(len(cp_map))
         }
-        dbw.mini_up_general(game_data)
-    if "Money" not in game_data:
         game_data["Money"] = {
             coin_name: 1000000 for coin_name in [
                 "Bitcoin", "Ether", "Ada", "Dogecoin",

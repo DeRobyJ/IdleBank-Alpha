@@ -200,6 +200,11 @@ def handle_new_group(body):
             if member["id"] == bot_user_id:
                 chat = body["message"]["chat"]
                 print(f"✅ Bot was added to group '{chat.get('title')}' (ID: {chat['id']})")
+                respond_with_keyboard(
+                    chat_id=int(os.environ["ADMIN_CHAT_ID"]), 
+                    text=f"Bot was added to group '{chat.get('title')}' (ID: {chat['id']})", 
+                    ignore_markdown=True
+                )
                 return True
     return False
 
@@ -256,10 +261,6 @@ def bot_handler(event, context):
             if not username:
                 username = no_username_emojis[chat_id%len(no_username_emojis)]
         
-        # happens when somebody sends media to the bot
-        if len(query) == 0:
-            query = "/start"
-        
         # Special response for feedback query
         if "feedback" in query:
             feedback_emoji = query[len("feedback "):]
@@ -283,7 +284,14 @@ def bot_handler(event, context):
             if handle_new_group(body):
                 game_start()
                 return {'statusCode': 200}
-            
+
+
+        # happens when somebody sends media to the bot
+        if len(query) == 0:
+            if is_private:
+                query = "/start"
+            else:
+                return {'statusCode': 200}
         
         # Normal input
         if is_button:

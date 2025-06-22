@@ -791,7 +791,7 @@ def exe_and_reply(query, chat_id):
     if query == "Main menu":
         _, is_user_new = get_user_data(chat_id)
         if is_user_new:
-            message = uistr.get(chat_id, "mnm Welcome"),
+            message = uistr.get(chat_id, "mnm Welcome")
             keyboard = [{
                 uistr.get(chat_id, "mnm April Fools button"): "Main menu"
             }]
