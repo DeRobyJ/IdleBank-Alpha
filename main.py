@@ -20,6 +20,10 @@ maintenance = False
 instance_time = time.time()
 start_time = time.time()
 print(instance_time, "\n", time.gmtime(instance_time))
+no_username_emojis = [
+    "🐵", "🐶", "🐺", "🐱", "🦁", "🐯", "🦒", "🦊", "🦝", "🐮", "🐷", "🐗", "🐭", 
+    "🐹", "🐰", "🐻", "🐨", "🐼", "🐸", "🦩", "🦚", "🦉", "🐧", "🐥", "🦋", "🐌"
+]
 
 
 def post_to_telegram(url, data):
@@ -129,9 +133,9 @@ def get_username(update):
         return None
 
 
-def is_player_allowed(chat_id):
+def is_chat_allowed(chat_id):
     if os.environ["TABLE_NAME"] == "idlebank_alpha_testing":
-        return chat_id in [int(os.environ["ADMIN_CHAT_ID"])]
+        return chat_id in [int(os.environ["ADMIN_CHAT_ID"]),  int(os.environ["GROUP_TEST_CHAT_ID"])]
     else:
         return True
 
@@ -200,11 +204,12 @@ def bot_handler(event, context):
             delete_message(chat_id,  message_id)
             return {"statusCode": 200}
         
-        if maintenance or not is_player_allowed(chat_id):
+        if maintenance or not is_chat_allowed(chat_id):
                 respond_with_keyboard(
                     chat_id=chat_id, 
                     text=uistr.get(chat_id, "Maintenance message")
                 )
+                print(f"Trying to use the bot {chat_id}")
                 return {'statusCode': 200}
           
         
@@ -255,15 +260,75 @@ def bot_handler(event, context):
                 r_message = update_text(pre_text,  r_message)
                 respond_with_keyboard(chat_id, r_message, r_keyboard)
         
+        elif chat_type in ["group",  "supergroup"]:
+            # Getting correct chat_id from sender, and  collecting group_id and username
+            group_id = chat_id
+            if is_button:
+                chat_id = body["callback_query"]["from"]["id"]
+                username = body["callback_query"]["from"].get("username")
+            else:
+                chat_id = message["from"]["id"]
+                username = message["from"].get("username")
+            if not username:
+                username = no_username_emojis[chat_id%len(no_username_emojis)]
+            
+            if len(query) == 0:
+                query = "/start"
+            
+            # Special response for feedback query
+            if "feedback" in query:
+                feedback_emoji = query[len("feedback "):]
+                user_identification = str(chat_id)
+                username = get_username(body)
+                if username:
+                    user_identification = "@" + username
+                respond_with_keyboard(
+                    chat_id=int(os.environ["ADMIN_CHAT_ID"]),
+                    text=("Feedback from " + user_identification +
+                          ": " + feedback_emoji + "\n\n/start"), 
+                    ignore_markdown=True
+                )
+                query = "Main menu"
+            
+            # Normal input
+            if is_button:
+                r_message,  r_keyboard,  r_notifications = fill_output(ui.exe_and_reply(query, chat_id))
+            else:
+                r_message,  r_keyboard,  r_notifications = fill_output(ui.handle_message(chat_id, query))
+            
+            manage_notifications(r_notifications)
+            
+            # Confirmation messages
+            if r_keyboard is None:
+                if not r_message or len(r_message) == 0:
+                    return {'statusCode': 200}
+                pre_text = r_message
+                r_message,  r_keyboard,  r_notifications = fill_output(ui.last_menu(chat_id))
+                r_message = update_text(pre_text,  r_message)
+                manage_notifications(r_notifications)
+            
+            r_message = f"@{username}\n" + r_message
+            
+            # Normal output
+            result = respond_with_keyboard(group_id,  r_message,  r_keyboard,  is_button,  message_id)
+            
+            if result == "Flood":
+                r_message,  r_keyboard,  r_notifications = fill_output(ui.handle_message(chat_id, "/start"))
+                manage_notifications(r_notifications)
+                pre_text = "Telegram Flood Control!"
+                r_message = update_text(pre_text,  r_message)
+                r_message = f"@{username}\n" + r_message
+                respond_with_keyboard(group_id, r_message, r_keyboard)
+        
     except Exception:
         respond_with_keyboard(
             chat_id=int(os.environ["ADMIN_CHAT_ID"]),
-            text=traceback.format_exc() + "\n/fixed_" + str(chat_id), 
+            text=traceback.format_exc() + "\n/fixed_" + str(group_id), 
             ignore_markdown=True
         )
         respond_with_keyboard(
-            chat_id=chat_id,
-            text=("Bug!\n/start -> try again\n" +
+            chat_id=group_id,
+            text=(f"@{username} " + "Bug!\n/start -> try again\n" +
                   "/help -> Ask for help in the public channel!")
         )
 
