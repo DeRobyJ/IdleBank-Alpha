@@ -293,9 +293,11 @@ def mini_get_player(chat_id, game_name):
                                                   "current_option"]
             }
         if "SC::game_timestamp" in raw_data:
+            if "SC::investment" not in raw_data:
+                raw_data["SC::investment"] = "0"
             ch().mini_player[chat_id]["Shop Chain"] = {}
             for field in ["game_timestamp", "employees", "payment_amount",
-                          "history", "highscore"]:
+                          "history", "highscore",  "investment"]:
                 ch().mini_player[chat_id]["Shop Chain"][field] = raw_data["SC::" + field]
             for faction in gut.list["membership"]:
                 ch().mini_player[chat_id]["Shop Chain"]["shops_" + faction] = raw_data["SC::shops_" + faction]
