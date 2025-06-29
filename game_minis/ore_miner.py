@@ -1,4 +1,5 @@
 from game_minis._common import *
+from game_minis.shop_chain import economy_inflation
 
 # == ORE MINER ==
 '''

@@ -77,4 +77,3 @@ def ui_game_prizes_message(chat_id, owntype_blocks=0, owntype_money=0,
         prizes_message += str_elements[id]
 
     return prizes_message
-
