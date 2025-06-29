@@ -369,6 +369,8 @@ def minis_player_data_init(chat_id):
         sc_data["payment_amount"] = "10000"
         sc_data["history"] = ["0"] * 6
         sc_data["highscore"] = "0"
+        sc_data["capital"] = "0"
+        sc_data["sale_timestamp"] = 0
         dbw.mini_up_player(chat_id, "Shop Chain", sc_data)
     # The following changes will override the cache!
     sc_data["payment_amount"] = int(sc_data["payment_amount"])
@@ -385,16 +387,6 @@ def mini_get_player(chat_id, game_name):
 
 
 def mini_up_player(chat_id, game_name, player_data):
-    '''
-    player_data = player_data.copy()
-    if game_name == "Shop Chain":
-        player_data["payment_amount"] = str(player_data["payment_amount"])
-        player_data["highscore"] = str(player_data["highscore"])
-        player_data["history"] = [str(el) for el in player_data["history"]]
-        for faction in gut.list["membership"]:
-            player_data["shops_" + faction] = str(player_data["shops_" + faction])
-        player_data["employees"] = str(player_data["employees"])
-    '''
     dbw.mini_up_player(chat_id, game_name, player_data)
 
 

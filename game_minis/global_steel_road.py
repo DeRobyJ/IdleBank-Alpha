@@ -1,4 +1,4 @@
-from _common import *
+from game_minis._common import *
 
 # == GLOBAL STEEL ROAD ==
 '''

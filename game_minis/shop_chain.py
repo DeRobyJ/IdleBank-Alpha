@@ -1,4 +1,4 @@
-from _common import *
+from game_minis._common import *
 
 # == SHOP CHAIN ==
 '''
@@ -13,7 +13,8 @@ User data
     Shops <faction>: N
     Payment Amount: N     (this is saved as pro capite)
     History of Payments: L  (FIFO queue)
-    Investment: S
+    Capital: S
+    Sale Timestamp: N
 
 '''
 
@@ -235,7 +236,19 @@ def ui_SC_wage_pay(chat_id):
         SC_hire(chat_id, max(3, int(.5 + min(ten_times_shops, employees) * (.05))))
     elif paid_wages == 6:
         SC_hire(chat_id, max(3, int(.5 + ten_times_shops * (.05))))
-
+    
+    # Extra to market and Capital
+    extra_wage = player_data["payment_amount"] - 900
+    capital_power = tot_shops // 100
+    capital_drain = int(max(0,  extra_wage - 100) * employees * (1 - .99**capital_power))
+    player_data["capital"] = str(int(player_data["capital"]) + capital_drain)
+    
+    to_market = max(0,  (extra_wage * employees - capital_drain) * player_prod // 30000)
+    for faction in gut.list["membership"]:
+        money_to_section = to_market * player_data["shops_" + faction] // tot_shops
+        section = conv.name(membership=faction)["block"]
+        best.market_put_money(section,  money_to_section)
+    
     best.mini_up_player(chat_id, "Shop Chain", player_data)
 
     return uistr.get(chat_id, "SC block prize").format(
@@ -248,6 +261,79 @@ def ui_SC_wage_pay(chat_id):
     )
 
 
+def ui_SC_do_sale(chat_id):
+    _, player_data = SC_game_and_player_data(chat_id)
+    ts_turn = (player_data["sale_timestamp"] - (sc_period // 2)) // sc_period
+    current_turn = (gut.time_s() - (sc_period // 2)) // sc_period
+    if ts_turn >= current_turn:
+        return uistr.get(chat_id,  "SC sale already done")
+    tot_shops = SC_player_total_shops(chat_id)
+    if tot_shops < 100:
+        return uistr.get(chat_id,  "SC shops below 100")
+    capital_power = tot_shops // 100
+    
+    block_limits,  money_limits = best.get_all_market_limits()
+    block_costs = {
+        type: int(
+            block_limits[type] * (1 - .99**capital_power)
+        ) for type in block_limits
+    }
+    
+    block_checks = [
+        dbr.check_mmmb(chat_id,  conv.name(block=type)["currency"],  block_costs[type]) 
+        for type in block_costs
+    ]
+    if not all(block_checks):
+        return uistr.get(chat_id,  "SC sale blocks needed").format(
+            blocks=ui_game_prizes_message(
+                chat_id, 
+                us_dollar_blocks=block_costs["mUSDmb"], 
+                euro_blocks=block_costs["mEmb"], 
+                yuan_blocks=block_costs["mYmb"],
+                au_dollar_blocks=block_costs["mAUDmb"], 
+                real_blocks=block_costs["mBRmb"], 
+                rupee_blocks=block_costs["mIRmb"],
+                afro_blocks=block_costs["mAmb"]
+            )
+        )
+    
+    for type in block_costs:
+        best.market_put_blocks(type, block_costs[type])
+        user_block_type = conv.name(block=type)["currency"]
+        dbw.pay_block(chat_id,  user_block_type, block_costs[type])
+    
+    money_prize = 0
+    for cur in money_limits:
+        base_value = money_limits[cur] * (1 - .99**capital_power)
+        section = conv.name(currency=cur)["block"]
+        best.market_give_money(section,  int(base_value))
+        
+        money_prize += int(
+            base_value *
+            best.get_exchange_rate(cur,  best.get_types_of(chat_id)["currency"])
+        )
+    money_prize += (int(player_data["capital"]) // 100) * (best.get_production(chat_id) // 30000)
+    dbw.give_money(chat_id,  money_prize)
+    
+    player_data["sale_timestamp"] = gut.time_s()
+    best.mini_up_player(chat_id, "Shop Chain", player_data)
+    
+    return uistr.get(chat_id,  "SC sale done").format(
+        blocks=ui_game_prizes_message(
+            chat_id, 
+            us_dollar_blocks=block_costs["mUSDmb"], 
+            euro_blocks=block_costs["mEmb"], 
+            yuan_blocks=block_costs["mYmb"],
+            au_dollar_blocks=block_costs["mAUDmb"], 
+            real_blocks=block_costs["mBRmb"], 
+            rupee_blocks=block_costs["mIRmb"],
+            afro_blocks=block_costs["mAmb"]
+        ),
+        money=put.pretty(money_prize), 
+        cur_sym=best.get_types_of(chat_id)["symbol"]
+    )
+    
+    
 def ui_SC_action(chat_id, action, value=0):
     game_data, player_data = SC_game_and_player_data(chat_id)
     if action == "pay":
@@ -281,6 +367,8 @@ def ui_SC_action(chat_id, action, value=0):
             shops=opened_shops  # ,
             # hired=hired
         )
+    if action == "sale":
+        return ui_SC_do_sale(chat_id)
     return "Eh?"
 
 
@@ -305,6 +393,10 @@ def ui_SC_main_screen(chat_id):
         current_wage=put.pretty(sum(player_data["history"])),
         recent_payments=recent_payments_line
     )
+    if SC_player_total_shops(chat_id) < 100:
+        message += "\n" + uistr.get(chat_id,  "SC capital info minimum shops")
+    else:
+        message += "\n" + uistr.get(chat_id, "SC capital").format(capital=put.pretty(int(player_data["capital"])//1000))
     player_prod = best.get_production(chat_id)
     salary = player_data["payment_amount"] * player_prod // 30000
     keyboard = []
@@ -320,13 +412,6 @@ def ui_SC_main_screen(chat_id):
         "+10%": "SC wage +10",
         "+50%": "SC wage +50"
     })
-    '''
-    keyboard.append({
-        uistr.get(chat_id, "SC button hire"): "SC hire 1",
-        "5": "SC hire 5",
-        "50": "SC hire 50"
-    })
-    '''
     keyboard.append({
         uistr.get(chat_id, "SC button open shop").format(
             block_cost=put.pretty(SC_shop_cost(chat_id)) + " " + conv.name(
@@ -336,13 +421,22 @@ def ui_SC_main_screen(chat_id):
     keyboard.append({
         uistr.get(chat_id, "SC button maximize"): "SC maximize"
     })
+    sale_turn = (gut.time_s() - (sc_period // 2)) // sc_period
+    if player_data["sale_timestamp"] < (sale_turn + 0.5) * sc_period:
+        sale_button = uistr.get(chat_id, "SC button sale available")
+    else:
+        sale_time_left = int((sale_turn + 1.5) * sc_period) - gut.time_s()
+        sale_button = uistr.get(chat_id, "SC button sale time left").format(
+            time=put.pretty_time(sale_time_left)
+        )
     keyboard.append({
-        uistr.get(chat_id, "SC button data"): "SC data screen",
+        sale_button: "SC sale",
         uistr.get(chat_id, "button back"): "Main menu"
     })
     return message, keyboard
 
 
+# This is getting removed, along with the whole feature
 def ui_SC_data_screen(chat_id):
     # Show data on this player's faction
     player_faction = dbr.login(chat_id)["membership"]

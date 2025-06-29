@@ -1574,7 +1574,7 @@ def exe_and_reply(query, chat_id):
     elif "SC " in query:
         user_last_menu[chat_id] = "SC main"
         action = query[len("SC "):]
-        if action in ["pay", "open", "maximize"]:
+        if action in ["pay", "open", "maximize",  "sale"]:
             message = minis.ui_SC_action(chat_id, action)
         elif True in [kw in action for kw in ["wage", "hire"]]:
             value = int(action[len("xxxx "):])
