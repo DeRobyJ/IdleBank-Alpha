@@ -452,9 +452,20 @@ def season_upget():
     return data
 
 
+def season_ranking_point_tax(chat_id,  blocks,  levels=1):
+    faction_ranking = tv.get_faction_ranking()
+    faction = get_types_of(chat_id)["membership"]
+    if faction == faction_ranking[0][0]:
+        return 0
+    season_data = season_upget()
+    self_points = season_data["faction"][faction]["blocks_used"]
+    first_points = season_data["faction"][faction_ranking[0][0]]["blocks_used"]
+    return gut.season_ranking_point_tax(blocks,  self_points,  first_points,  levels)
+
+
 def upgrade_extra_costs(new_level, faction):
     base_blocks = gut.block_cost_formula(new_level)
-    points, _, _ = gut.season_ranking_point_tax(base_blocks)
+    points = season_ranking_point_tax(base_blocks)
     extra_blocks_base = max(0, (points - 10) // 10)
     if extra_blocks_base < 1:
         return {}
@@ -478,7 +489,7 @@ def upgrade_extra_costs(new_level, faction):
 
 def bulk_extra_costs_upgradability(base_level, faction, blocks):
     base_blocks = gut.block_cost_formula(base_level)
-    points, _, _ = gut.season_ranking_point_tax(base_blocks)
+    points = season_ranking_point_tax(base_blocks)
     extra_blocks_base = max(0, (points - 10) // 10)
     if extra_blocks_base < 1:
         return math.inf
@@ -511,7 +522,7 @@ def bulk_extra_costs_upgradability(base_level, faction, blocks):
 
 def bulk_upgrade_extra_costs(base_level, faction, levels):
     base_blocks = gut.block_cost_formula(base_level)
-    points, _, _ = gut.season_ranking_point_tax(base_blocks)
+    points = season_ranking_point_tax(base_blocks)
     extra_blocks_base = max(0, (points - 10) // 10)
     if extra_blocks_base < 1:
         return {}
@@ -625,18 +636,6 @@ def season_points(faction):
         faction_ranking = tv.get_faction_ranking()
         faction = faction_ranking[0][0]
     return season_data["faction"][faction]["blocks_used"]
-
-
-def season_pity_rate(faction, offset=0):
-    faction_ranking = tv.get_faction_ranking()
-    if faction == faction_ranking[0][0]:
-        return 0
-    season_data = season_upget()
-    self_points = season_data["faction"][faction]["blocks_used"]
-    first_points = season_data["faction"][faction_ranking[0][0]]["blocks_used"]
-    if first_points == 0:
-        return 0
-    return max(0, 1 - ((self_points + offset) / first_points))
 
 
 def mystery_item_base_probability(chat_id):
