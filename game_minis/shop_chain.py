@@ -239,8 +239,11 @@ def ui_SC_wage_pay(chat_id):
     
     # Extra to market and Capital
     extra_wage = player_data["payment_amount"] - 900
-    capital_power = tot_shops // 100
-    capital_drain = int(max(0,  extra_wage - 100) * employees * (1 - .99**capital_power))
+    tot_capital_power = sum([
+        player_data["shops_" + faction] // 100
+        for faction in gut.list["membership"]
+    ])
+    capital_drain = int(max(0,  extra_wage - 100) * employees * (1 - .99**tot_capital_power))
     player_data["capital"] = str(int(player_data["capital"]) + capital_drain)
     
     to_market = max(0,  (extra_wage * employees - capital_drain) * player_prod // 30000)
@@ -267,15 +270,19 @@ def ui_SC_do_sale(chat_id):
     current_turn = (gut.time_s() - (sc_period // 2)) // sc_period
     if ts_turn >= current_turn:
         return uistr.get(chat_id,  "SC sale already done")
-    tot_shops = SC_player_total_shops(chat_id)
-    if tot_shops < 100:
+    if all(player_data["shops_" + faction] < 100 for faction in gut.list["membership"]):
         return uistr.get(chat_id,  "SC shops below 100")
-    capital_power = tot_shops // 100
+    capital_power = {
+        faction: player_data["shops_" + faction] // 100
+        for faction in gut.list["membership"]
+    }
     
     block_limits,  money_limits = best.get_all_market_limits()
     block_costs = {
         type: int(
-            block_limits[type] * (1 - .99**capital_power)
+            block_limits[type] * (1 - .99**capital_power[
+                conv.name(block=type)["membership"]
+            ])
         ) for type in block_limits
     }
     
@@ -304,7 +311,9 @@ def ui_SC_do_sale(chat_id):
     
     money_prize = 0
     for cur in money_limits:
-        base_value = money_limits[cur] * (1 - .99**capital_power)
+        base_value = money_limits[cur] * (1 - .99**capital_power[
+                conv.name(currency=cur)["membership"]
+            ])
         section = conv.name(currency=cur)["block"]
         best.market_give_money(section,  int(base_value))
         
