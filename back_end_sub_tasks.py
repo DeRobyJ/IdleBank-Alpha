@@ -369,6 +369,8 @@ def minis_player_data_init(chat_id):
         sc_data["payment_amount"] = "10000"
         sc_data["history"] = ["0"] * 6
         sc_data["highscore"] = "0"
+        sc_data["capital"] = "0"
+        sc_data["sale_timestamp"] = 0
         dbw.mini_up_player(chat_id, "Shop Chain", sc_data)
     # The following changes will override the cache!
     sc_data["payment_amount"] = int(sc_data["payment_amount"])
@@ -385,16 +387,6 @@ def mini_get_player(chat_id, game_name):
 
 
 def mini_up_player(chat_id, game_name, player_data):
-    '''
-    player_data = player_data.copy()
-    if game_name == "Shop Chain":
-        player_data["payment_amount"] = str(player_data["payment_amount"])
-        player_data["highscore"] = str(player_data["highscore"])
-        player_data["history"] = [str(el) for el in player_data["history"]]
-        for faction in gut.list["membership"]:
-            player_data["shops_" + faction] = str(player_data["shops_" + faction])
-        player_data["employees"] = str(player_data["employees"])
-    '''
     dbw.mini_up_player(chat_id, game_name, player_data)
 
 
@@ -460,9 +452,18 @@ def season_upget():
     return data
 
 
-def upgrade_extra_costs(new_level, faction):
+def season_ranking_point_tax(chat_id,  blocks,  levels=1):
+    faction_ranking = tv.get_faction_ranking()
+    faction = get_types_of(chat_id)["membership"]
+    season_data = season_upget()
+    self_points = season_data["faction"][faction]["blocks_used"]
+    first_points = season_data["faction"][faction_ranking[0][0]]["blocks_used"]
+    return gut.season_ranking_point_tax(blocks,  self_points,  first_points,  levels)
+
+
+def upgrade_extra_costs(chat_id, new_level, faction):
     base_blocks = gut.block_cost_formula(new_level)
-    points, _, _ = gut.season_ranking_point_tax(base_blocks)
+    points = season_ranking_point_tax(chat_id, base_blocks)
     extra_blocks_base = max(0, (points - 10) // 10)
     if extra_blocks_base < 1:
         return {}
@@ -484,9 +485,9 @@ def upgrade_extra_costs(new_level, faction):
     return extra_blocks
 
 
-def bulk_extra_costs_upgradability(base_level, faction, blocks):
+def bulk_extra_costs_upgradability(chat_id, base_level, faction, blocks):
     base_blocks = gut.block_cost_formula(base_level)
-    points, _, _ = gut.season_ranking_point_tax(base_blocks)
+    points = season_ranking_point_tax(chat_id, base_blocks)
     extra_blocks_base = max(0, (points - 10) // 10)
     if extra_blocks_base < 1:
         return math.inf
@@ -517,9 +518,9 @@ def bulk_extra_costs_upgradability(base_level, faction, blocks):
     return upgradability + base_level
 
 
-def bulk_upgrade_extra_costs(base_level, faction, levels):
+def bulk_upgrade_extra_costs(chat_id, base_level, faction, levels):
     base_blocks = gut.block_cost_formula(base_level)
-    points, _, _ = gut.season_ranking_point_tax(base_blocks)
+    points = season_ranking_point_tax(chat_id, base_blocks)
     extra_blocks_base = max(0, (points - 10) // 10)
     if extra_blocks_base < 1:
         return {}
@@ -633,18 +634,6 @@ def season_points(faction):
         faction_ranking = tv.get_faction_ranking()
         faction = faction_ranking[0][0]
     return season_data["faction"][faction]["blocks_used"]
-
-
-def season_pity_rate(faction, offset=0):
-    faction_ranking = tv.get_faction_ranking()
-    if faction == faction_ranking[0][0]:
-        return 0
-    season_data = season_upget()
-    self_points = season_data["faction"][faction]["blocks_used"]
-    first_points = season_data["faction"][faction_ranking[0][0]]["blocks_used"]
-    if first_points == 0:
-        return 0
-    return max(0, 1 - ((self_points + offset) / first_points))
 
 
 def mystery_item_base_probability(chat_id):

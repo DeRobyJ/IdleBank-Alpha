@@ -396,7 +396,7 @@ def mini_up_player(chat_id, game_name, player_data):
                 **{"SC::" + i: minis_data_copy["Shop Chain"][i]
                    for i in [
                        "game_timestamp", "employees", "payment_amount",
-                       "history", "highscore"] + [
+                       "history", "highscore",  "capital",  "sale_timestamp"] + [
                        ("shops_" + f) for f in gut.list["membership"]]}
                 }
         for field in ["SC::employees", "SC::payment_amount", "SC::highscore"] + [

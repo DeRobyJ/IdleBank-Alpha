@@ -44,3 +44,20 @@ def pretty(value):
     if order == 0:
         return value[0] + "." + value[1] + " " + prefix
     return value[0:order + 1] + " " + prefix
+
+
+def pretty_time(timestamp):
+    pretty_str = ""
+    days_ts = timestamp // (60 * 60 * 24)
+    hours_ts = (timestamp // (60 * 60)) % 24
+    minutes_ts = (timestamp // 60) % 60
+    seconds_ts = timestamp % 60
+    if days_ts >= 7:
+        pretty_str += str(days_ts) + "d"
+    elif days_ts >= 1:
+        pretty_str += str(days_ts) + "d" + str(hours_ts) + "h"
+    elif hours_ts >= 1:
+        pretty_str += str(hours_ts) + "h" + str(minutes_ts) + "m"
+    else:
+        pretty_str += "0h" + str(minutes_ts) + "m" + str(seconds_ts) + "s"
+    return pretty_str

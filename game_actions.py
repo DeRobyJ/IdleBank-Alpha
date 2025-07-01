@@ -188,8 +188,10 @@ def can_upgrade(chat_id):
     cur = conv.name(membership=user_data["membership"])["currency"]
 
     extra_costs = best.upgrade_extra_costs(
+        chat_id, 
         user_data["production_level"] + 1,
-        user_data["membership"])
+        user_data["membership"]
+    )
 
     can = True
     balance = user_data["balance"]
@@ -208,46 +210,8 @@ def can_upgrade(chat_id):
                     conv.name(block=block_type)["currency"]]
             )
             can = False
-    points, _, _ = gut.season_ranking_point_tax(costs["Blocks"])
-    points += int((min(10000, costs["Blocks"]) - points) * best.season_pity_rate(
-        user_data["membership"]
-    ))
+    points = best.season_ranking_point_tax(chat_id,  costs["Blocks"])
     return can, costs, extra_costs, missing_extra, points
-
-
-# Back then, when a faction would overtake another one in the production leadeboard,
-# it would reward that faction by restocking the market.
-def check_and_reward_factions(increasing_currency, delta_increase):
-    return  # FEATURE DISCONTINUED
-    currencies_status = dbr.get_currencies_status().copy()
-    cur_order_new = [(i, currencies_status[i]) for i in currencies_status]
-    cur_order_new = sorted(
-        cur_order_new, key=lambda item: item[1], reverse=True)
-    cur_order_new = [i[0] for i in cur_order_new]
-
-    currencies_status[increasing_currency] -= delta_increase
-    cur_order_old = [(i, currencies_status[i]) for i in currencies_status]
-    cur_order_old = sorted(
-        cur_order_old, key=lambda item: item[1], reverse=True)
-    cur_order_old = [i[0] for i in cur_order_old]
-    changed = False
-    new_winner = False  # if the first position was changed
-    for i in range(len(currencies_status)):
-        if cur_order_new[i] != cur_order_old[i]:
-            changed = True
-            if i == 0:
-                new_winner = True
-            break
-    if new_winner:
-        for currency in currencies_status:
-            if currency != cur_order_new[0]:
-                section = conv.name(currency=currency)["block"]
-                market_restock(section, pcent=75)
-    elif changed:
-        for currency in currencies_status:
-            if currency != cur_order_new[0]:
-                section = conv.name(currency=currency)["block"]
-                market_restock(section, pcent=50)
 
 
 def upgrade_money_printer(chat_id):
@@ -265,7 +229,7 @@ def upgrade_money_printer(chat_id):
     if not can_upgrade(chat_id)[0]:
         return uistr.get(chat_id, "Insufficient blocks")
     dbw.up_money_printer(chat_id, costs)
-    extra_costs = best.upgrade_extra_costs(new_level, user_data["membership"])
+    extra_costs = best.upgrade_extra_costs(chat_id,  new_level, user_data["membership"])
     for block_type in extra_costs:
         dbw.pay_block(
             chat_id,
@@ -279,19 +243,8 @@ def upgrade_money_printer(chat_id):
         type] + production_delta
     dbw.up_global_production(type, new_global_production)
 
-    points, blocks_self, blocks_last = gut.season_ranking_point_tax(costs["Blocks"])
+    points = best.season_ranking_point_tax(chat_id, costs["Blocks"])
     best.season_add_blocks(chat_id, points, extra_costs)
-    if blocks_self > 0:
-        self_section = conv.name(membership=user_data["membership"])["block"]
-        best.market_put_blocks(self_section, blocks_self)
-    if blocks_last > 0:
-        faction_ranking = tv.get_faction_ranking()
-        last_section = conv.name(
-            membership=faction_ranking[-1][0])["block"]
-        best.market_put_blocks(last_section, blocks_last)
-    points += int((min(10000, costs["Blocks"]) - points) * best.season_pity_rate(
-        user_data["membership"]
-    ))
 
     if best.mystery_item_on_level_up(chat_id, new_level):
         best.inventory_give(chat_id, "mystery_item", 1)
@@ -334,8 +287,6 @@ def calculate_bulk_upgrade(chat_id):
     balance = start_balance
     blocks = start_blocks
     calculated_bulk_upgrades[hash_id]["season_points"] = 0
-    calculated_bulk_upgrades[hash_id]["self_market_input"] = 0
-    calculated_bulk_upgrades[hash_id]["last_market_input"] = 0
 
     if start_level < 5100:
         time_limit = 1.5
@@ -353,8 +304,10 @@ def calculate_bulk_upgrade(chat_id):
             if costs["Blocks"] > blocks - tot_costs["Blocks"]:
                 calculated_bulk_upgrades[hash_id]["can"] = False
             extra_costs = best.upgrade_extra_costs(
+                chat_id, 
                 start_level + levels_done + 1,
-                user_data["membership"])
+                user_data["membership"]
+            )
             for block_type in extra_costs:
                 if extra_costs[block_type] + tot_extra_costs[
                         block_type] > user_data["blocks"][
@@ -368,17 +321,10 @@ def calculate_bulk_upgrade(chat_id):
                 tot_costs["Blocks"] += costs["Blocks"]
                 if costs["Blocks"] not in calculated_point_tax:
                     calculated_point_tax[costs["Blocks"]] = (
-                        gut.season_ranking_point_tax(costs["Blocks"])
+                        best.season_ranking_point_tax(chat_id, costs["Blocks"])
                     )
-                points, blocks_s, blocks_l = calculated_point_tax[costs["Blocks"]]
-                points += int(
-                    (min(10000, costs["Blocks"]) - points) * best.season_pity_rate(
-                        user_data["membership"], tot_costs["Blocks"] - costs["Blocks"]
-                    )
-                )
+                points = calculated_point_tax[costs["Blocks"]]
                 calculated_bulk_upgrades[hash_id]["season_points"] += points
-                calculated_bulk_upgrades[hash_id]["self_market_input"] += blocks_s
-                calculated_bulk_upgrades[hash_id]["last_market_input"] += blocks_l
     else:  # Start lvl >= 5100
         block_cost_mult = tv.block_upgrade_cost_multiplier(
             chat_id, best.season_upget())
@@ -386,6 +332,7 @@ def calculate_bulk_upgrade(chat_id):
             start_level, start_balance, start_blocks, block_cost_mult)
         if len(best.season_upget()["faction"][user_data["membership"]]["current_badge"]) > 0:
             extra_costs_upgradable_level = best.bulk_extra_costs_upgradability(
+                chat_id,
                 start_level,
                 user_data["membership"],
                 user_data["blocks"]
@@ -395,6 +342,7 @@ def calculate_bulk_upgrade(chat_id):
                 extra_costs_upgradable_level
             ) - start_level
             tot_extra_costs = best.bulk_upgrade_extra_costs(
+                chat_id, 
                 start_level,
                 user_data["membership"],
                 levels_done
@@ -406,18 +354,8 @@ def calculate_bulk_upgrade(chat_id):
         costs = gut.bulk_upgrade_costs(start_level, start_level + levels_done, block_cost_mult)
         tot_costs["Money"] = costs["Money"]
         tot_costs["Blocks"] = costs["Blocks"]
-        points, blocks_s, blocks_l = gut.bulk_season_ranking_point_tax(
-            costs["Blocks"],
-            levels_done
-        )
-        points += int(
-            (min(10000 * levels_done, costs["Blocks"]) - points) * best.season_pity_rate(
-                user_data["membership"], min(costs["Blocks"], 5000 * levels_done)
-            )
-        )
+        points = best.season_ranking_point_tax(chat_id, costs["Blocks"],  levels_done)
         calculated_bulk_upgrades[hash_id]["season_points"] = points
-        calculated_bulk_upgrades[hash_id]["self_market_input"] = blocks_s
-        calculated_bulk_upgrades[hash_id]["last_market_input"] = blocks_l
 
     calculated_bulk_upgrades[hash_id]["money"] = tot_costs["Money"]
     calculated_bulk_upgrades[hash_id]["blocks"] = tot_costs["Blocks"]
@@ -462,15 +400,6 @@ def bulk_upgrade(chat_id):
     best.season_add_blocks(
         chat_id, data["season_points"], data["tot_extra_costs"]
     )
-    if data["self_market_input"] > 0:
-        self_section = conv.name(
-            membership=dbr.login(chat_id)["membership"])["block"]
-        best.market_put_blocks(self_section, data["self_market_input"])
-    if data["last_market_input"] > 0:
-        faction_ranking = tv.get_faction_ranking()
-        last_section = conv.name(
-            membership=faction_ranking[-1][0])["block"]
-        best.market_put_blocks(last_section, data["last_market_input"])
 
     multiplayer_info_upget(chat_id)
     mystery_items = best.mystery_items_on_bulk_upgrade(

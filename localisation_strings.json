@@ -2702,6 +2702,54 @@
     "Français": "",
     "Español": ""
   },
+  "SC capital": {
+    "English": "Current capital: equivalent to {capital} wages",
+    "Italiano": "Capitale corrente: equivalente a {capital} salari",
+    "Français": "",
+    "Español": ""
+  },
+  "SC capital info minimum shops": {
+    "English": "Open 100 total shops to start accumulating capital and do sales!",
+    "Italiano": "Apri 100 negozi totali per iniziare ad accumulare capitale e fare saldi!",
+    "Français": "",
+    "Español": ""
+  },
+  "SC button sale available": {
+    "English": "Do sales!",
+    "Italiano": "Fai saldi!",
+    "Français": "",
+    "Español": ""
+  },
+  "SC button sale time left": {
+    "English": "Sale in {time}",
+    "Italiano": "Saldi in {time}",
+    "Français": "",
+    "Español": ""
+  },
+  "SC sale blocks needed": {
+    "English": "You need blocks to do a sale: {blocks}",
+    "Italiano": "Per fare i saldi servono blocchi: {blocks}",
+    "Français": "",
+    "Español": ""
+  },
+  "SC sale done": {
+    "English": "Sales done! You sold {blocks} and got {money}{cur_sym}",
+    "Italiano": "Saldi fatti! Hai venuto {blocks} e ricevuto {money}{cur_sym}",
+    "Français": "",
+    "Español": ""
+  },
+  "SC sale already done": {
+    "English": "You can't do sales again! Please wait",
+    "Italiano": "Non è periodo di saldi! Prova più tardi",
+    "Français": "",
+    "Español": ""
+  },
+  "SC shops below 100": {
+    "English": "You need at least 100 shops to do sales",
+    "Italiano": "Servono almeno 100 negozi per fare i saldi",
+    "Français": "",
+    "Español": ""
+  },
   "minis button manual": {
     "English": "Manual",
     "Italiano": "Guida",

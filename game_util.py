@@ -93,42 +93,32 @@ def bulk_upgradability(base_lvl, money, blocks, block_cost_mult):
     return min(money_max_lvl, blocks_max_lvl)
 
 
-def season_ranking_point_tax(blocks):
-    tier_A_blocks = min(blocks, 10)
-    tier_B_blocks = max(0, min(blocks - 10, 30 - 10))
-    tier_C_blocks = max(0, min(blocks - 30, 60 - 30))
-    tier_D_blocks = max(0, min(blocks - 60, 100 - 60))
-    tier_E_blocks = max(0, min(blocks - 100, 1000 - 100))
-    tier_F_blocks = max(0, min(blocks - 1000, 10000 - 1000))
-
-    to_self_market = (
-        tier_B_blocks * 30 // 100 +
-        tier_C_blocks * 50 // 100
-    )
-    to_last_market = (
-        tier_D_blocks * 75 // 100 +
-        tier_E_blocks * 90 // 100 +
-        tier_F_blocks * 99 // 100
-    )
-    points = (
-        tier_A_blocks +
-        tier_B_blocks + tier_C_blocks - to_self_market +
-        tier_D_blocks + tier_E_blocks + tier_F_blocks - to_last_market
-    )
-
-    return points, to_self_market, to_last_market
-
-
-def bulk_season_ranking_point_tax(totblocks, levels):
-    blocks_per_level = totblocks // levels
-    points, to_self_market, to_last_market = season_ranking_point_tax(
-        blocks_per_level
-    )
-    return (
-        points * levels,
-        to_self_market * levels,
-        to_last_market * levels
-    )
+def season_ranking_point_tax(blocks, faction_points,  top_points,  levels=1):
+    if faction_points + blocks < top_points:
+        levels_per_round = levels
+    else:
+        div = 10
+        while faction_points + blocks/div > top_points * 1.1 and div < levels / 10:
+            div += 1
+        levels_per_round = max(10,  int(levels / div))
+    
+    levels_done = 0
+    blocks_per_level = blocks / levels
+    cached_points = 0
+    while levels_done < levels:
+        levels_to_do = min(levels - levels_done,  levels_per_round)
+        
+        round_blocks = int(blocks_per_level * levels_to_do)
+        nerfing = min(1, (faction_points + cached_points) / top_points)
+        no_tax = min(round_blocks,  100 * levels_to_do)
+        taxing = round_blocks - no_tax
+        taxed = taxing * (nerfing ** 2)
+        points = no_tax + (taxing - taxed)
+        cached_points += points
+        
+        levels_done += levels_to_do
+    
+    return int(cached_points)
 
 
 def current_balance(production_level, saved_balance, timestamp, multiplier=1):
