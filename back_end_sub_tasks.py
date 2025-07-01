@@ -455,17 +455,15 @@ def season_upget():
 def season_ranking_point_tax(chat_id,  blocks,  levels=1):
     faction_ranking = tv.get_faction_ranking()
     faction = get_types_of(chat_id)["membership"]
-    if faction == faction_ranking[0][0]:
-        return 0
     season_data = season_upget()
     self_points = season_data["faction"][faction]["blocks_used"]
     first_points = season_data["faction"][faction_ranking[0][0]]["blocks_used"]
     return gut.season_ranking_point_tax(blocks,  self_points,  first_points,  levels)
 
 
-def upgrade_extra_costs(new_level, faction):
+def upgrade_extra_costs(chat_id, new_level, faction):
     base_blocks = gut.block_cost_formula(new_level)
-    points = season_ranking_point_tax(base_blocks)
+    points = season_ranking_point_tax(chat_id, base_blocks)
     extra_blocks_base = max(0, (points - 10) // 10)
     if extra_blocks_base < 1:
         return {}
@@ -487,9 +485,9 @@ def upgrade_extra_costs(new_level, faction):
     return extra_blocks
 
 
-def bulk_extra_costs_upgradability(base_level, faction, blocks):
+def bulk_extra_costs_upgradability(chat_id, base_level, faction, blocks):
     base_blocks = gut.block_cost_formula(base_level)
-    points = season_ranking_point_tax(base_blocks)
+    points = season_ranking_point_tax(chat_id, base_blocks)
     extra_blocks_base = max(0, (points - 10) // 10)
     if extra_blocks_base < 1:
         return math.inf
@@ -520,9 +518,9 @@ def bulk_extra_costs_upgradability(base_level, faction, blocks):
     return upgradability + base_level
 
 
-def bulk_upgrade_extra_costs(base_level, faction, levels):
+def bulk_upgrade_extra_costs(chat_id, base_level, faction, levels):
     base_blocks = gut.block_cost_formula(base_level)
-    points = season_ranking_point_tax(base_blocks)
+    points = season_ranking_point_tax(chat_id, base_blocks)
     extra_blocks_base = max(0, (points - 10) // 10)
     if extra_blocks_base < 1:
         return {}

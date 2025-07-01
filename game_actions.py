@@ -188,8 +188,10 @@ def can_upgrade(chat_id):
     cur = conv.name(membership=user_data["membership"])["currency"]
 
     extra_costs = best.upgrade_extra_costs(
+        chat_id, 
         user_data["production_level"] + 1,
-        user_data["membership"])
+        user_data["membership"]
+    )
 
     can = True
     balance = user_data["balance"]
@@ -208,7 +210,7 @@ def can_upgrade(chat_id):
                     conv.name(block=block_type)["currency"]]
             )
             can = False
-    points = best.season_ranking_point_tax(costs["Blocks"])
+    points = best.season_ranking_point_tax(chat_id,  costs["Blocks"])
     return can, costs, extra_costs, missing_extra, points
 
 
@@ -227,7 +229,7 @@ def upgrade_money_printer(chat_id):
     if not can_upgrade(chat_id)[0]:
         return uistr.get(chat_id, "Insufficient blocks")
     dbw.up_money_printer(chat_id, costs)
-    extra_costs = best.upgrade_extra_costs(new_level, user_data["membership"])
+    extra_costs = best.upgrade_extra_costs(chat_id,  new_level, user_data["membership"])
     for block_type in extra_costs:
         dbw.pay_block(
             chat_id,
@@ -241,7 +243,7 @@ def upgrade_money_printer(chat_id):
         type] + production_delta
     dbw.up_global_production(type, new_global_production)
 
-    points = best.season_ranking_point_tax(costs["Blocks"])
+    points = best.season_ranking_point_tax(chat_id, costs["Blocks"])
     best.season_add_blocks(chat_id, points, extra_costs)
 
     if best.mystery_item_on_level_up(chat_id, new_level):
@@ -302,8 +304,10 @@ def calculate_bulk_upgrade(chat_id):
             if costs["Blocks"] > blocks - tot_costs["Blocks"]:
                 calculated_bulk_upgrades[hash_id]["can"] = False
             extra_costs = best.upgrade_extra_costs(
+                chat_id, 
                 start_level + levels_done + 1,
-                user_data["membership"])
+                user_data["membership"]
+            )
             for block_type in extra_costs:
                 if extra_costs[block_type] + tot_extra_costs[
                         block_type] > user_data["blocks"][
@@ -317,7 +321,7 @@ def calculate_bulk_upgrade(chat_id):
                 tot_costs["Blocks"] += costs["Blocks"]
                 if costs["Blocks"] not in calculated_point_tax:
                     calculated_point_tax[costs["Blocks"]] = (
-                        best.season_ranking_point_tax(costs["Blocks"])
+                        best.season_ranking_point_tax(chat_id, costs["Blocks"])
                     )
                 points = calculated_point_tax[costs["Blocks"]]
                 calculated_bulk_upgrades[hash_id]["season_points"] += points
@@ -328,6 +332,7 @@ def calculate_bulk_upgrade(chat_id):
             start_level, start_balance, start_blocks, block_cost_mult)
         if len(best.season_upget()["faction"][user_data["membership"]]["current_badge"]) > 0:
             extra_costs_upgradable_level = best.bulk_extra_costs_upgradability(
+                chat_id,
                 start_level,
                 user_data["membership"],
                 user_data["blocks"]
@@ -337,6 +342,7 @@ def calculate_bulk_upgrade(chat_id):
                 extra_costs_upgradable_level
             ) - start_level
             tot_extra_costs = best.bulk_upgrade_extra_costs(
+                chat_id, 
                 start_level,
                 user_data["membership"],
                 levels_done
@@ -348,7 +354,7 @@ def calculate_bulk_upgrade(chat_id):
         costs = gut.bulk_upgrade_costs(start_level, start_level + levels_done, block_cost_mult)
         tot_costs["Money"] = costs["Money"]
         tot_costs["Blocks"] = costs["Blocks"]
-        points = best.season_ranking_point_tax(costs["Blocks"],  levels_done)
+        points = best.season_ranking_point_tax(chat_id, costs["Blocks"],  levels_done)
         calculated_bulk_upgrades[hash_id]["season_points"] = points
 
     calculated_bulk_upgrades[hash_id]["money"] = tot_costs["Money"]
