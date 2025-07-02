@@ -79,35 +79,6 @@ def economy_inflation(chat_id):
     )
 
 
-# Returns all daily wages, updates list for 0 incomes. and individual data
-def SC_faction_upget(chat_id, faction):
-    game_data, _ = SC_game_and_player_data(chat_id)
-    employers_to_delete = []
-    employers_wages = {}
-    for employer_id in game_data["faction_employers"][faction]:
-        if employer_id == 0:
-            continue
-        employer_data = best.mini_get_player(employer_id, "Shop Chain")
-        if sum(employer_data["history"]) > 0:
-            period_diff = gut.time_s() // sc_period - employer_data["game_timestamp"] // sc_period
-            if period_diff > 0:
-                for _ in range(min(6, period_diff)):
-                    employer_data["history"] = employer_data["history"][1:6] + [0]
-                employer_data["game_timestamp"] = gut.time_s()
-                best.mini_up_player(employer_id, "Shop Chain", employer_data)
-        if sum(employer_data["history"]) == 0:
-            employers_to_delete.append(employer_id)
-        else:
-            employers_wages[employer_id] = sum(employer_data["history"])
-
-    if len(employers_to_delete) > 0:
-        for employer_id in employers_to_delete:
-            game_data["faction_employers"][faction].remove(employer_id)
-        dbw.mini_up_general(game_data)
-
-    return employers_wages
-
-
 def SC_player_total_shops(chat_id):
     _, player_data = SC_game_and_player_data(chat_id)
     count = 0
@@ -188,23 +159,15 @@ def ui_SC_wage_pay(chat_id):
     dbw.pay_money(chat_id, price)
 
     player_data["history"][-1] = salary
-    faction_wages = SC_faction_upget(chat_id, dbr.login(chat_id)["membership"])
-    if len(faction_wages) < 3:
-        multiplier = 1
-    else:
-        max_wage = max(faction_wages.values())
-        if faction_wages[chat_id] == max_wage:
-            multiplier = 2
-        else:
-            multiplier = (faction_wages[chat_id] / max_wage)**2
+    best.mini_up_player(chat_id, "Shop Chain", player_data)  # 'cause sometimes it doesn't put it for some reason
+    
     bpf = {}
     tot_score = 0
     for faction in gut.list["membership"]:
         bpf[faction] = min(int(
             .5 +
             player_data["employees"] *
-            math.log2(player_data["shops_" + faction] + 1) *
-            multiplier
+            math.log2(player_data["shops_" + faction] + 1)
         ), 10**35)
         tot_score += bpf[faction]
         dbw.add_block(
@@ -442,74 +405,6 @@ def ui_SC_main_screen(chat_id):
         sale_button: "SC sale",
         uistr.get(chat_id, "button back"): "Main menu"
     })
-    return message, keyboard
-
-
-# This is getting removed, along with the whole feature
-def ui_SC_data_screen(chat_id):
-    # Show data on this player's faction
-    player_faction = dbr.login(chat_id)["membership"]
-    player_faction_wages = SC_faction_upget(chat_id, player_faction)
-    if len(player_faction_wages) == 0:
-        player_faction_wages = {chat_id: 0}
-    message = uistr.get(chat_id, "SC Data Player Faction") + uistr.get(chat_id, "SC Data Line").format(
-        max=put.pretty(max(player_faction_wages.values())),
-        avg=put.pretty(sum(player_faction_wages.values()) // len(player_faction_wages)),
-        min=put.pretty(min(player_faction_wages.values())),
-        syn=conv.name(membership=player_faction)["symbol"]
-    ) + "\n\n"
-
-    # Show data on other factions
-    all_factions_wages = {}
-    all_factions_wages = {**all_factions_wages, **player_faction_wages}
-    for faction in gut.list["membership"]:
-        if faction == player_faction:
-            continue
-        faction_wages = SC_faction_upget(chat_id, faction)
-        all_factions_wages = {**all_factions_wages, **faction_wages}
-        if len(faction_wages) == 0:
-            faction_wages = {chat_id: 0}
-        message += faction + ": " + uistr.get(chat_id, "SC Data Line").format(
-            max=put.pretty(max(faction_wages.values())),
-            avg=put.pretty(sum(faction_wages.values()) // len(faction_wages)),
-            min=put.pretty(min(faction_wages.values())),
-            syn=conv.name(membership=faction)["symbol"]
-        ) + "\n"
-    message += "\n"
-
-    # Show best player in player faction and in general
-    best_player_in_player_faction, b_wage_ipf = gut.sort(player_faction_wages)[0]
-    best_player_in_general, b_wage_ig = gut.sort(all_factions_wages)[0]
-
-    if best_player_in_player_faction == best_player_in_general:
-        message += uistr.get(chat_id, "SC best unified").format(
-            player=uistr.nickname(
-                chat_id,
-                best_player_in_general,
-                dbr.get_nickname(best_player_in_general)
-            ),
-            wage=put.pretty(b_wage_ig)
-        )
-    else:
-        message += uistr.get(chat_id, "SC best two").format(
-            player_pf=uistr.nickname(
-                chat_id,
-                best_player_in_player_faction,
-                dbr.get_nickname(best_player_in_player_faction)
-            ),
-            wage_pf=put.pretty(b_wage_ipf),
-            player_general=uistr.nickname(
-                chat_id,
-                best_player_in_general,
-                dbr.get_nickname(best_player_in_general)
-            ),
-            wage_general=put.pretty(b_wage_ig)
-        )
-
-    keyboard = [{
-        uistr.get(chat_id, "SC button main"): "SC main",
-        uistr.get(chat_id, "button back"): "Main menu"
-    }]
     return message, keyboard
 
 

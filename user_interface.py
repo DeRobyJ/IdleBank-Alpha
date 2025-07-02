@@ -1569,8 +1569,6 @@ def exe_and_reply(query, chat_id):
     elif query == "SC main":
         user_last_menu[chat_id] = query
         message, keyboard = minis.ui_SC_main_screen(chat_id)
-    elif query == "SC data screen":
-        message, keyboard = minis.ui_SC_data_screen(chat_id)
     elif "SC " in query:
         user_last_menu[chat_id] = "SC main"
         action = query[len("SC "):]

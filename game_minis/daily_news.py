@@ -1,4 +1,5 @@
 from game_minis._common import *
+from game_minis.coinopoly import cp_map
 
 # == DAILY NEWS ==
 '''
