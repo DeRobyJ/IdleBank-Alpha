@@ -1569,8 +1569,6 @@ def exe_and_reply(query, chat_id):
     elif query == "SC main":
         user_last_menu[chat_id] = query
         message, keyboard = minis.ui_SC_main_screen(chat_id)
-    elif query == "SC data screen":
-        message, keyboard = minis.ui_SC_data_screen(chat_id)
     elif "SC " in query:
         user_last_menu[chat_id] = "SC main"
         action = query[len("SC "):]
@@ -1656,7 +1654,10 @@ def exe_and_reply(query, chat_id):
 def last_menu(chat_id):
     if chat_id not in user_last_menu:
         return exe_and_reply("Main menu", chat_id)
-    return exe_and_reply(user_last_menu[chat_id], chat_id)
+    try:
+        return exe_and_reply(user_last_menu[chat_id], chat_id)
+    except Exception:
+        return exe_and_reply("Main menu", chat_id)
 
 
 def game_credits(chat_id):

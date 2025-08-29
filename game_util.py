@@ -109,7 +109,7 @@ def season_ranking_point_tax(blocks, faction_points,  top_points,  levels=1):
         levels_to_do = min(levels - levels_done,  levels_per_round)
         
         round_blocks = int(blocks_per_level * levels_to_do)
-        nerfing = min(1, (faction_points + cached_points) / top_points)
+        nerfing = min(1, (faction_points + cached_points) / max(1, top_points ))
         no_tax = min(round_blocks,  100 * levels_to_do)
         taxing = round_blocks - no_tax
         taxed = taxing * (nerfing ** 2)

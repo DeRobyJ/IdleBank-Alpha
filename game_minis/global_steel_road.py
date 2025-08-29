@@ -31,16 +31,18 @@ sr_dividends = {}
 
 
 def SR_factories_dividend(station, redo=False):
+    season_days_left = gut.time_till_next_season() // (60 * 60 * 24)
+    dividend_mult = 1 - (season_days_left / 100.0)
     if station not in sr_dividends or redo:
         game_data = dbr.mini_get_general("Global Steel Road")
         tot_production = 0
         for fid in "SABCDEF":
             if game_data["Factories"][str(station) + fid][
                "owner_chat_id"] > 0:
-                tot_production += best.get_base_production(game_data[
+                tot_production += best.get_production(game_data[
                     "Factories"][str(station) + fid]["owner_chat_id"])
-        sr_dividends[station] = (
-            tot_production * tv.GSRF_extra_divdeg()[0]
+        sr_dividends[station] = int(
+            tot_production * tv.GSRF_extra_divdeg()[0] * dividend_mult
         ) // 60
     return sr_dividends[station]
 
@@ -115,9 +117,16 @@ def SR_position():
                         "fid": fid,
                         "qty": int(factory["value"] * base_dividend)
                     })
-                    if do_degrade:  # random.random()*7 < 1:
-                        season_days_left = gut.time_till_next_season() // (60 * 60 * 24)
-                        degrade_rate = (season_days_left / 100.0) ** 2
+                    if do_degrade:
+                        degrade_rate = {
+                            "S": 0, 
+                            "A": .01, 
+                            "B": .03, 
+                            "C": .07, 
+                            "D": .15, 
+                            "E": .31, 
+                            "F": .63
+                        }[fid]
                         factory["value"] -= max(
                             int(factory["value"] * degrade_rate),
                             tv.GSRF_extra_divdeg()[1]

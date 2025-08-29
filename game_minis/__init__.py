@@ -2,7 +2,7 @@ from game_minis.daily_news import ui_DN_main_screen,  ui_DN_agencies_screen,  ui
 from game_minis.ore_miner import ui_OM_main_screen,  ui_OM_game
 from game_minis.global_steel_road import SR_position,  sr_data,  ui_SR_main_screen,  ui_SR_player_action,  ui_SR_manual,  ui_SR_mode_switch,  ui_SR_factories_action
 from game_minis.investment_plan import IP_check_game,  IP_game_emoji,  ui_IP_main_screen,  ui_IP_info_screen,  ui_IP_option_select,  ui_IP_invest
-from game_minis.shop_chain import sc_period,  SC_get_points_record,  economy_inflation,  SC_get_personal_points_record,  ui_SC_main_screen,  ui_SC_data_screen,  ui_SC_action
+from game_minis.shop_chain import sc_period,  SC_get_points_record,  economy_inflation,  SC_get_personal_points_record,  ui_SC_main_screen,  ui_SC_action
 from game_minis.coinopoly import cp_map,  cp_period,  ui_CP_cryptoprint,  ui_CP_main_screen,  ui_CP_menu_map,  ui_CP_menu_list,  ui_CP_player_action
 import conversions as conv
 import back_end_sub_tasks as best
