@@ -39,9 +39,8 @@ def login(chat_id):
     if "gear_level" not in ch().active_users[chat_id]:  # migration guard
         ch().active_users[chat_id]["gear_level"] = 0
     data["gear_level"] = ch().active_users[chat_id]["gear_level"]
-    if "shut_valves" not in ch().active_users[chat_id]:  # migration guard
-        ch().active_users[chat_id]["shut_valves"] = 0
-    data["shut_valves"] = ch().active_users[chat_id]["shut_valves"]
+    if "shut_valves" in ch().active_users[chat_id]:  # migration guard
+        ch().active_users[chat_id].pop("shut_valves")
     data["balance_timestamp"] = ch().active_users[chat_id]["balance_timestamp"]
     data["balance"] = gut.balance(
         ch().active_users[chat_id]["production_level"],

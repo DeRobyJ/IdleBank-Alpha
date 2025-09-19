@@ -281,12 +281,6 @@ def main_menu_keyboard_for(chat_id, user_data, minis_emoji):
             "⚙️ 📦 ⚙️": "Gear",
             uistr.get(chat_id, upbutton[0]): upbutton[1]
         })
-    elif game.can_operate_valves(chat_id):
-        keyboard.append({
-            "IBTV 📺": "Temporal Variations 0",
-            "⚙️ 🔧 ⚙️": "Valve Screen",
-            uistr.get(chat_id, upbutton[0]): upbutton[1]
-        })
     else:
         if lvl_limit(player_level, player_gear, "Mini IP"):
             keyboard.append({"IBTV 📺": "Temporal Variations 0",
@@ -1240,50 +1234,6 @@ def personal_page(viewer_id, chat_id, page):
     return message, keyboard
 
 
-def valve_screen(chat_id):
-    (
-        player_valves, player_level, level_after_opening_valves, all_valve_values,
-        user_currency, op_price, can_gear_normally, gear_level_cost, can_gear_after_opening,
-        max_valve_closing
-    ) = game.get_valve_screen_data(chat_id)
-    message = "൦" * 40 + "\n"
-    message += uistr.get(chat_id, "Valve Info")
-    for cur in all_valve_values:
-        message += uistr.get(chat_id, "Valve faction value").format(
-            faction=conv.name(currency=cur)["membership"],
-            value=put.pretty(all_valve_values[cur])
-        )
-
-    level_after_closing_valves = player_level - max_valve_closing * all_valve_values[user_currency]
-    message += uistr.get(chat_id, "Valve user options").format(
-        cur_level=put.pretty(player_level),
-        cur_valves=put.pretty(player_valves),
-        level_after_opening=put.pretty(level_after_opening_valves),
-        valves_closing=put.pretty(max_valve_closing),
-        level_after_closing=put.pretty(level_after_closing_valves),
-        valves_after_closing=put.pretty(max_valve_closing + player_valves),
-        gear_level_cost=put.pretty(gear_level_cost)
-    )
-
-    if can_gear_normally:
-        message += uistr.get(chat_id, "Valve note gear normal")
-    elif can_gear_after_opening:
-        message += uistr.get(chat_id, "Valve note gear after opening")
-
-    message += uistr.get(chat_id, "Valve price").format(
-        price=put.pretty(op_price),
-        cur_sym=conv.name(currency=user_currency)["symbol"]
-    )
-
-    keyboard = []
-    keyboard.append({
-        uistr.get(chat_id, "Valve button close"): "Valve close",
-        uistr.get(chat_id, "Valve button open"): "Valve open",
-    })
-    keyboard.append({uistr.get(chat_id, "button back"): "Main menu"})
-    return message, keyboard
-
-
 # hopefully AWS doesn't kill machines in seconds!
 current_request_type = {}
 user_last_menu = {}
@@ -1630,14 +1580,6 @@ def exe_and_reply(query, chat_id):
         delta_month = int(query[len("Temporal Variations "):])
         message, keyboard = temporal_variations_screen(chat_id, delta_month)
 
-    elif query == "Valve Screen":
-        user_last_menu[chat_id] = query
-        message, keyboard = valve_screen(chat_id)
-    elif query == "Valve close":
-        message = game.operate_valves(chat_id, "close")
-    elif query == "Valve open":
-        message = game.operate_valves(chat_id, "open")
-
     elif query == "Event":
         message, keyboard = game_events.do_event(chat_id)
     else:
@@ -1702,14 +1644,6 @@ def handle_message(chat_id, mex):
             if check_april_fools(chat_id):
                 return exe_and_reply("mnm Main menu", chat_id)
             return mystery_item_screen(chat_id)
-        elif mex == "/valve":
-            if check_april_fools(chat_id):
-                return exe_and_reply("mnm Main menu", chat_id)
-            if (game.check_account(chat_id)["status"] == "Activated" and
-               (game.load_main_menu(chat_id)["user"][
-                "production_level"] > 35 or
-               game.load_main_menu(chat_id)["user"]["gear_level"] > 0)):
-                return valve_screen(chat_id)
         elif "/edb" in mex:
             query_parts = mex.split()
             faction = "No"

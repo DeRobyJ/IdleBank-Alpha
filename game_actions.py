@@ -1652,65 +1652,6 @@ def recalculate_global_production():
     dbw.up_multiplayer_info(multi_data)
 
 
-def get_valve_screen_data(chat_id):
-    player_valves = best.get_valves(chat_id)
-    player_level = dbr.login(chat_id)["production_level"]
-    level_after_opening_valves = best.get_level_opening_valves(chat_id)
-    all_valve_values = best.get_all_valve_values()
-    user_currency = best.get_types_of(chat_id)["currency"]
-    op_price = best.get_valve_operation_price(chat_id)
-
-    can_gear_normally, gear_level_cost, _ = can_gear_up(chat_id)
-    can_gear_after_opening = level_after_opening_valves > gear_level_cost
-
-    max_valve_closing = best.get_max_valve_closing(chat_id)
-    return (
-        player_valves, player_level, level_after_opening_valves, all_valve_values,
-        user_currency, op_price, can_gear_normally, gear_level_cost, can_gear_after_opening,
-        max_valve_closing
-    )
-
-
-def can_operate_valves(chat_id):
-    if best.get_valves(chat_id) > 0:
-        return True
-    if best.get_max_valve_closing(chat_id) > 0:
-        return True
-    return False
-
-
-def operate_valves(chat_id, op):
-    user_data = dbr.login(chat_id)
-    cur_valves = best.get_valves(chat_id)
-    valve_value = best.get_valve_value(chat_id)
-    price = best.get_valve_operation_price(chat_id)
-    if not dbr.check_payment(chat_id, price):
-        return uistr.get(chat_id, "Insufficient balance")
-    cur_level = user_data["production_level"]
-
-    if op == "close":
-        valve_closing = best.get_max_valve_closing(chat_id)
-        levels_frozen = valve_closing * valve_value
-        if cur_level - levels_frozen < (10**6):
-            return "Uh?"
-        dbw.set_valves(chat_id, cur_valves + valve_closing, cur_level - levels_frozen)
-    elif op == "open":
-        level_unfrozen = cur_valves * valve_value
-        dbw.set_valves(chat_id, 0, cur_level + level_unfrozen)
-
-    dbw.pay_money(chat_id, price)
-
-    best.market_put_money(
-        conv.name(membership=user_data["membership"])["block"],
-        gearup_money_to_market(chat_id)
-    )
-    # Re-getting user data after first payment, just to be sure
-    dbw.pay_money(chat_id, dbr.login(chat_id)["balance"])
-
-    recalculate_global_production()
-    return uistr.get(chat_id, "Done")
-
-
 # admin actions ====================================
 
 def game_start():

@@ -448,20 +448,6 @@ def member_switch(old_memb, new_memb, old_ship_count, new_ship_count):
     return "Ok"
 
 
-def set_valves(chat_id, new_valve_count, new_production_level):
-    if chat_id not in ch().active_users:
-        return "Abort"
-    consolidate_balance(chat_id)
-    print("dbw", chat_id, "set_valves")
-    di.item_update(di.pre_user, {'key': {"S": str(
-        chat_id)}}, "shut_valves", {"N": new_valve_count})
-    ch().active_users[chat_id]["shut_valves"] = new_valve_count
-    di.item_update(di.pre_user, {'key': {"S": str(
-        chat_id)}}, "production_level", {"N": new_production_level})
-    ch().active_users[chat_id]["production_level"] = new_production_level
-    return "Ok"
-
-
 def up_minimal_user(chat_id, user_data):
     print("dbw", chat_id, "minimal_user")
     user_data["key"] = chat_id

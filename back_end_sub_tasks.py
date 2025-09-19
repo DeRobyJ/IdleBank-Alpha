@@ -658,7 +658,6 @@ def mystery_item_on_level_up(chat_id, lvl):
 
 def mystery_items_on_bulk_upgrade(chat_id, fromlvl, tolvl):
     user_data = dbr.login(chat_id)
-    user_data["gear_level"]
     ref_level = 50 * (user_data["gear_level"] + 1)
     base_prob = mystery_item_base_probability(chat_id)
 
@@ -672,45 +671,11 @@ def mystery_items_on_bulk_upgrade(chat_id, fromlvl, tolvl):
         current_level += ref_level
     return mitems
 
+def get_valve_value(valves=1):
+    if valves <= 1:
+        return 0
+    top_gear = max(2, dbr.get_multiplayer_info()["top_gear"]["level"])
+    top_level_cost = gut.gear_up_level_cost(top_gear, top_gear+1)
 
-def get_valves(chat_id):
-    return dbr.login(chat_id)["shut_valves"]
-
-
-def get_all_valve_values():
-    cur_status = dbr.get_currencies_status()
-    cur_order = [(i, cur_status[i]) for i in cur_status]
-    cur_order = sorted(cur_order, key=lambda item: item[1], reverse=True)
-    cur_order = [i[0] for i in cur_order]
-
-    return {
-        cur_order[0]: 2 * (10 ** 9),
-        cur_order[1]: 15 * (10 ** 8),
-        cur_order[2]: 10 ** 9,
-        cur_order[3]: 7 * (10 ** 8),
-        cur_order[4]: 5 * (10 ** 8),
-        cur_order[5]: 4 * (10 ** 8),
-        cur_order[6]: 35 * (10 ** 7)
-    }
-
-
-def get_valve_value(chat_id):
-    user_currency = get_types_of(chat_id)["currency"]
-    valve_value = get_all_valve_values()[user_currency]
-    return valve_value
-
-
-def get_level_opening_valves(chat_id):
-    level = dbr.login(chat_id)["production_level"]
-    level += get_valves(chat_id) * get_valve_value(chat_id)
-    return level
-
-
-def get_valve_operation_price(chat_id):
-    return get_production(chat_id) * 100
-
-
-def get_max_valve_closing(chat_id):
-    valve_value = get_valve_value(chat_id)
-    level = dbr.login(chat_id)["production_level"]
-    return max(0, (level - (10**6)) // valve_value)
+    factor = 1 - (2/3) ** valves
+    return top_level_cost * factor
