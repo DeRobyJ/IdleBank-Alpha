@@ -166,7 +166,7 @@ def get_season_info():
     return ch().season_info
 
 
-def check_payment(chat_id, cost, currency="unified"):
+def check_payment(chat_id, cost):
     player_balance = login(chat_id)["balance"]
     if player_balance >= cost:
         return True
@@ -237,7 +237,7 @@ def mini_get_player(chat_id, game_name):
             "Investment Plan": {},
             "Shop Chain": {}
         }
-        for invit in ["coal", "dice", "key", "mystery_item", "investment_pass"]:
+        for invit in ["coal", "dice", "key", "mystery_item", "investment_pass", "valve"]:
             if "in::" + invit in raw_data:
                 ch().mini_player[chat_id]["inventory"][invit] = raw_data[
                     "in::" + invit]

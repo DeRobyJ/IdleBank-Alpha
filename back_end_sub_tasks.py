@@ -650,7 +650,6 @@ def mystery_item_base_probability(chat_id):
 
 def mystery_item_on_level_up(chat_id, lvl):
     user_data = dbr.login(chat_id)
-    user_data["gear_level"]
     ref_level = 50 * (user_data["gear_level"] + 1)
     return lvl % ref_level == 0 and random.random() < (
         .25 * mystery_item_base_probability(chat_id))
@@ -678,4 +677,23 @@ def get_valve_value(valves=1):
     top_level_cost = gut.gear_up_level_cost(top_gear, top_gear+1)
 
     factor = 1 - (2/3) ** valves
-    return top_level_cost * factor
+    return int(top_level_cost * factor)
+
+def get_valve_price(chat_id):
+    currency = get_types_of(chat_id)["currency"]
+    global_production = max(
+        dbr.get_currencies_status()[currency],
+        get_production(chat_id)  # safeguard against incorrect global production
+    )
+    current_time = gut.time_s()
+    timestamp = dbr.get_multiplayer_info().get("timestamp", current_time)
+
+    max_price = global_production * 24 * 365
+    min_price = global_production * 24  # should be reached in about 115 days
+    price = int(max(
+        min_price,
+        max_price * (.95 ** (  # -5% a day
+                (current_time - timestamp) / (60 * 60 * 24)
+        ))
+    ))
+    return price

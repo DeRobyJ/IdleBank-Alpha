@@ -577,19 +577,14 @@ def gear_menu(chat_id):
     can, level_cost, _ = game.can_gear_up(chat_id)
     if level_cost is None:
         return "WIP", [{uistr.get(chat_id, "button back"): "Main menu"}]
+
+    effects = game.gearup_effects(chat_id)
+
     if not can:
         can = False
         message += uistr.get(chat_id, "Gearup not ready").format(
-            needed_level=put.readable(level_cost + 1)
-        )
-        message += "\n" + "-" * 30 + "\n"
-    excess_money = game.gearup_market_absorption(chat_id)
-    if False:  # excess_money > 0:
-        can = False
-        message += uistr.get(chat_id, "Gearup too much money").format(
-            excess=put.pretty(excess_money),
-            sym=conv.name(membership=game.load_main_menu(
-                chat_id)["user"]["membership"])["symbol"]
+            valves=put.readable(effects["prod_level"][1]),
+            needed_level=put.readable( effects["prod_level"][5])
         )
         message += "\n" + "-" * 30 + "\n"
     if not game.passes_season_gearup_limit(chat_id):
@@ -600,10 +595,12 @@ def gear_menu(chat_id):
     message += uistr.get(chat_id, "Gearup info")
     message += "\n"
 
-    effects = game.gearup_effects(chat_id)
-    message += uistr.get(chat_id, "Gearup effect Prod_level") + put.readable(
-        effects["Prod_level"][0]) + " → " + put.readable(
-        effects["Prod_level"][1]) + "\n"
+    message += uistr.get(chat_id, "Gearup effect Prod_level").format(
+        current=put.readable(effects["prod_level"][0]),
+        valves=put.readable(effects["prod_level"][1]),
+        discount=put.readable(effects["prod_level"][2]),
+        final=put.readable(effects["prod_level"][3])
+    )
     message += uistr.get(chat_id, "Gearup effect Prod_rate") + put.pretty(
         effects["hourly_production_rate"][0]) + "M / h → " + put.pretty(
         effects["hourly_production_rate"][1]) + "M / h\n"
@@ -669,39 +666,6 @@ def gear_menu(chat_id):
 
     keyboard.append({uistr.get(chat_id, "button back"): "Main menu"})
     return message, keyboard
-
-
-def info_upgrade_account_to_single_balance(chat_id):
-    r = game.load_main_menu(chat_id)
-    user_data = r["user"]
-    cur_status = r["currencies"]
-
-    message = ""
-    message += uistr.get(chat_id, "accup new market general info")
-
-    cur_order = [(i, cur_status[i]) for i in cur_status]
-    cur_order = sorted(cur_order, key=lambda item: item[1], reverse=True)
-    cur_order = [i[0] for i in cur_order]
-    highest_cur = cur_order[0]
-    change_rate = {
-        i: max(0.001, (cur_status[i] / cur_status[highest_cur]))
-        for i in cur_status}
-    cur_sym = [conv.name(currency=currency)["symbol"]
-               for currency in cur_order]
-
-    sum_of_bal = 0
-    for i in range(3):
-        old_bal = user_data["balance"][cur_order[i]]
-        new_bal = (max(1, int(int(old_bal / change_rate[cur_order[i]]) *
-                   change_rate[cur_order[0]])))
-        sum_of_bal += new_bal
-        message += uistr.get(chat_id, "accup balance").format(
-            old_balance=str(old_bal) + cur_sym[i],
-            new_balance=str(new_bal) + cur_sym[0])
-    message += uistr.get(chat_id, "accup total").format(
-        total_new_balance=str(sum_of_bal) + cur_sym[0])
-
-    return message
 
 
 def market_screen(chat_id, section_selection):
@@ -1319,14 +1283,6 @@ def exe_and_reply(query, chat_id):
                         "chat_id": int(os.environ["ADMIN_CHAT_ID"]),
                         "message": f"Activated account for /view@{chat_id}"
                     }]
-    elif query == "Account Upgrade":
-        message = info_upgrade_account_to_single_balance(chat_id)
-        keyboard = [{
-            uistr.get(chat_id, "button confirm"): "Account Upgrade Confirm",
-            uistr.get(chat_id, "button back"): "Main menu"}]
-    elif query == "Account Upgrade Confirm":
-        game.upgrade_to_single_balance(chat_id)
-        message = uistr.get(chat_id, "Done")
     elif query == "Nickname Random":
         message = game.set_random_nickname(chat_id)
     elif "Nickname" in query:
