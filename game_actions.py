@@ -974,6 +974,11 @@ def valve_deal(chat_id, qty, action):
         for section in gut.list["block"]:
             best.market_put_money(section, share)
 
+        muli = dbr.get_multiplayer_info()
+        muli["valve_acquisition_timestamp"] = gut.time_s()
+        dbw.up_multiplayer_info(muli)
+
+
     return uistr.get(chat_id, "Done")
 
 def change_language(chat_id, language_selected):

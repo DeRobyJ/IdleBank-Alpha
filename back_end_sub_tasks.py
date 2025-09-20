@@ -686,7 +686,7 @@ def get_valve_price(chat_id):
         get_production(chat_id)  # safeguard against incorrect global production
     )
     current_time = gut.time_s()
-    timestamp = dbr.get_multiplayer_info().get("timestamp", current_time)
+    timestamp = dbr.get_multiplayer_info().get("valve_acquisition_timestamp", current_time)
 
     max_price = global_production * 24 * 365
     min_price = global_production * 24  # should be reached in about 115 days

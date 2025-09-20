@@ -1801,8 +1801,8 @@
     "Español": ""
   },
   "Flea Market Info": {
-    "English": "The Flea Market allows anyone to swap between items! Come often to check which offers are available!\n\n",
-    "Italiano": "Il Mercatino offre a chiunque un luogo di scambio tra oggetti! Torna spesso per vedere cosa è disponibile!\n\n",
+    "English": "The Flea Market allows anyone to swap between items! Come often to check which offers are available!\nValves are always available, and their price decreases 5% a day until somebody buys one!\n\n",
+    "Italiano": "Il Mercatino offre a chiunque un luogo di scambio tra oggetti! Torna spesso per vedere cosa è disponibile!\nLe Valvole sono sempre disponibili, il prezzo scende di 5% al giorno finché qualcuno non ne acquista una!\n\n",
     "Français": "",
     "Español": ""
   },
@@ -1881,6 +1881,12 @@
   "FM item investment_pass": {
     "English": "Inv. Pass",
     "Italiano": "Pass Inv.",
+    "Français": "",
+    "Español": ""
+  },
+  "FM item valve": {
+    "English": "valves",
+    "Italiano": "valvole",
     "Français": "",
     "Español": ""
   },
@@ -3089,54 +3095,6 @@
   "PP Badges no pages": {
     "English": "Badges\n",
     "Italiano": "Stemmi\n",
-    "Français": "",
-    "Español": ""
-  },
-  "Valve Info": {
-    "English": "- You can close valves to temporarily reduce your production level, so it is easier to progress! Then, once satisfied, you can open them again.\n- The fee is 100 hours of production.\n- However, note that valves value is based on your position in the global production leaderboard!\n\nThese are the current values:\n",
-    "Italiano": "- Puoi chiudere le valvole per ridurre il tuo livello di produzione temporaneamente, così da progredire più facilmente! In seguito potrai riaprirle.\n- Il costo è di 100 ore di produzione.\n- Ma attenzione, il valore di una valvola dipende dalla tua posizione nella classifica di produzione globale!\n\nEcco i valori attuali:\n",
-    "Français": "",
-    "Español": ""
-  },
-  "Valve faction value": {
-    "English": "{faction}: 1 valve = {value} production levels\n",
-    "Italiano": "{faction}: 1 valvola = {value} livelli di produzione\n",
-    "Français": "",
-    "Español": ""
-  },
-  "Valve user options": {
-    "English": "\n\nCurrent: {cur_level} levels, {cur_valves} valves\nClosing {valves_closing} valves: {level_after_closing} levels, {valves_after_closing} valves\nOpening all valves: {level_after_opening} levels\n\nNote you can gear up at level {gear_level_cost}\n\n",
-    "Italiano": "\n\nAdesso: {cur_level} livelli, {cur_valves} valvole\nChiudendo {valves_closing} valvole: {level_after_closing} livelli, {valves_after_closing} valvole\nAprendole tutte: {level_after_opening} livelli\n\nConsidera che puoi aumentare di manrcia a livello {gear_level_cost}\n\n",
-    "Français": "",
-    "Español": ""
-  },
-  "Valve note gear normal": {
-    "English": "Actually, you can currently gear up!\n",
-    "Italiano": "In realtà potresti salire di marcia già ora!\n",
-    "Français": "",
-    "Español": ""
-  },
-  "Valve note gear after opening": {
-    "English": "If you open the valves now, you'll be able to gear up.\n",
-    "Italiano": "Se apri le valvole ora, potrai salire di marcia.\n",
-    "Français": "",
-    "Español": ""
-  },
-  "Valve price": {
-    "English": "Current operation fee: {price}",
-    "Italiano": "Costo operativo attuale: {price}",
-    "Français": "",
-    "Español": ""
-  },
-  "Valve button open": {
-    "English": "Open valves",
-    "Italiano": "Apri valvole",
-    "Français": "",
-    "Español": ""
-  },
-  "Valve button close": {
-    "English": "Close valves",
-    "Italiano": "Chiudi valvole",
     "Français": "",
     "Español": ""
   },

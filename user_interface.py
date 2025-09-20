@@ -856,11 +856,22 @@ def flea_market_screen(chat_id, qty):
 
     message = uistr.get(chat_id, "Flea Market Info")
     keyboard = []
-    items_to_show = set()
+    items_to_show = {"valve"}
     if data["payment"] == "Market":
         message += uistr.get(chat_id, "Flea Market Fee not due")
     else:
         items_to_show.add("money")
+
+    valve_buy_price, valve_sell_price = game.valve_prices(chat_id, qty)
+    keyboard.append({(
+        put.pretty(valve_buy_price) + player_cursym + " -> " +
+        put.pretty(qty)+ " " + uistr.get(chat_id, "FM item valve")
+    ): "FM valve buy " + str(qty),
+    (
+        put.pretty(qty)+ " " + uistr.get(chat_id, "FM item valve")+ " -> " +
+        put.pretty(valve_sell_price) + player_cursym
+    ): "FM valve sell " + str(qty),
+    })
 
     for offer in ["hot", "mid", "ins"]:
         item0 = data[offer]["offer"][0]
@@ -909,6 +920,7 @@ def flea_market_screen(chat_id, qty):
             item0name
         ): "FM deal1 " + offer + " " + str(qty),
         })
+
     if "money" in items_to_show:
         message += uistr.get(chat_id, "MM main balance").format(
             value=put.pretty(user_data["balance"]), sym=player_cursym)
@@ -920,7 +932,7 @@ def flea_market_screen(chat_id, qty):
         if crypto_type in items_to_show:
             message += minis.ui_CP_cryptoprint(game.best.inventory_get(chat_id, crypto_type)
                                                ) + " " + crypto_type + "\n"
-    for item in ["coal", "dice", "key", "investment_pass", "protections"]:
+    for item in ["coal", "dice", "key", "investment_pass", "protections", "valve"]:
         if item in items_to_show:
             message += put.pretty(
                 game.best.inventory_get(chat_id, item)
@@ -1382,6 +1394,14 @@ def exe_and_reply(query, chat_id):
         user_last_menu[chat_id] = "Flea Mart " + str(qty)
         offer = query[len("FM deal1 "):len("FM deal1 xxx")]
         message = game.flea_market_deal(chat_id, offer, 1, qty)
+    elif "FM valve buy" in query:
+        qty = int(query.split()[-1])
+        user_last_menu[chat_id] = "Flea Mart " + str(qty)
+        message = game.valve_deal(chat_id, qty, "buy")
+    elif "FM valve sell" in query:
+        qty = int(query.split()[-1])
+        user_last_menu[chat_id] = "Flea Mart " + str(qty)
+        message = game.valve_deal(chat_id, qty, "sell")
 
     elif query == "Settings":
         user_last_menu[chat_id] = query
