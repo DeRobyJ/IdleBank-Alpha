@@ -285,21 +285,21 @@ def inventory_give(chat_id, item, quantity):
             inventory[item] = 0
         inventory[item] += quantity
         mini_up_player(chat_id, "inventory", inventory)
-    if item in gut.list["block"]:
+    elif item in gut.list["block"]:
         type_name = conv.name(block=item)["currency"]
         dbw.pay_block(chat_id, type_name, qty=-quantity)
-    if item in gut.list["crypto"]:
+    elif item in gut.list["crypto"]:
         player_CPdata = mini_get_player(chat_id, "Coinopoly")
         player_CPdata["Coins"][item] = float.hex(
             float.fromhex(player_CPdata["Coins"][item]) + quantity
         )
         mini_up_player(chat_id, "Coinopoly", player_CPdata)
-    if item == "protections":
+    elif item == "protections":
         player_OMdata = mini_get_player(chat_id, "Ore Miner")
         player_OMdata["protections"] += quantity
         mini_up_player(chat_id, "Ore Miner", player_OMdata)
-
-    raise Exception("Item not recognized", item)
+    else:
+        raise Exception("Item not recognized", item)
 
 
 def minis_player_data_init(chat_id):
