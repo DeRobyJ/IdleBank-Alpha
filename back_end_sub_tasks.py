@@ -228,7 +228,7 @@ def market_give_blocks(section, amount):
 
 
 def inventory_get(chat_id, item):
-    if item in ["coal", "dice", "key", "mystery_item", "investment_pass"]:
+    if item in ["coal", "dice", "key", "mystery_item", "investment_pass", "valve"]:
         inventory = dbr.mini_get_player(chat_id, "inventory")
         if item not in inventory:
             return 0
@@ -245,7 +245,7 @@ def inventory_get(chat_id, item):
 
 
 def inventory_use(chat_id, item, quantity):
-    if item in ["coal", "dice", "key", "mystery_item", "investment_pass"]:
+    if item in ["coal", "dice", "key", "mystery_item", "investment_pass", "valve"]:
         inventory = dbr.mini_get_player(chat_id, "inventory")
         if item not in inventory:
             return False
@@ -279,7 +279,7 @@ def inventory_use(chat_id, item, quantity):
 
 
 def inventory_give(chat_id, item, quantity):
-    if item in ["coal", "dice", "key", "mystery_item", "investment_pass"]:
+    if item in ["coal", "dice", "key", "mystery_item", "investment_pass", "valve"]:
         inventory = dbr.mini_get_player(chat_id, "inventory")
         if item not in inventory:
             inventory[item] = 0
@@ -298,6 +298,8 @@ def inventory_give(chat_id, item, quantity):
         player_OMdata = mini_get_player(chat_id, "Ore Miner")
         player_OMdata["protections"] += quantity
         mini_up_player(chat_id, "Ore Miner", player_OMdata)
+
+    raise Exception("Item not recognized", item)
 
 
 def minis_player_data_init(chat_id):
@@ -671,7 +673,7 @@ def mystery_items_on_bulk_upgrade(chat_id, fromlvl, tolvl):
     return mitems
 
 def get_valve_value(valves=1):
-    if valves <= 1:
+    if valves < 1:
         return 0
     top_gear = max(2, dbr.get_multiplayer_info()["top_gear"]["level"])
     top_level_cost = gut.gear_up_level_cost(top_gear, top_gear+1)

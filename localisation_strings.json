@@ -1585,8 +1585,8 @@
     "Português": ""
   },
   "Gearup not ready": {
-    "English": "You need more levels to gear up! Get to level {needed_level} and come back!",
-    "Italiano": "Servono più livelli per salire di marcia! Raggiungi il livello {needed_level} e riprova!",
+    "English": "You need more levels to gear up! Using {valves} valves, get to level {needed_level} and come back!",
+    "Italiano": "Servono più livelli per salire di marcia! Se usi {valves} valvole, raggiungi il livello {needed_level} e riprova!",
     "Français": "",
     "Español": ""
   },
@@ -1609,8 +1609,8 @@
     "Español": ""
   },
   "Gearup effect Prod_level": {
-    "English": "Production level: ",
-    "Italiano": "Livello di produzione: ",
+    "English": "Production level: {current} → {final}\nWith your {valves} valves you get a discount of {discount} levels!\n\n",
+    "Italiano": "Livello di produzione: {current} → {final}\nCon le tue {valves} valvole, hai uno sconto di {discount} livelli!\n\n",
     "Français": "",
     "Español": ""
   },
