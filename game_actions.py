@@ -866,7 +866,11 @@ def flea_market_offer_prepare(chat_id, turn):
             )
             '''
     if "crypto" in offer:
-        crypto_type = rgen.choice(gut.list["crypto"])
+        cp_data = dbr.mini_get_general("Coinopoly")
+        crypto_type = rgen.choices(
+            gut.list["crypto"],
+            weights=[float.fromhex(cp_data["Coins"][cc]) for cc in gut.list["crypto"]]
+        )[0]
 
     return offer, quantities, block_type, crypto_type
 
@@ -887,9 +891,9 @@ def flea_market_get(chat_id, qty=1):
             chat_id, data[sec]["turn"])
 
     player_prod = best.get_production(chat_id)
-    data["hot"]["price"] = player_prod // 20
-    data["mid"]["price"] = player_prod // 33
-    data["ins"]["price"] = player_prod // 100
+    data["hot"]["price"] = player_prod // 200
+    data["mid"]["price"] = player_prod // 333
+    data["ins"]["price"] = player_prod // 1000
     predicted_money_rate = best.get_section_money_rate(
         best.get_types_of(chat_id)["block"],
         after_variation=(-data["hot"]["price"] * qty)
