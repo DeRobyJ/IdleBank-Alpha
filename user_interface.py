@@ -584,7 +584,7 @@ def gear_menu(chat_id):
         can = False
         message += uistr.get(chat_id, "Gearup not ready").format(
             valves=put.readable(effects["prod_level"][1]),
-            needed_level=put.readable( effects["prod_level"][5])
+            needed_level=put.readable( effects["prod_level"][4])
         )
         message += "\n" + "-" * 30 + "\n"
     if not game.passes_season_gearup_limit(chat_id):
