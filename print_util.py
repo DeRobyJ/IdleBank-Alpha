@@ -27,10 +27,12 @@ def pretty_old(value):
 
 
 def pretty(value):
+    sign = "" if value >= 0 else "-"
+    value = abs(value)
     value = str(value)
     order = len(value) - 1
     if order == 0:
-        return value + " "
+        return sign + value + " "
     prefix = ""
     while order >= 9:
         prefix += "b"
@@ -42,8 +44,8 @@ def pretty(value):
         prefix = "k" + prefix
         order -= 3
     if order == 0:
-        return value[0] + "." + value[1] + " " + prefix
-    return value[0:order + 1] + " " + prefix
+        return sign + value[0] + "." + value[1] + " " + prefix
+    return sign + value[0:order + 1] + " " + prefix
 
 
 def pretty_time(timestamp):

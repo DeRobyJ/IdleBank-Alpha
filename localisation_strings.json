@@ -3219,5 +3219,9 @@
   "mnm shard name gold": {
     "English": "ViceGold",
     "Italiano": "OroVizio"
+  },
+  "mnm Market Reserve": {
+    "English": "Reserve for loans",
+    "Italiano": "Riserva per prestiti"
   }
 }
