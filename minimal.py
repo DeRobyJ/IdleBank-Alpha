@@ -8,6 +8,23 @@ import random
 import math
 
 
+interest_period = 8 * 60 * 60  # 8 hours
+
+
+def update_user_debt(chat_id, user_data):
+    if user_data["debt"] <= 0:
+        return user_data
+    time_passed = gut.time_s() - user_data["debt_timestamp"]
+    interest_bumps = time_passed // interest_period
+    if interest_bumps == 0:
+        return user_data
+    user_data["debt"] = int(user_data["debt"] * (1.01 ** interest_bumps))
+    user_data["debt_timestamp"] += interest_bumps * interest_period
+
+    set_user_data(chat_id, user_data)
+    return user_data
+
+
 # Differently from other parts of the source, this code relies often on the
 # fact that user_data will always be passed through functions as reference.
 # Some operations are done in careful order because of this.
@@ -25,11 +42,17 @@ def get_user_data(chat_id):
             "generator_level": 0,
             "board_level": 1,
             "board_timestamp": gut.time_s(),
-            "shard_exp": 0
+            "shard_exp": 0,
+            "debt": 0,
+            "debt_timestamp": gut.time_s()
         }
         dbw.up_minimal_user(chat_id, user_data)
     if "shard_exp" not in user_data:
         user_data["shard_exp"] = 0
+    if "debt" not in user_data:
+        user_data["debt"] = 0
+        user_data["debt_timestamp"] = gut.time_s()
+    user_data = update_user_debt(chat_id, user_data)
     return user_data, new
 
 
@@ -71,9 +94,10 @@ def get_shard_bins():
     mnm_data = dbr.get_minimal_general_data()
     if len(mnm_data) == 0:
         get_general_data()
+    mnm_data = dbr.get_minimal_general_data()
     if "shard_bins" not in mnm_data:
         mnm_data["shard_bins"] = {
-            type: 0 for type in [
+            shard_type: 0 for shard_type in [
                 "red", "green", "blue", "yellow",
                 "cyan", "magenta", "silver", "gold"
             ]
@@ -82,6 +106,30 @@ def get_shard_bins():
     if "shard_global_exp" not in mnm_data:
         mnm_data["shard_global_exp"] = 0
     return mnm_data["shard_bins"], mnm_data["shard_global_exp"]
+
+
+def get_market_reserve():
+    mnm_data = dbr.get_minimal_general_data()
+    if len(mnm_data) == 0:
+        get_general_data()
+    mnm_data = dbr.get_minimal_general_data()
+    if "reserve" not in mnm_data:
+        mnm_data["reserve"] = 0
+        dbw.up_minimal_general_data(mnm_data)
+    return mnm_data["reserve"]
+
+
+def put_market_reserve(new_reserve):
+    mnm_data = dbr.get_minimal_general_data()
+    mnm_data["reserve"] = new_reserve
+    dbw.up_minimal_general_data(mnm_data)
+
+
+def repay_debt(qty_repaid):
+    if qty_repaid == 0:
+        return
+    mnm_data = dbr.get_minimal_general_data()
+    put_market_reserve(qty_repaid + mnm_data["reserve"])
 
 
 def get_shard_levels(chat_id, residuals=False):
@@ -237,6 +285,10 @@ def main_menu(chat_id):
         money_print = put.pretty(balance)
     message += uistr.get(chat_id, "MM main balance").format(
         value=money_print, sym=" L")
+    if user_data["debt"] > 0:
+        message += uistr.get(chat_id, "mnm user debt").format(
+            debt = put.pretty(user_data["debt"])
+        )
 
     message += uistr.get(chat_id, "MM blocks") + put.pretty(user_data["blocks"]) + "\n\n"
 
@@ -348,6 +400,8 @@ def main_menu(chat_id):
 
 
 def payment(qty, from_id=None, to_id=None, commit=False):
+    if qty == 0 and not commit:
+        return
     if from_id:
         from_user_data, _ = get_user_data(from_id)
         from_user_data["saved_balance"] -= qty
@@ -488,6 +542,15 @@ def contribute_shards(chat_id, contr_shards, gslvl):
     tot_req_blocks = sum([req["blocks"]for req in requests])
     sb_data = shard_bin_sizes(gslvl)
 
+    # Getting gold and silver shards first, as they are harder to give out
+    if shard_bins["gold"] >= sb_data['bin_size'] and blocks <= tot_req_blocks - sb_data['gold_prize']:
+        shard_bins["gold"] -= sb_data['bin_size']
+        blocks += sb_data['gold_prize']
+
+    if shard_bins["silver"] >= sb_data['bin_size'] and blocks <= tot_req_blocks - sb_data['silver_prize']:
+        shard_bins["silver"] -= sb_data['bin_size']
+        blocks += sb_data['silver_prize']
+
     for round in [1, 2]:
         for c in range(3):
             if blocks + sb_data["simple_prize"] > tot_req_blocks:
@@ -521,13 +584,6 @@ def contribute_shards(chat_id, contr_shards, gslvl):
             shard_bins[colour] -= sb_data['bin_size']
             blocks += sb_data['combined_prize']
 
-    if shard_bins["silver"] >= sb_data['bin_size'] and blocks <= tot_req_blocks - sb_data['silver_prize']:
-        shard_bins["silver"] -= sb_data['bin_size']
-        blocks += sb_data['silver_prize']
-
-    if shard_bins["gold"] >= sb_data['bin_size'] and blocks <= tot_req_blocks - sb_data['gold_prize']:
-        shard_bins["gold"] -= sb_data['bin_size']
-        blocks += sb_data['gold_prize']
 
     # Giving blocks to market
     while blocks > 0 and len(requests) > 0:
@@ -560,6 +616,7 @@ def float_to_residualbar(res_float, lnt=10):
 
 def shard_bin_screen(chat_id):
     shard_bins, shard_global_exp = get_shard_bins()
+    reserve = get_market_reserve()
     uslvl, gslvl, usres, gsres = get_shard_levels(chat_id, residuals=True)
     sb_data = shard_bin_sizes(gslvl)
     message = "`S°°S°°S°°S°°S°°S°°S°°S`"
@@ -578,7 +635,8 @@ def shard_bin_screen(chat_id):
 
     message += "\n\n"
     message += f"`UrsLvl {uslvl} - [{float_to_residualbar(usres)}]`\n"
-    message += f"`GlbLvl {gslvl} - [{float_to_residualbar(gsres)}]`"
+    message += f"`GlbLvl {gslvl} - [{float_to_residualbar(gsres)}]`\n"
+    message += uistr.get("chat_id", "mnm Market Reserve") + f": {put.pretty(reserve)} L"
     return message
 
 
@@ -608,7 +666,10 @@ def claim_board(chat_id):
             message += "\n" + uistr.get(chat_id, "mnm Board Claim contribution money").format(
                 qty=put.pretty(contr_money)
             )
-            payment(contr_money, to_id=chat_id)
+            debt = user_data["debt"]
+            user_data["debt"] = debt - min(contr_money, debt)
+            repay_debt(min(contr_money, debt))
+            payment(max(0, contr_money - debt), to_id=chat_id)
 
     user_data["board_timestamp"] = gut.time_s()
     set_user_data(chat_id, user_data)
@@ -646,7 +707,11 @@ def gear_up(chat_id):
     can, level_cost, block_prize = can_gear_up(chat_id)
     if not can:
         return uistr.get(chat_id, "Gearup not available")
-    user_data["saved_balance"] = get_balance(chat_id)
+    balance = get_balance(chat_id)
+    debt = user_data["debt"]
+    user_data["debt"] = debt - min(balance, debt)
+    repay_debt(min(balance, debt))
+    user_data["saved_balance"] = max(0, balance - debt)
     user_data["balance_timestamp"] = gut.time_s()
     user_data["gear_level"] += 1
     user_data["production_level"] -= level_cost
@@ -695,6 +760,12 @@ def block_market_menu(chat_id):
             price=put.pretty(max_price)
         ): "Market sell"})
 
+    reserve = get_market_reserve()
+    if reserve > 10000:
+        keyboard.append({uistr.get(chat_id, "mnm Market loan button").format(
+            qty=put.pretty(reserve // 2)
+        ): "Take Loan " + str(reserve//2)})
+
     keyboard.append({
         uistr.get(chat_id, "mnm Shard Screen button"): "Shard Screen",
         uistr.get(chat_id, "button back"): "Main menu"
@@ -723,6 +794,8 @@ def block_market_offer(chat_id, qty):
         "blocks": qty
     })
     set_general_data(requests=requests)
+    reserve = get_market_reserve()
+    put_market_reserve(reserve + player_price * qty)
     return uistr.get(chat_id, "Done")
 
 
@@ -741,6 +814,8 @@ def block_market_sell(chat_id):
     if requests[0]["blocks"] <= 0:
         requests = requests[1:]
     set_general_data(requests=requests)
+    reserve = get_market_reserve()
+    put_market_reserve(reserve - max_price)
     return uistr.get(chat_id, "Done")
 
 
@@ -785,6 +860,24 @@ def update_leaderboard(chat_id):
     set_general_data(leaderboard=leaderboard)
 
 
+def take_loan(chat_id, quantity):
+    if quantity <= 0:
+        return "?"
+    reserve = get_market_reserve()
+    if reserve < quantity:
+        return "Nah"
+    user_data, _ = get_user_data(chat_id)
+
+    user_data["debt"] += quantity
+    user_data["debt"] += user_data["debt"] // 100  # 1% instant interest on taking debt
+    user_data["debt_timestamp"] = gut.time_s()
+    payment(quantity, to_id=chat_id, commit=True)
+
+    put_market_reserve(reserve - quantity)
+
+    return uistr.get(chat_id, "Done")
+
+
 def exe_and_reply(query, chat_id):
     message = ""
     keyboard = None
@@ -819,6 +912,10 @@ def exe_and_reply(query, chat_id):
         message = block_market_sell(chat_id)
         m, keyboard = block_market_menu(chat_id)
         message += "\n" + "-" * 20 + "\n" + m
+
+    if "Take Loan" in query:
+        quantity = int(query.split()[-1])
+        message = take_loan(chat_id, quantity)
 
     if query == "Leaderboard":
         message, keyboard = leaderboard(chat_id)

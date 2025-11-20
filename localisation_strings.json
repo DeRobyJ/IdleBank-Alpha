@@ -3125,8 +3125,8 @@
     "Italiano": "Non ci sono blocchi da prendere dalla tavola!"
   },
   "mnm Market": {
-    "English": "Here are the current requests.\nYou can either offer more money to request blocks, or sell blocks to the best offers.\n\n",
-    "Italiano": "Ecco le richieste correnti.\nPuoi offrire di più per richiedere blocchi, o vendere blocchi alla migliore offerta.\n\n"
+    "English": "Here are the current requests.\nYou can either offer more money to request blocks, or sell blocks to the best offers.\nA loan might be available, beware of interests!\n\n",
+    "Italiano": "Ecco le richieste correnti.\nPuoi offrire di più per richiedere blocchi, o vendere blocchi alla migliore offerta.\nForse puoi prendere un prestito, attenzione agli interessi!\n\n"
   },
   "mnm Market empty": {
     "English": "There are no requests",
@@ -3143,6 +3143,14 @@
   "mnm Market sell button": {
     "English": "Sell a block for {price}",
     "Italiano": "Vendi un blocco per {price}"
+  },
+  "mnm Market loan button": {
+    "English": "Take loan of {qty} L",
+    "Italiano": "Prestito di {price} L"
+  },
+  "mnm user debt": {
+    "English": "Debt: {debt} L, plase repay with shards or gearing up!",
+    "Italiano": "Debiti: {debt} L, ripagali con i cocci o aumentando marcia!"
   },
   "mnm April Fools": {
     "English": "Did you enjoy the season? Because it was the last!\n\nThe game became too complex, so I decided to make it simple again, surprise!\nNo more seasons, no more factions, and most importatly no more minigames!\nIn this new, perfected version of IdleBank Alpha, blocks are generated!\nOh and I almost forgot, screw the automated market, let's go back to block requests, like the good old times!\n\nI hope you enjoy the new IB Alpha, because we won't go back!",
