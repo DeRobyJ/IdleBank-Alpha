@@ -669,7 +669,11 @@ def claim_board(chat_id):
             debt = user_data["debt"]
             user_data["debt"] = debt - min(contr_money, debt)
             repay_debt(min(contr_money, debt))
+
+            # Money that instead is given to they user is taken from the reserve
             payment(max(0, contr_money - debt), to_id=chat_id)
+            reserve = get_market_reserve()
+            put_market_reserve(reserve - max(0, contr_money - debt))
 
     user_data["board_timestamp"] = gut.time_s()
     set_user_data(chat_id, user_data)
