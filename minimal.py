@@ -855,7 +855,7 @@ def update_leaderboard(chat_id):
         leaderboard.append(chat_id)
     else:
         leaderboard = sorted(
-            leaderboard + chat_id,
+            leaderboard + [chat_id],
             key=lambda x_id: (
                 get_user_data(x_id)[0]["gear_level"],
                 get_user_data(x_id)[0]["production_level"]
