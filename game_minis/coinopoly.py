@@ -182,6 +182,7 @@ def CP_house_data(chat_id, coin_name, cur_level, player_coin_in_pocket):
     exponential_base = int(shown_level ** (1.8 - cells_num / 10))
 
     while rounds <= player_gear_level and building_cost <= player_coin_in_pocket:
+        rounds += 1
         shown_level = (shown_level * 10 + 10 + int(max(economy_inflation(chat_id), 0))) // 10
 
         exponential_base = int(shown_level ** (1.8 - cells_num / 10))
@@ -191,7 +192,7 @@ def CP_house_data(chat_id, coin_name, cur_level, player_coin_in_pocket):
         if building_cost <= player_coin_in_pocket:
             last_good_building_cost = building_cost
 
-    if building_cost > player_coin_in_pocket:
+    if building_cost > player_coin_in_pocket and rounds > 1:
         building_cost = last_good_building_cost
         target_build_level -= 10
 
