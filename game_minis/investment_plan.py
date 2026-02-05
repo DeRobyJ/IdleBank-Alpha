@@ -47,13 +47,34 @@ def IP_get_gamemode():
 
 
 def IP_game_start(start_time):
-    game_data = {"Companies": {}, "key": "Investment Plan"}
-    game_data["game_timestamp"] = start_time
+    game_data = {"Companies": {}, "key": "Investment Plan", "game_timestamp": start_time}
+
     for company in "ABCDEFGHIJKL":
         game_data["Companies"][company] = {
             "level": 0,
             "faction": "No"
         }
+    dbw.mini_up_general(game_data)
+
+def IP_game_start_continued(start_time, game_data):
+    game_data["game_timestamp"] = start_time
+    states = IP_accessibility()
+
+    _, trios = IP_market_prizes()
+    true_trios = []
+    for trio in trios:
+        if trios[trio]["faction"] != "No":
+            true_trios.append(trio)
+    companies_in_trios = set(list(''.join(true_trios)))
+
+    for company in "ABCDEFGHIJKL":
+        if states[company] == "round_lock":
+            game_data["Companies"][company] = {
+                "level": 0,
+                "faction": "No"
+            }
+        elif company not in companies_in_trios:
+            game_data["Companies"][company]["level"] = int(game_data["Companies"][company]["level"] * .9)
     dbw.mini_up_general(game_data)
 
 
@@ -81,9 +102,9 @@ def IP_accessibility():
 def IP_player_prices(chat_id, companies="ABCDEFGHIJKL", deal=0):
     game_data = dbr.mini_get_general("Investment Plan")
     gamemode = IP_get_gamemode()
-    if "Capitalist" in gamemode:
-        faction_denominator = 1
-    elif "Socialist" in gamemode:
+    #if "Capitalist" in gamemode:
+    faction_denominator = 1
+    if "Socialist" in gamemode:
         currencies_status = dbr.get_currencies_status()
         cur_order = [(i, currencies_status[i]) for i in currencies_status]
         cur_order = sorted(cur_order, key=lambda item: item[1], reverse=True)
@@ -99,23 +120,22 @@ def IP_player_prices(chat_id, companies="ABCDEFGHIJKL", deal=0):
     linear_price = (player_prod // 6) / faction_denominator * tv.IP_price_pity(
         chat_id)
 
-    low_bound = int(max([
-        game_data["Companies"][comp]["level"]
-        for comp in game_data["Companies"]
-    ]) * .8)
+    #low_bound = int(max([
+    #    game_data["Companies"][comp]["level"]
+    #    for comp in game_data["Companies"]
+    #]) * .8)
 
     # To multiply to (difference between low_bound and selected lvl)^exponent
-    exp_price = (player_prod // 6) / faction_denominator * tv.IP_price_pity(
-        chat_id)
+    #exp_price = (player_prod // 6) / faction_denominator * tv.IP_price_pity(chat_id)
 
     if len(companies) > 1:
         prices = {}
         for cy in companies:
             try:
-                diff_to_bound = max(game_data["Companies"][cy]["level"] - low_bound, 0)
+                #diff_to_bound = max(game_data["Companies"][cy]["level"] - low_bound, 0)
                 prices[cy] = best.apply_discount(
-                    game_data["Companies"][cy]["level"] * linear_price +
-                    diff_to_bound ** (1 + diff_to_bound / 200) * exp_price,
+                    game_data["Companies"][cy]["level"] * linear_price, # +
+                    # diff_to_bound ** (1 + diff_to_bound / 200) * exp_price,
                     chat_id=chat_id)
             except OverflowError:
                 prices[cy] = dbr.login(chat_id)["balance"] + dbr.login(
@@ -123,11 +143,11 @@ def IP_player_prices(chat_id, companies="ABCDEFGHIJKL", deal=0):
         return prices
     else:
         try:
-            diff_to_bound = max(game_data["Companies"][companies]["level"] - low_bound, 0)
+            #diff_to_bound = max(game_data["Companies"][companies]["level"] - low_bound, 0)
             return best.apply_discount(
-                (game_data["Companies"][companies]["level"] * linear_price +
-                 diff_to_bound ** (1 + diff_to_bound / 200) * exp_price) * max(1, deal),
-                chat_id=chat_id, deal=(deal > 0))
+                (game_data["Companies"][companies]["level"] * linear_price) * max(1, deal), # +
+                 # diff_to_bound ** (1 + diff_to_bound / 200) * exp_price),
+                 chat_id=chat_id, deal=(deal > 0))
         except OverflowError:
             return dbr.login(chat_id)["balance"] + dbr.login(
                 chat_id)["balance"] // 10
@@ -239,11 +259,14 @@ def IP_check_game():
         if "game_timestamp" in game_data:
             IP_game_end()
             new_time = game_data["game_timestamp"]
+            while current_time > new_time + ip_period:
+                new_time += ip_period
+            IP_game_start_continued(new_time, game_data)
         else:
             new_time = ipv3_origin_timestamp
-        while current_time > new_time + ip_period:
-            new_time += ip_period
-        IP_game_start(new_time)
+            while current_time > new_time + ip_period:
+                new_time += ip_period
+            IP_game_start(new_time)
         game_data = dbr.mini_get_general("Investment Plan")
     if "last_line_timestamp" not in game_data:
         game_data["last_line_timestamp"] = current_time
