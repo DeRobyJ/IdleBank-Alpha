@@ -73,13 +73,29 @@ def post_to_telegram(url, data):
         return False
 
 
+styles = {
+    "Main menu": "primary",
+    "mnm Main menu": "primary",
+    "Upgrade Production": "success",
+    "Upgrade Production Bulk": "success",
+    "Upgrade Production Bulk confirm": "success",
+    "mnm Upgrade Production": "success",
+    "SC maximize": "danger",
+    "mnm Back": "primary",
+    "Mystery Item Screen": "success",
+    "Gear": "success"
+}
+
 # a list of dictionaries, each dict is a row {"string" : "querydata"}
 def create_keyboard(kblist):
     inline_keyboard = []
     for row in kblist:
         inline_keyboard.append([])
         for element in row:
-            inline_keyboard[-1].append({"text": element,  "callback_data": row[element]})
+            if row[element] in styles:
+                inline_keyboard[-1].append({"text": element, "callback_data": row[element], "style": styles[row[element]]})
+            else:
+                inline_keyboard[-1].append({"text": element,  "callback_data": row[element]})
     return {"inline_keyboard": inline_keyboard}
 
 
