@@ -307,6 +307,8 @@ def mini_get_player(chat_id, game_name):
 def get_minimal_user(chat_id):
     if chat_id not in ch().minimal_user:
         ch().minimal_user[chat_id] = di.ezget_item(di.pre_minimal_user, {"key": chat_id})
+        for big_number_field in ["saved_balance", "shard_exp", "debt", "real_estate_value"]:
+            ch().minimal_user[chat_id][big_number_field] = int(ch().minimal_user[chat_id][big_number_field])
         if not ch().minimal_user[chat_id]:
             ch().minimal_user[chat_id] = {}
     return ch().minimal_user[chat_id]
@@ -315,6 +317,8 @@ def get_minimal_user(chat_id):
 def get_minimal_general_data():
     if "key" not in ch().minimal_general:
         ch().minimal_general = di.ezget_item(di.pre_minimal_general, {"key": "Game"})
+        for big_number_field in ["reserve"]:
+            ch().minimal_general[big_number_field] = int(ch().minimal_general[big_number_field])
         if not ch().minimal_general:
             ch().minimal_general = {}
     return ch().minimal_general

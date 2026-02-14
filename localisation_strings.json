@@ -3109,16 +3109,16 @@
     "Italiano": "Avvia"
   },
   "button up generator": {
-    "English": "gener. ",
-    "Italiano": "gener. "
+    "English": "Improve generator for ",
+    "Italiano": "Migliora generatore per "
   },
   "button start generator": {
     "English": "Start block generator for ",
     "Italiano": "Avvia generatore blocchi per "
   },
   "button up board": {
-    "English": "board ",
-    "Italiano": "tavola "
+    "English": "Add more space on board for ",
+    "Italiano": "Fai più spazio sulla tavola per  "
   },
   "mnm Board empty": {
     "English": "No blocks to take from the board!",
@@ -3223,5 +3223,45 @@
   "mnm Market Reserve": {
     "English": "Reserve for loans",
     "Italiano": "Riserva per prestiti"
+  },
+  "mnm Generator info": {
+    "English": "The block generator will create blocks every hour.\nPlease, make sure the generator board has enough space for the new blocks!\n\nYou can take the finished blocks from the board here or in the main menu. Any unfinished production will be converted to blocks shards and sold to the market.\nYou can increase the block production and the board storage size!\n\n",
+    "Italiano": "Il generatore di blocchi creerà blocchi ogni ora.\nRicorda di controllare che la tavola abbia abbastanza spazio per i nuovi blocchi!\n\nPuoi prendere i blocchi lavorati sulla tavola sia qui che nel menù principale. La produzione non terminata verrà convertita in cocci di blocchi, subito venduti al mercato.\nPuoi aumentare la produzione di blocchi e la dimensione della tavola!\n\n"
+  },
+  "mnm Real Estate info": {
+    "English": "Rather than keeping money around, you can invest them long-term here!\nIf you keep your real estate empty, its value will increase by 1% every 8 hours.\nThen, you can put your property for rent! This will decrease its value 8 hours, but you will collect that value as rent, although with a 20% tax!\n\nTip: to turn a profit, let the value rise for two weeks before renting out!\n\n",
+    "Italiano": "Invece di tenere i soldi fermi, puoi investirli a lungo termine qui!\nSe tieni le tue proprietà vuote, il loro valore aumenterà dell'1% ogni 8 ore.\nPoi, puoi metterle in affitto! Questo farà scendere il loro valore 8 ore, ma il valore perso sarà ottenuto come affitto, seppur con una tassa del 20%!\n\nConsiglio: per realizzare profitto, lascia aumentare il valore per 2 settimane prima di affittare!\n\n"
+  },
+  "mnm Real Estate current": {
+    "English": "Your property value: {value} L\n",
+    "Italiano": "Il valore delle tue proprietà: {value} L\n"
+  },
+  "mnm Real Estate increase": {
+    "English": "It will increase by {increase} L in {time_left}\n",
+    "Italiano": "Crescerà di {increase} L in {time_left}\n"
+  },
+  "mnm Real Estate earnings": {
+    "English": "You will earn {earnings} L in {time_left} (accounting for {taxes} L in taxes)\n",
+    "Italiano": "Guadagnerai {earnings} L in {time_left} (considerando {taxes} L di tasse)\n"
+  },
+  "button real_estate invest": {
+    "English": "Invest {value} L",
+    "Italiano": "Investi {value} L"
+  },
+  "button real_estate rent": {
+    "English": "Rent out",
+    "Italiano": "Metti in affitto"
+  },
+  "button real_estate empty": {
+    "English": "Empty property",
+    "Italiano": "Svuota la proprietà"
+  },
+  "button real_estate": {
+    "English": "Real Estate",
+    "Italiano": "Proprietà Immobiliari"
+  },
+  "button generator": {
+    "English": "Block Generator",
+    "Italiano": "Generatore Blocchi"
   }
 }
