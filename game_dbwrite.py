@@ -448,7 +448,8 @@ def up_minimal_user(chat_id, user_data):
 
     up_data = copy.deepcopy(user_data)
     for big_number_field in ["saved_balance", "shard_exp", "debt", "real_estate_value"]:
-        up_data[big_number_field] = str(up_data[big_number_field])
+        if big_number_field in up_data:
+            up_data[big_number_field] = str(up_data[big_number_field])
     di.ezput_item(di.pre_minimal_user, up_data)
 
 
@@ -459,5 +460,6 @@ def up_minimal_general_data(data):
 
     up_data = copy.deepcopy(data)
     for big_number_field in ["reserve"]:
-        up_data[big_number_field] = str(up_data[big_number_field])
+        if big_number_field in up_data:
+            up_data[big_number_field] = str(up_data[big_number_field])
     di.ezput_item(di.pre_minimal_general, up_data)

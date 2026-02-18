@@ -241,6 +241,23 @@ def handle_new_group(body):
     return False
 
 
+admin_imp = None
+
+
+def admin_impersonate(command):
+    global admin_imp
+    if command == "/#":
+        admin_imp = None
+        return int(os.environ["ADMIN_CHAT_ID"]), "/start"
+    if command[:2] == "/#":
+        imp_id = int(command[2:])
+        admin_imp = imp_id
+        return int(admin_imp), "/start"
+    if admin_imp is None:
+        return int(os.environ["ADMIN_CHAT_ID"]), command
+    return int(admin_imp), command
+
+
 def bot_handler(event, context):
     print("🚨 RAW EVENT:", json.dumps(event))
     
@@ -294,6 +311,7 @@ def bot_handler(event, context):
         if chat_type == "private":
             is_private = True
             respond_id = chat_id
+            chat_id, query = admin_impersonate(query)
         elif chat_type in ["group",  "supergroup"]:
             is_private = False
             # Getting correct chat_id from sender, and  collecting group_id and username

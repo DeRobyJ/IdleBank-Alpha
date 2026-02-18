@@ -43,13 +43,13 @@ def update_user_real_estate_value(chat_id, user_data):
     else:
         # Rent mode
         min_value = int(bumps * get_production_rate(chat_id) / 6)
-        earnings = min(
+        earnings = int(min(
             user_data["real_estate_value"],
             max(
                 min_value,
                 user_data["real_estate_value"] - int(user_data["real_estate_value"] * (.97 ** bumps))
             )
-        )
+        ))
         user_data["real_estate_value"] -= earnings
 
     user_data["real_estate_timestamp"] += bumps * interest_period
