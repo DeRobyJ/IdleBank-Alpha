@@ -46,22 +46,6 @@ def activate_account(chat_id, membership):
         return True
 
 
-# Upgrades old accounts to single balance
-def upgrade_to_single_balance(chat_id):
-    r = load_main_menu(chat_id)
-    user_data = r["user"]
-
-    # this call also creates "saved_balance" record on db and ch
-    dbw.consolidate_balance(chat_id)
-    for cur in ["Dollar", "Euro", "Yuan"]:  # only need these
-        dbw.give_money(chat_id, best.cur_convert(user_data["balance"][cur],
-                                                 conv.name(
-            membership=user_data["membership"])["currency"], cur))
-        dbw.pay_money(chat_id, user_data["balance"][cur], cur)
-
-    return "Ok"
-
-
 # Gets and processes all the information needed for the main menu
 # (meaning user data and global production of all currencies)
 def load_main_menu(chat_id):
@@ -458,6 +442,8 @@ def multiplayer_info_upget(chat_id):
     current_time = gut.time_s()
     if "global_production_timestamp" not in data:
         data["global_production_timestamp"] = current_time - 60 * 60 * 24 * 31
+    if "valve_acquisition_timestamp" not in data:
+        data["valve_acquisition_timestamp"] = current_time
     if int(time.time() * 100) % 99 < 3:  # raughly check 1/33 of the times
         for ci in list(data["players_activity"].keys()):
             if data["players_activity"][ci] <= current_time - 60 * 60 * 24 * 30:
@@ -493,7 +479,6 @@ def multiplayer_info_upget(chat_id):
         "last_week_active_count": 0,
         "last_month_active_count": 0
     }
-    minfo["tot_player_count"] = 0
     counts = get_member_counts()
     for memb in counts:
         minfo["tot_player_count"] += counts[memb]
@@ -881,7 +866,11 @@ def flea_market_offer_prepare(chat_id, turn):
             )
             '''
     if "crypto" in offer:
-        crypto_type = rgen.choice(gut.list["crypto"])
+        cp_data = dbr.mini_get_general("Coinopoly")
+        crypto_type = rgen.choices(
+            gut.list["crypto"],
+            weights=[float.fromhex(cp_data["Coins"][cc]) for cc in gut.list["crypto"]]
+        )[0]
 
     return offer, quantities, block_type, crypto_type
 
@@ -902,9 +891,9 @@ def flea_market_get(chat_id, qty=1):
             chat_id, data[sec]["turn"])
 
     player_prod = best.get_production(chat_id)
-    data["hot"]["price"] = player_prod // 20
-    data["mid"]["price"] = player_prod // 33
-    data["ins"]["price"] = player_prod // 100
+    data["hot"]["price"] = player_prod // 200
+    data["mid"]["price"] = player_prod // 333
+    data["ins"]["price"] = player_prod // 1000
     predicted_money_rate = best.get_section_money_rate(
         best.get_types_of(chat_id)["block"],
         after_variation=(-data["hot"]["price"] * qty)
@@ -959,6 +948,43 @@ def flea_market_deal(chat_id, offer, direction, qty):
     return uistr.get(chat_id, "Done")
 
 
+def valve_prices(chat_id, qty):
+    buy_price = qty * best.get_valve_price(chat_id)
+    sell_price = buy_price // 2
+
+    return buy_price, sell_price
+
+
+def valve_deal(chat_id, qty, action):
+    buy_price, sell_price = valve_prices(chat_id, qty)
+
+    if action == "sell":
+        if best.inventory_get(chat_id, "valve") < qty:
+            return uistr.get(chat_id, "error no item left")
+        best.inventory_use(chat_id, "valve", qty)
+        dbw.give_money(chat_id, sell_price)
+
+    elif action == "buy":
+        if not dbr.check_payment(chat_id, buy_price):
+            return uistr.get(chat_id, "Insufficient balance")
+        best.inventory_give(chat_id, "valve", qty)
+        dbw.pay_money(chat_id, buy_price)
+
+        share = buy_price // (len(gut.list["crypto"]) + len(gut.list["block"]))
+        cp_data = dbr.mini_get_general("Coinopoly")
+        for coin in gut.list["crypto"]:
+            cp_data["Money"][coin] += max(share, 0)
+        dbw.mini_up_general(cp_data)
+        for section in gut.list["block"]:
+            best.market_put_money(section, share)
+
+        muli = dbr.get_multiplayer_info()
+        muli["valve_acquisition_timestamp"] = gut.time_s()
+        dbw.up_multiplayer_info(muli)
+
+
+    return uistr.get(chat_id, "Done")
+
 def change_language(chat_id, language_selected):
     r = dbw.change_language(chat_id, language_selected)
     if r != "Ok":
@@ -1005,8 +1031,12 @@ def can_gear_up(chat_id):
     block_prize = gut.gear_up_block_prize(cur_gear_level, cur_gear_level + 1)
 
     cur_prod_level = user_data["production_level"]
+    valves = best.inventory_get(chat_id, "valve")
+    discount = best.get_valve_value(valves)
 
-    if cur_prod_level <= level_cost:
+    minimum = max([level_cost - discount, user_data["gear_level"], 50])
+
+    if cur_prod_level <= minimum:
         return False, level_cost, block_prize
     return True, level_cost, block_prize
 
@@ -1017,6 +1047,8 @@ def check_max_gear_up(chat_id):
     user_data = dbr.login(chat_id)
     cur_gear_level = user_data["gear_level"]
     cur_prod_level = user_data["production_level"]
+    valves = best.inventory_get(chat_id, "valve")
+    discount = best.get_valve_value(valves)
     if cur_gear_level < 10:
         return 0
     if user_data["membership"] == "ACB":
@@ -1024,21 +1056,10 @@ def check_max_gear_up(chat_id):
 
     max_gear = int((
         math.sqrt(
-            1 + 4 * (cur_prod_level / 25 + cur_gear_level * (cur_gear_level + 1))
+            1 + 4 * ((cur_prod_level + discount) / 25 + cur_gear_level * (cur_gear_level + 1))
         ) - 1) / 2
     )
     return max_gear - cur_gear_level
-
-
-# When gearing up, all money goes to player's faction market
-# This checks whether it would put too much money into it, reaching over 200%
-# It returns the excess money, so we can tell the user how much to spend
-# Deprecated
-def gearup_market_absorption(chat_id):
-    section = conv.name(membership=dbr.login(chat_id)["membership"])["block"]
-    _, _, cur_money, _, money_limit, _ = market_upget(chat_id, section)
-    cur_balance = dbr.login(chat_id)["balance"]
-    return max(0, cur_money + cur_balance - money_limit * 2)
 
 
 def gearup_money_to_market(chat_id):
@@ -1098,6 +1119,11 @@ def gear_up(chat_id, new_membership):
     )
     dbw.pay_money(chat_id, user_data["balance"])
 
+    valves = best.inventory_get(chat_id, "valve")
+    discount = best.get_valve_value(valves)
+    new_production_level = user_data["production_level"] + discount - level_cost
+
+
     # Updating global production and member counts
     if new_membership != user_data["membership"]:
         cur_status = dbr.get_currencies_status()
@@ -1119,7 +1145,7 @@ def gear_up(chat_id, new_membership):
         new_prod_for_new_memb = (
             cur_status[conv.name(membership=new_membership)["currency"]] +
             best.get_production_for_level(
-                chat_id, user_data["production_level"] - level_cost))
+                chat_id, new_production_level))
         dbw.up_global_production(conv.name(membership=new_membership)[
                                  "currency"], new_prod_for_new_memb)
 
@@ -1148,7 +1174,7 @@ def gear_up(chat_id, new_membership):
         set_nickname(chat_id, nick_data)
 
         new_production = best.get_production_for_level(
-            chat_id, user_data["production_level"] - level_cost)
+            chat_id, new_production_level)
 
         production_delta = new_production - old_production
         new_global_prod = dbr.get_currencies_status()[conv.name(
@@ -1158,8 +1184,8 @@ def gear_up(chat_id, new_membership):
 
     # Paying levels,upgrading gear and changing membership
     new_gear_level = user_data["gear_level"] + 1
-    new_production_level = user_data["production_level"] - level_cost
     dbw.gear_up(chat_id, new_membership, new_gear_level, new_production_level)
+    best.inventory_use(chat_id, "valve", valves)
 
     # Adding bonus blocks
     dbw.add_block(chat_id, conv.name(membership=new_membership)
@@ -1188,7 +1214,12 @@ def bulk_gear_up(chat_id, gears):
 
     level_cost = gut.gear_up_level_cost(cur_gear_level, cur_gear_level + gears)
     block_prize = gut.gear_up_block_prize(cur_gear_level, cur_gear_level + gears)
-    if level_cost + 1 > cur_prod_level:
+
+    valves = best.inventory_get(chat_id, "valve")
+    discount = best.get_valve_value(valves)
+    new_production_level = cur_prod_level + discount - level_cost
+
+    if level_cost + 1 > cur_prod_level + discount:
         return uistr.get(chat_id, "Gearup not available")
 
     # Donating money to market
@@ -1204,18 +1235,18 @@ def bulk_gear_up(chat_id, gears):
         membership=user_data["membership"])["badge_letter"]
     set_nickname(chat_id, nick_data)
 
-    # update global production
-    recalculate_global_production()
-
     # Paying levels and upgrading gear
     new_gear_level = cur_gear_level + gears
-    new_production_level = cur_prod_level - level_cost
     dbw.gear_up(
         chat_id,
         user_data["membership"],
         new_gear_level,
         new_production_level
     )
+    best.inventory_use(chat_id, "valve", valves)
+
+    # update global production
+    recalculate_global_production()
 
     # Adding bonus blocks
     dbw.add_block(chat_id, conv.name(membership=user_data["membership"])
@@ -1236,10 +1267,17 @@ def gearup_effects(chat_id):
     _, level_cost, block_prize = can_gear_up(chat_id)
     user_data = dbr.login(chat_id)
 
+    valves = best.inventory_get(chat_id, "valve")
+    discount = best.get_valve_value(valves)
+
     effects = {}
-    effects["Prod_level"] = (
+    effects["prod_level"] = (
         user_data["production_level"],
-        user_data["production_level"] - level_cost)
+        valves,
+        discount,
+        user_data["production_level"] + discount - level_cost,  # final production level
+        max([level_cost - discount, user_data["gear_level"], 50])  # minimum needed to gear up!
+    )
     effects["hourly_production_rate"] = (
         gut.hourly_production_rate_of_level(
             user_data["production_level"]),
@@ -1650,65 +1688,6 @@ def recalculate_global_production():
 
     multi_data["global_production_timestamp"] = gut.time_s()
     dbw.up_multiplayer_info(multi_data)
-
-
-def get_valve_screen_data(chat_id):
-    player_valves = best.get_valves(chat_id)
-    player_level = dbr.login(chat_id)["production_level"]
-    level_after_opening_valves = best.get_level_opening_valves(chat_id)
-    all_valve_values = best.get_all_valve_values()
-    user_currency = best.get_types_of(chat_id)["currency"]
-    op_price = best.get_valve_operation_price(chat_id)
-
-    can_gear_normally, gear_level_cost, _ = can_gear_up(chat_id)
-    can_gear_after_opening = level_after_opening_valves > gear_level_cost
-
-    max_valve_closing = best.get_max_valve_closing(chat_id)
-    return (
-        player_valves, player_level, level_after_opening_valves, all_valve_values,
-        user_currency, op_price, can_gear_normally, gear_level_cost, can_gear_after_opening,
-        max_valve_closing
-    )
-
-
-def can_operate_valves(chat_id):
-    if best.get_valves(chat_id) > 0:
-        return True
-    if best.get_max_valve_closing(chat_id) > 0:
-        return True
-    return False
-
-
-def operate_valves(chat_id, op):
-    user_data = dbr.login(chat_id)
-    cur_valves = best.get_valves(chat_id)
-    valve_value = best.get_valve_value(chat_id)
-    price = best.get_valve_operation_price(chat_id)
-    if not dbr.check_payment(chat_id, price):
-        return uistr.get(chat_id, "Insufficient balance")
-    cur_level = user_data["production_level"]
-
-    if op == "close":
-        valve_closing = best.get_max_valve_closing(chat_id)
-        levels_frozen = valve_closing * valve_value
-        if cur_level - levels_frozen < (10**6):
-            return "Uh?"
-        dbw.set_valves(chat_id, cur_valves + valve_closing, cur_level - levels_frozen)
-    elif op == "open":
-        level_unfrozen = cur_valves * valve_value
-        dbw.set_valves(chat_id, 0, cur_level + level_unfrozen)
-
-    dbw.pay_money(chat_id, price)
-
-    best.market_put_money(
-        conv.name(membership=user_data["membership"])["block"],
-        gearup_money_to_market(chat_id)
-    )
-    # Re-getting user data after first payment, just to be sure
-    dbw.pay_money(chat_id, dbr.login(chat_id)["balance"])
-
-    recalculate_global_production()
-    return uistr.get(chat_id, "Done")
 
 
 # admin actions ====================================

@@ -17,7 +17,7 @@ The project started in April 2021, during COVID-19 lockdowns. It launched on the
 
 In May 2021, the game received localisation support, featuring English and Italian, a leaderboard and nicknames.
 
-In June 2021, the first three minigames were added: Daily News, Ore Miner and Investment Plan. A tutorial phase was added for new players.
+In June 2021, the first three minigames were added: Daily News, Ore Miner and Investment Plan. A tutorial phase was added for new players. The game was also translated to Brazilian Portuguese.
 
 In July 2021, the prestige system known as "Gear System" was added. Gearing up makes the player decrease their production level, acquiring a "Badge" to commemorate their investment.
 
@@ -50,3 +50,7 @@ In February 2025, the top players and the admin decided to reset the game. All p
 In April 2025, a new minimal version of the game was introduced first as an April Fools event and then as a permanent sub-game available through the IBTV screen.
 
 In June 2025, the bot now supports private games to be held inside groups. Each group the bot is added to creates a new game just for the players inside the group!
+
+In November 2025, the minimal game was updated with the ability to take loans from the market, with exponential interests.
+
+In February 2026, as IdleBank Beta started its Early phase, Alpha received a few updates including Real Estate investments on the minimal game and the Russian translation.

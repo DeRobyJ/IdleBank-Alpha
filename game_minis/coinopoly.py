@@ -169,14 +169,33 @@ def CP_player_available_actions(chat_id, player_data):
     return actions
 
 
-# Data based on the current level
-def CP_house_data(chat_id, coin_name, cur_level):
-    shown_level = (cur_level + 9 + int(max(economy_inflation(chat_id), 0))) // 10
+# Gets the building costs and block results
+def CP_house_data(chat_id, coin_name, cur_level, player_coin_in_pocket):
+    player_gear_level = dbr.login(chat_id)["gear_level"]
     cells_num = cp_map.count(coin_name)
+
+    building_cost = 0
+    last_good_building_cost = 0
+    rounds = 0
+    shown_level = cur_level // 10
+    target_build_level = cur_level * 10
     exponential_base = int(shown_level ** (1.8 - cells_num / 10))
 
-    building_cost = exponential_base * 10 + 10
-    target_build_level = shown_level * 10 + 10
+    while rounds <= player_gear_level and building_cost <= player_coin_in_pocket:
+        rounds += 1
+        shown_level = (shown_level * 10 + 10 + int(max(economy_inflation(chat_id), 0))) // 10
+
+        exponential_base = int(shown_level ** (1.8 - cells_num / 10))
+        building_cost += exponential_base * 10 + 10
+
+        target_build_level = shown_level * 10 + 10
+        if building_cost <= player_coin_in_pocket:
+            last_good_building_cost = building_cost
+
+    if building_cost > player_coin_in_pocket and rounds > 1:
+        building_cost = last_good_building_cost
+        target_build_level -= 10
+
     payment_to_stock = target_build_level + (building_cost - target_build_level) // 2
 
     block_prize = exponential_base * 5
@@ -189,7 +208,7 @@ def CP_sell_quantity(chat_id, cur_cell, cur_house, in_pocket):
     if cur_house["chat_id"] == chat_id:
         quantity = in_pocket
     else:
-        building_cost, _, _, _ = CP_house_data(chat_id, cur_cell, cur_house["level"])
+        building_cost, _, _, _ = CP_house_data(chat_id, cur_cell, cur_house["level"], in_pocket)
         if abs(building_cost - in_pocket) < cp_min_val:
             quantity = in_pocket
         else:
@@ -247,7 +266,11 @@ def ui_CP_player_action(chat_id, action):
             coin_stock = float.fromhex(game_data["Coins"][cell_type])
             cur_house = game_data["Houses"][
                 str(player_data["position"])]
-            building_cost, target_build_level, payment_to_stock, _ = CP_house_data(chat_id, cell_type, cur_house["level"])
+            building_cost, target_build_level, payment_to_stock, _ = CP_house_data(
+                chat_id, cell_type, cur_house["level"],
+                float.fromhex(player_data["Coins"][cell_type])
+            )
+            # print(cell_type, building_cost, target_build_level, payment_to_stock)
             if float.fromhex(player_data[
                     "Coins"][cell_type]) <= building_cost:
                 return uistr.get(chat_id, "Insufficient balance"), None
@@ -258,8 +281,7 @@ def ui_CP_player_action(chat_id, action):
             player_data["state"] = "acted"
             best.mini_up_player(chat_id, "Coinopoly", player_data)
             game_data["Coins"][cell_type] = float.hex(
-                float.fromhex(game_data["Coins"][cell_type]) +
-                payment_to_stock * (1 - tv.CP_coin_tax())
+                coin_stock + payment_to_stock * (1 - tv.CP_coin_tax())
             )
             game_data["Houses"][str(player_data["position"])] = {
                 "chat_id": chat_id,
@@ -411,7 +433,7 @@ def ui_CP_player_action(chat_id, action):
             game_data = dbr.mini_get_general("Coinopoly")
             cur_house = game_data["Houses"][str(player_data["position"])]
             if cur_house["level"] > 0 and cur_house["chat_id"] > 0:
-                _, _, _, blocks_won = CP_house_data(chat_id, new_cell_type, cur_house["level"])
+                _, _, _, blocks_won = CP_house_data(chat_id, new_cell_type, cur_house["level"],0)
                 blocks_won = best.apply_block_bonus(
                     blocks_won * dice_used, chat_id=cur_house["chat_id"], deal=True)
                 # Level of the previous storehouse, top in the board view
@@ -734,7 +756,10 @@ def ui_CP_main_screen(chat_id):
                             cur_sym=player_cursym
                         ): "CP sell"
                     })
-            building_cost, _, _, _ = CP_house_data(chat_id, cur_cell, cur_house["level"])
+            building_cost, _, _, _ = CP_house_data(
+                chat_id, cur_cell, cur_house["level"],
+                float.fromhex(player_data["Coins"][cur_cell])
+            )
             if float.fromhex(player_data[
                     "Coins"][cur_cell]) > building_cost:
                 keyboard.append({

@@ -285,7 +285,7 @@ def DN_country_keyboard(chat_id, countries):
     elif len(countries) % 2 == 0:  # 4,6,8,10
         return [
             {uistr.dn_country(chat_id, i): "DN vote " + str(i)
-                for i in countries[:len(countries) // 2]},
+                for i in countries[:(len(countries) // 2)]},
             {uistr.dn_country(chat_id, i): "DN vote " + str(i)
                 for i in countries[len(countries) // 2:]}
         ]
@@ -380,7 +380,7 @@ def ui_DN_main_screen(chat_id):
     else:
         message += uistr.get(chat_id, "DN please vote")
         keyboard = DN_country_keyboard(
-            chat_id, game_data["Countries"]) + [{
+            chat_id, list(game_data["Countries"].keys())) + [{
                 uistr.get(chat_id, "button agencies"): "DN Agencies",
                 uistr.get(chat_id, "button back"): "Main menu"}
         ]

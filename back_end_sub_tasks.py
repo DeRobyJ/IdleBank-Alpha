@@ -228,7 +228,7 @@ def market_give_blocks(section, amount):
 
 
 def inventory_get(chat_id, item):
-    if item in ["coal", "dice", "key", "mystery_item", "investment_pass"]:
+    if item in ["coal", "dice", "key", "mystery_item", "investment_pass", "valve"]:
         inventory = dbr.mini_get_player(chat_id, "inventory")
         if item not in inventory:
             return 0
@@ -245,7 +245,7 @@ def inventory_get(chat_id, item):
 
 
 def inventory_use(chat_id, item, quantity):
-    if item in ["coal", "dice", "key", "mystery_item", "investment_pass"]:
+    if item in ["coal", "dice", "key", "mystery_item", "investment_pass", "valve"]:
         inventory = dbr.mini_get_player(chat_id, "inventory")
         if item not in inventory:
             return False
@@ -279,25 +279,27 @@ def inventory_use(chat_id, item, quantity):
 
 
 def inventory_give(chat_id, item, quantity):
-    if item in ["coal", "dice", "key", "mystery_item", "investment_pass"]:
+    if item in ["coal", "dice", "key", "mystery_item", "investment_pass", "valve"]:
         inventory = dbr.mini_get_player(chat_id, "inventory")
         if item not in inventory:
             inventory[item] = 0
         inventory[item] += quantity
         mini_up_player(chat_id, "inventory", inventory)
-    if item in gut.list["block"]:
+    elif item in gut.list["block"]:
         type_name = conv.name(block=item)["currency"]
         dbw.pay_block(chat_id, type_name, qty=-quantity)
-    if item in gut.list["crypto"]:
+    elif item in gut.list["crypto"]:
         player_CPdata = mini_get_player(chat_id, "Coinopoly")
         player_CPdata["Coins"][item] = float.hex(
             float.fromhex(player_CPdata["Coins"][item]) + quantity
         )
         mini_up_player(chat_id, "Coinopoly", player_CPdata)
-    if item == "protections":
+    elif item == "protections":
         player_OMdata = mini_get_player(chat_id, "Ore Miner")
         player_OMdata["protections"] += quantity
         mini_up_player(chat_id, "Ore Miner", player_OMdata)
+    else:
+        raise Exception("Item not recognized", item)
 
 
 def minis_player_data_init(chat_id):
@@ -650,7 +652,6 @@ def mystery_item_base_probability(chat_id):
 
 def mystery_item_on_level_up(chat_id, lvl):
     user_data = dbr.login(chat_id)
-    user_data["gear_level"]
     ref_level = 50 * (user_data["gear_level"] + 1)
     return lvl % ref_level == 0 and random.random() < (
         .25 * mystery_item_base_probability(chat_id))
@@ -658,7 +659,6 @@ def mystery_item_on_level_up(chat_id, lvl):
 
 def mystery_items_on_bulk_upgrade(chat_id, fromlvl, tolvl):
     user_data = dbr.login(chat_id)
-    user_data["gear_level"]
     ref_level = 50 * (user_data["gear_level"] + 1)
     base_prob = mystery_item_base_probability(chat_id)
 
@@ -672,45 +672,30 @@ def mystery_items_on_bulk_upgrade(chat_id, fromlvl, tolvl):
         current_level += ref_level
     return mitems
 
+def get_valve_value(valves=1):
+    if valves < 1:
+        return 0
+    top_gear = max(2, dbr.get_multiplayer_info()["top_gear"]["level"])
+    top_level_cost = gut.gear_up_level_cost(top_gear, top_gear+1)
 
-def get_valves(chat_id):
-    return dbr.login(chat_id)["shut_valves"]
+    factor = 1 - (2/3) ** valves
+    return int(top_level_cost * factor)
 
+def get_valve_price(chat_id):
+    currency = get_types_of(chat_id)["currency"]
+    global_production = max(
+        dbr.get_currencies_status()[currency],
+        get_production(chat_id)  # safeguard against incorrect global production
+    )
+    current_time = gut.time_s()
+    timestamp = dbr.get_multiplayer_info().get("valve_acquisition_timestamp", current_time)
 
-def get_all_valve_values():
-    cur_status = dbr.get_currencies_status()
-    cur_order = [(i, cur_status[i]) for i in cur_status]
-    cur_order = sorted(cur_order, key=lambda item: item[1], reverse=True)
-    cur_order = [i[0] for i in cur_order]
-
-    return {
-        cur_order[0]: 2 * (10 ** 9),
-        cur_order[1]: 15 * (10 ** 8),
-        cur_order[2]: 10 ** 9,
-        cur_order[3]: 7 * (10 ** 8),
-        cur_order[4]: 5 * (10 ** 8),
-        cur_order[5]: 4 * (10 ** 8),
-        cur_order[6]: 35 * (10 ** 7)
-    }
-
-
-def get_valve_value(chat_id):
-    user_currency = get_types_of(chat_id)["currency"]
-    valve_value = get_all_valve_values()[user_currency]
-    return valve_value
-
-
-def get_level_opening_valves(chat_id):
-    level = dbr.login(chat_id)["production_level"]
-    level += get_valves(chat_id) * get_valve_value(chat_id)
-    return level
-
-
-def get_valve_operation_price(chat_id):
-    return get_production(chat_id) * 100
-
-
-def get_max_valve_closing(chat_id):
-    valve_value = get_valve_value(chat_id)
-    level = dbr.login(chat_id)["production_level"]
-    return max(0, (level - (10**6)) // valve_value)
+    max_price = global_production * 24 * 365
+    min_price = global_production * 24  # should be reached in about 115 days
+    price = int(max(
+        min_price,
+        max_price * (.95 ** (  # -5% a day
+                (current_time - timestamp) / (60 * 60 * 24)
+        ))
+    ))
+    return price

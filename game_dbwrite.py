@@ -96,26 +96,19 @@ def up_settings(chat_id, settings):
     set_specific(chat_id, "N", "settings", flag)
 
 
-def give_money(chat_id, amount, type=None):
+def give_money(chat_id, amount):
     if chat_id not in ch().active_users:
         return "Abort"
     print("dbw", chat_id, "give_money or pay_money")
-    # consolidate_balance(chat_id)
-    if type:
-        new_money = ch().active_users[chat_id]["cur_" + type] + amount
-        di.item_update(di.pre_user, {'key': {
-                       "S": str(chat_id)}}, "cur_" + type, {"N": new_money})
-        ch().active_users[chat_id]["cur_" + type] = new_money
-    else:
-        new_money = ch().active_users[chat_id]["saved_balance"] + amount
-        di.item_update(di.pre_user, {'key': {"S": str(
-            chat_id)}}, "saved_balance", {"N": new_money})
-        ch().active_users[chat_id]["saved_balance"] = new_money
+    new_money = ch().active_users[chat_id]["saved_balance"] + amount
+    di.item_update(di.pre_user, {'key': {"S": str(
+        chat_id)}}, "saved_balance", {"N": new_money})
+    ch().active_users[chat_id]["saved_balance"] = new_money
     return "Ok"
 
 
-def pay_money(chat_id, amount, type=None):
-    return give_money(chat_id, -amount, type)
+def pay_money(chat_id, amount):
+    return give_money(chat_id, -amount)
 
 
 def up_money_printer(chat_id, costs, levels=1):
@@ -343,7 +336,7 @@ def mini_up_player(chat_id, game_name, player_data):
     if len(minis_data_copy["inventory"]) > 0:
         item = {**item,
                 **{"in::" + i: minis_data_copy["inventory"][i]
-                   for i in ["coal", "dice", "key", "mystery_item", "investment_pass"]}
+                   for i in ["coal", "dice", "key", "mystery_item", "investment_pass", "valve"]}
                 }
     if len(minis_data_copy["Daily News"]) > 0:
         item = {**item,
@@ -448,29 +441,25 @@ def member_switch(old_memb, new_memb, old_ship_count, new_ship_count):
     return "Ok"
 
 
-def set_valves(chat_id, new_valve_count, new_production_level):
-    if chat_id not in ch().active_users:
-        return "Abort"
-    consolidate_balance(chat_id)
-    print("dbw", chat_id, "set_valves")
-    di.item_update(di.pre_user, {'key': {"S": str(
-        chat_id)}}, "shut_valves", {"N": new_valve_count})
-    ch().active_users[chat_id]["shut_valves"] = new_valve_count
-    di.item_update(di.pre_user, {'key': {"S": str(
-        chat_id)}}, "production_level", {"N": new_production_level})
-    ch().active_users[chat_id]["production_level"] = new_production_level
-    return "Ok"
-
-
 def up_minimal_user(chat_id, user_data):
     print("dbw", chat_id, "minimal_user")
     user_data["key"] = chat_id
     ch().minimal_user[chat_id] = user_data
-    di.ezput_item(di.pre_minimal_user, user_data)
+
+    up_data = copy.deepcopy(user_data)
+    for big_number_field in ["saved_balance", "shard_exp", "debt", "real_estate_value"]:
+        if big_number_field in up_data:
+            up_data[big_number_field] = str(up_data[big_number_field])
+    di.ezput_item(di.pre_minimal_user, up_data)
 
 
 def up_minimal_general_data(data):
     print("dbw", "minimal_general")
     data["key"] = "Game"
     ch().minimal_general = data
-    di.ezput_item(di.pre_minimal_general, data)
+
+    up_data = copy.deepcopy(data)
+    for big_number_field in ["reserve"]:
+        if big_number_field in up_data:
+            up_data[big_number_field] = str(up_data[big_number_field])
+    di.ezput_item(di.pre_minimal_general, up_data)

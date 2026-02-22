@@ -281,12 +281,6 @@ def main_menu_keyboard_for(chat_id, user_data, minis_emoji):
             "⚙️ 📦 ⚙️": "Gear",
             uistr.get(chat_id, upbutton[0]): upbutton[1]
         })
-    elif game.can_operate_valves(chat_id):
-        keyboard.append({
-            "IBTV 📺": "Temporal Variations 0",
-            "⚙️ 🔧 ⚙️": "Valve Screen",
-            uistr.get(chat_id, upbutton[0]): upbutton[1]
-        })
     else:
         if lvl_limit(player_level, player_gear, "Mini IP"):
             keyboard.append({"IBTV 📺": "Temporal Variations 0",
@@ -583,19 +577,14 @@ def gear_menu(chat_id):
     can, level_cost, _ = game.can_gear_up(chat_id)
     if level_cost is None:
         return "WIP", [{uistr.get(chat_id, "button back"): "Main menu"}]
+
+    effects = game.gearup_effects(chat_id)
+
     if not can:
         can = False
         message += uistr.get(chat_id, "Gearup not ready").format(
-            needed_level=put.readable(level_cost + 1)
-        )
-        message += "\n" + "-" * 30 + "\n"
-    excess_money = game.gearup_market_absorption(chat_id)
-    if False:  # excess_money > 0:
-        can = False
-        message += uistr.get(chat_id, "Gearup too much money").format(
-            excess=put.pretty(excess_money),
-            sym=conv.name(membership=game.load_main_menu(
-                chat_id)["user"]["membership"])["symbol"]
+            valves=put.readable(effects["prod_level"][1]),
+            needed_level=put.readable( effects["prod_level"][4])
         )
         message += "\n" + "-" * 30 + "\n"
     if not game.passes_season_gearup_limit(chat_id):
@@ -606,10 +595,12 @@ def gear_menu(chat_id):
     message += uistr.get(chat_id, "Gearup info")
     message += "\n"
 
-    effects = game.gearup_effects(chat_id)
-    message += uistr.get(chat_id, "Gearup effect Prod_level") + put.readable(
-        effects["Prod_level"][0]) + " → " + put.readable(
-        effects["Prod_level"][1]) + "\n"
+    message += uistr.get(chat_id, "Gearup effect Prod_level").format(
+        current=put.readable(effects["prod_level"][0]),
+        valves=put.readable(effects["prod_level"][1]),
+        discount=put.readable(effects["prod_level"][2]),
+        final=put.readable(effects["prod_level"][3])
+    )
     message += uistr.get(chat_id, "Gearup effect Prod_rate") + put.pretty(
         effects["hourly_production_rate"][0]) + "M / h → " + put.pretty(
         effects["hourly_production_rate"][1]) + "M / h\n"
@@ -675,39 +666,6 @@ def gear_menu(chat_id):
 
     keyboard.append({uistr.get(chat_id, "button back"): "Main menu"})
     return message, keyboard
-
-
-def info_upgrade_account_to_single_balance(chat_id):
-    r = game.load_main_menu(chat_id)
-    user_data = r["user"]
-    cur_status = r["currencies"]
-
-    message = ""
-    message += uistr.get(chat_id, "accup new market general info")
-
-    cur_order = [(i, cur_status[i]) for i in cur_status]
-    cur_order = sorted(cur_order, key=lambda item: item[1], reverse=True)
-    cur_order = [i[0] for i in cur_order]
-    highest_cur = cur_order[0]
-    change_rate = {
-        i: max(0.001, (cur_status[i] / cur_status[highest_cur]))
-        for i in cur_status}
-    cur_sym = [conv.name(currency=currency)["symbol"]
-               for currency in cur_order]
-
-    sum_of_bal = 0
-    for i in range(3):
-        old_bal = user_data["balance"][cur_order[i]]
-        new_bal = (max(1, int(int(old_bal / change_rate[cur_order[i]]) *
-                   change_rate[cur_order[0]])))
-        sum_of_bal += new_bal
-        message += uistr.get(chat_id, "accup balance").format(
-            old_balance=str(old_bal) + cur_sym[i],
-            new_balance=str(new_bal) + cur_sym[0])
-    message += uistr.get(chat_id, "accup total").format(
-        total_new_balance=str(sum_of_bal) + cur_sym[0])
-
-    return message
 
 
 def market_screen(chat_id, section_selection):
@@ -898,11 +856,22 @@ def flea_market_screen(chat_id, qty):
 
     message = uistr.get(chat_id, "Flea Market Info")
     keyboard = []
-    items_to_show = set()
+    items_to_show = {"valve"}
     if data["payment"] == "Market":
         message += uistr.get(chat_id, "Flea Market Fee not due")
     else:
         items_to_show.add("money")
+
+    valve_buy_price, valve_sell_price = game.valve_prices(chat_id, qty)
+    keyboard.append({(
+        put.pretty(valve_buy_price) + player_cursym + " -> " +
+        put.pretty(qty)+ " " + uistr.get(chat_id, "FM item valve")
+    ): "FM valve buy " + str(qty),
+    (
+        put.pretty(qty)+ " " + uistr.get(chat_id, "FM item valve")+ " -> " +
+        put.pretty(valve_sell_price) + player_cursym
+    ): "FM valve sell " + str(qty),
+    })
 
     for offer in ["hot", "mid", "ins"]:
         item0 = data[offer]["offer"][0]
@@ -951,6 +920,7 @@ def flea_market_screen(chat_id, qty):
             item0name
         ): "FM deal1 " + offer + " " + str(qty),
         })
+
     if "money" in items_to_show:
         message += uistr.get(chat_id, "MM main balance").format(
             value=put.pretty(user_data["balance"]), sym=player_cursym)
@@ -962,7 +932,7 @@ def flea_market_screen(chat_id, qty):
         if crypto_type in items_to_show:
             message += minis.ui_CP_cryptoprint(game.best.inventory_get(chat_id, crypto_type)
                                                ) + " " + crypto_type + "\n"
-    for item in ["coal", "dice", "key", "investment_pass", "protections"]:
+    for item in ["coal", "dice", "key", "investment_pass", "protections", "valve"]:
         if item in items_to_show:
             message += put.pretty(
                 game.best.inventory_get(chat_id, item)
@@ -1240,50 +1210,6 @@ def personal_page(viewer_id, chat_id, page):
     return message, keyboard
 
 
-def valve_screen(chat_id):
-    (
-        player_valves, player_level, level_after_opening_valves, all_valve_values,
-        user_currency, op_price, can_gear_normally, gear_level_cost, can_gear_after_opening,
-        max_valve_closing
-    ) = game.get_valve_screen_data(chat_id)
-    message = "൦" * 40 + "\n"
-    message += uistr.get(chat_id, "Valve Info")
-    for cur in all_valve_values:
-        message += uistr.get(chat_id, "Valve faction value").format(
-            faction=conv.name(currency=cur)["membership"],
-            value=put.pretty(all_valve_values[cur])
-        )
-
-    level_after_closing_valves = player_level - max_valve_closing * all_valve_values[user_currency]
-    message += uistr.get(chat_id, "Valve user options").format(
-        cur_level=put.pretty(player_level),
-        cur_valves=put.pretty(player_valves),
-        level_after_opening=put.pretty(level_after_opening_valves),
-        valves_closing=put.pretty(max_valve_closing),
-        level_after_closing=put.pretty(level_after_closing_valves),
-        valves_after_closing=put.pretty(max_valve_closing + player_valves),
-        gear_level_cost=put.pretty(gear_level_cost)
-    )
-
-    if can_gear_normally:
-        message += uistr.get(chat_id, "Valve note gear normal")
-    elif can_gear_after_opening:
-        message += uistr.get(chat_id, "Valve note gear after opening")
-
-    message += uistr.get(chat_id, "Valve price").format(
-        price=put.pretty(op_price),
-        cur_sym=conv.name(currency=user_currency)["symbol"]
-    )
-
-    keyboard = []
-    keyboard.append({
-        uistr.get(chat_id, "Valve button close"): "Valve close",
-        uistr.get(chat_id, "Valve button open"): "Valve open",
-    })
-    keyboard.append({uistr.get(chat_id, "button back"): "Main menu"})
-    return message, keyboard
-
-
 # hopefully AWS doesn't kill machines in seconds!
 current_request_type = {}
 user_last_menu = {}
@@ -1369,14 +1295,6 @@ def exe_and_reply(query, chat_id):
                         "chat_id": int(os.environ["ADMIN_CHAT_ID"]),
                         "message": f"Activated account for /view@{chat_id}"
                     }]
-    elif query == "Account Upgrade":
-        message = info_upgrade_account_to_single_balance(chat_id)
-        keyboard = [{
-            uistr.get(chat_id, "button confirm"): "Account Upgrade Confirm",
-            uistr.get(chat_id, "button back"): "Main menu"}]
-    elif query == "Account Upgrade Confirm":
-        game.upgrade_to_single_balance(chat_id)
-        message = uistr.get(chat_id, "Done")
     elif query == "Nickname Random":
         message = game.set_random_nickname(chat_id)
     elif "Nickname" in query:
@@ -1476,6 +1394,14 @@ def exe_and_reply(query, chat_id):
         user_last_menu[chat_id] = "Flea Mart " + str(qty)
         offer = query[len("FM deal1 "):len("FM deal1 xxx")]
         message = game.flea_market_deal(chat_id, offer, 1, qty)
+    elif "FM valve buy" in query:
+        qty = int(query.split()[-1])
+        user_last_menu[chat_id] = "Flea Mart " + str(qty)
+        message = game.valve_deal(chat_id, qty, "buy")
+    elif "FM valve sell" in query:
+        qty = int(query.split()[-1])
+        user_last_menu[chat_id] = "Flea Mart " + str(qty)
+        message = game.valve_deal(chat_id, qty, "sell")
 
     elif query == "Settings":
         user_last_menu[chat_id] = query
@@ -1486,7 +1412,7 @@ def exe_and_reply(query, chat_id):
     elif query == "Language selection":
         message = " |\nv"
         keyboard = [{li: "langsel " + li}
-                    for li in ["English", "Italiano", "Português"]]
+                    for li in ["English", "Italiano", "Português", "Russian"]]
     elif "langsel" in query:
         language_selected = query[len("langsel "):]
         game.change_language(chat_id, language_selected)
@@ -1630,14 +1556,6 @@ def exe_and_reply(query, chat_id):
         delta_month = int(query[len("Temporal Variations "):])
         message, keyboard = temporal_variations_screen(chat_id, delta_month)
 
-    elif query == "Valve Screen":
-        user_last_menu[chat_id] = query
-        message, keyboard = valve_screen(chat_id)
-    elif query == "Valve close":
-        message = game.operate_valves(chat_id, "close")
-    elif query == "Valve open":
-        message = game.operate_valves(chat_id, "open")
-
     elif query == "Event":
         message, keyboard = game_events.do_event(chat_id)
     else:
@@ -1663,10 +1581,11 @@ def last_menu(chat_id):
 def game_credits(chat_id):
     message = ""
 
-    message += "IdleBank Alpha\n\n"
+    message += "IdleBank Alpha\nhttps://github.com/DeRobyJ/IdleBank-Alpha\n\n"
     message += "Game design and implementation: Roberto Giaconia\n"
     message += "English UI and Italian translation: Roberto Giaconia\n"
     message += "Portuguese translation: Matheus Souza\n"
+    message += "Russian translation: https://github.com/Danstiv (llm gen and human review)"
     message += "\nMany thanks to friends and pioneer players for helping me test and begin this incredible adventure!\n"
     message += "\n_Se i giovani si organizzano, si impadroniscono di ogni ramo del sapere e lottano con i lavoratori e gli oppressi, non c’è scampo per un vecchio ordine fondato sul privilegio e sull’ingiustizia._ \n(~ Enrico Berlinguer)"  # noqa
     keyboard = [{uistr.get(chat_id, "button back"): "Main menu"}]
@@ -1702,14 +1621,6 @@ def handle_message(chat_id, mex):
             if check_april_fools(chat_id):
                 return exe_and_reply("mnm Main menu", chat_id)
             return mystery_item_screen(chat_id)
-        elif mex == "/valve":
-            if check_april_fools(chat_id):
-                return exe_and_reply("mnm Main menu", chat_id)
-            if (game.check_account(chat_id)["status"] == "Activated" and
-               (game.load_main_menu(chat_id)["user"][
-                "production_level"] > 35 or
-               game.load_main_menu(chat_id)["user"]["gear_level"] > 0)):
-                return valve_screen(chat_id)
         elif "/edb" in mex:
             query_parts = mex.split()
             faction = "No"

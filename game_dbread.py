@@ -39,9 +39,8 @@ def login(chat_id):
     if "gear_level" not in ch().active_users[chat_id]:  # migration guard
         ch().active_users[chat_id]["gear_level"] = 0
     data["gear_level"] = ch().active_users[chat_id]["gear_level"]
-    if "shut_valves" not in ch().active_users[chat_id]:  # migration guard
-        ch().active_users[chat_id]["shut_valves"] = 0
-    data["shut_valves"] = ch().active_users[chat_id]["shut_valves"]
+    if "shut_valves" in ch().active_users[chat_id]:  # migration guard
+        ch().active_users[chat_id].pop("shut_valves")
     data["balance_timestamp"] = ch().active_users[chat_id]["balance_timestamp"]
     data["balance"] = gut.balance(
         ch().active_users[chat_id]["production_level"],
@@ -167,7 +166,7 @@ def get_season_info():
     return ch().season_info
 
 
-def check_payment(chat_id, cost, currency="unified"):
+def check_payment(chat_id, cost):
     player_balance = login(chat_id)["balance"]
     if player_balance >= cost:
         return True
@@ -238,7 +237,7 @@ def mini_get_player(chat_id, game_name):
             "Investment Plan": {},
             "Shop Chain": {}
         }
-        for invit in ["coal", "dice", "key", "mystery_item", "investment_pass"]:
+        for invit in ["coal", "dice", "key", "mystery_item", "investment_pass", "valve"]:
             if "in::" + invit in raw_data:
                 ch().mini_player[chat_id]["inventory"][invit] = raw_data[
                     "in::" + invit]
@@ -308,6 +307,9 @@ def mini_get_player(chat_id, game_name):
 def get_minimal_user(chat_id):
     if chat_id not in ch().minimal_user:
         ch().minimal_user[chat_id] = di.ezget_item(di.pre_minimal_user, {"key": chat_id})
+        for big_number_field in ["saved_balance", "shard_exp", "debt", "real_estate_value"]:
+            if big_number_field in ch().minimal_user[chat_id]:
+                ch().minimal_user[chat_id][big_number_field] = int(ch().minimal_user[chat_id][big_number_field])
         if not ch().minimal_user[chat_id]:
             ch().minimal_user[chat_id] = {}
     return ch().minimal_user[chat_id]
@@ -316,6 +318,9 @@ def get_minimal_user(chat_id):
 def get_minimal_general_data():
     if "key" not in ch().minimal_general:
         ch().minimal_general = di.ezget_item(di.pre_minimal_general, {"key": "Game"})
+        for big_number_field in ["reserve"]:
+            if big_number_field in ch().minimal_general:
+                ch().minimal_general[big_number_field] = int(ch().minimal_general[big_number_field])
         if not ch().minimal_general:
             ch().minimal_general = {}
     return ch().minimal_general
