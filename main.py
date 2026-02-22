@@ -311,7 +311,8 @@ def bot_handler(event, context):
         if chat_type == "private":
             is_private = True
             respond_id = chat_id
-            chat_id, query = admin_impersonate(query)
+            if chat_id == int(os.environ["ADMIN_CHAT_ID"]):
+                chat_id, query = admin_impersonate(query)
         elif chat_type in ["group",  "supergroup"]:
             is_private = False
             # Getting correct chat_id from sender, and  collecting group_id and username

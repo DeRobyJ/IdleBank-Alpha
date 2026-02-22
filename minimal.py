@@ -50,7 +50,7 @@ def update_user_real_estate_value(chat_id, user_data):
                 user_data["real_estate_value"] - int(user_data["real_estate_value"] * (.97 ** bumps))
             )
         ))
-        user_data["real_estate_value"] -= earnings
+        user_data["real_estate_value"] = int(user_data["real_estate_value"] - earnings)
 
     user_data["real_estate_timestamp"] += bumps * interest_period
     return user_data, earnings
@@ -124,9 +124,9 @@ def get_user_data(chat_id):
     user_data, earnings = update_user_real_estate_value(chat_id, user_data)
     if earnings > 0:
         market_reserve = get_market_reserve()
-        market_reserve += int(earnings * .2)
+        market_reserve = int(market_reserve + earnings * .2)
         put_market_reserve(market_reserve)
-        user_data["saved_balance"] += int(earnings * .8)
+        user_data["saved_balance"] = int(user_data["saved_balance"] + earnings * .8)
         set_user_data(chat_id, user_data)
     return user_data, new
 
@@ -143,7 +143,7 @@ def get_balance(chat_id):
 
 
 def get_production_rate(chat_id):
-    user_data, _ = get_user_data(chat_id)
+    user_data = dbr.get_minimal_user(chat_id)
     return int(
         gut.hourly_production_rate_of_level(user_data["production_level"]) *
         gut.total_multiplier("L" * user_data["gear_level"])

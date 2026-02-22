@@ -46,6 +46,8 @@ def item_update(prefix, selection_dict, up_attribute, up_value_dict):
             ExpressionAttributeValues={':val1': {"S": str(balance_exponent)}}
         )
 
+    tab_puts[prefix] += 1
+    print( fixpre(prefix), "puts:", tab_puts[prefix])
     dynamodb.update_item(
         TableName=tabname,
         Key=selection_dict,
@@ -53,8 +55,6 @@ def item_update(prefix, selection_dict, up_attribute, up_value_dict):
         ExpressionAttributeNames={'#attr1': up_attribute},
         ExpressionAttributeValues={':val1': up_value_dict}
     )
-    tab_puts[prefix] += 1
-    print( fixpre(prefix), "puts:", tab_puts[prefix])
 # item_update('uselessbot-user_data', {'chat_id': {"N": str(chat_id)}},
 #             "Aa_allowed_action", {"S": action})
 
@@ -146,9 +146,10 @@ def ezput_item(prefix, item):
         item_copy["money"] = item_copy["money"] // (10 ** money_exponent)
         item_copy["money_limit"] = item_copy["money_limit"] // (10 ** money_exponent)
         item_copy["money_exponent"] = money_exponent
-    dynatable.put_item(Item=item_copy)
     tab_puts[prefix] += 1
     print(fixpre(prefix), "puts:", tab_puts[prefix])
+    dynatable.put_item(Item=item_copy)
+
 
 
 # Key prefixes
