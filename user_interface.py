@@ -1412,7 +1412,7 @@ def exe_and_reply(query, chat_id):
     elif query == "Language selection":
         message = " |\nv"
         keyboard = [{li: "langsel " + li}
-                    for li in ["English", "Italiano", "Português"]]
+                    for li in ["English", "Italiano", "Português", "Russian"]]
     elif "langsel" in query:
         language_selected = query[len("langsel "):]
         game.change_language(chat_id, language_selected)
@@ -1581,10 +1581,11 @@ def last_menu(chat_id):
 def game_credits(chat_id):
     message = ""
 
-    message += "IdleBank Alpha\n\n"
+    message += "IdleBank Alpha\nhttps://github.com/DeRobyJ/IdleBank-Alpha\n\n"
     message += "Game design and implementation: Roberto Giaconia\n"
     message += "English UI and Italian translation: Roberto Giaconia\n"
     message += "Portuguese translation: Matheus Souza\n"
+    message += "Russian translation: https://github.com/Danstiv (llm gen and human review)"
     message += "\nMany thanks to friends and pioneer players for helping me test and begin this incredible adventure!\n"
     message += "\n_Se i giovani si organizzano, si impadroniscono di ogni ramo del sapere e lottano con i lavoratori e gli oppressi, non c’è scampo per un vecchio ordine fondato sul privilegio e sull’ingiustizia._ \n(~ Enrico Berlinguer)"  # noqa
     keyboard = [{uistr.get(chat_id, "button back"): "Main menu"}]
