@@ -203,7 +203,7 @@
       "({time} секунд, плюс-минус)\n",
       "(быстрее, чем скажешь '{time} секунд')\n",
       "(примерно около {time} секунд)\n",
-      "({time} секунд, если я правильно посчитал)\n",
+      "({time} секунд, если мои расчёты верны)\n",
       "(обновляй, пока эти {time} секунд не пройдут)\n"
     ]
   },
@@ -337,8 +337,8 @@
       "Национальный банк",
       "Мастер инфляции",
       "Международный банк",
-      "Количественный массажер",
-      "Лазанья из банкнот",
+      "Массажёр денежной массы",
+      "Банкнотная лазанья",
       "Печатает что угодно",
       "Многопоточный криптомайнер",
       "Банк Солнечной системы",
@@ -358,7 +358,7 @@
     "Italiano": "Multi-miglioramento ({levels} livelli)",
     "Français": "",
     "Español": "",
-    "Russian": "Мульти-улучшение ({levels} уровней)"
+    "Russian": "Массовое улучшение ({levels} уровней)"
   },
   "upgrade prod bulk confirmation": {
     "English": "Are you sure you want to spend {money_cost}{sym} and {block_cost} {block_type} to get to level {final_level}?\nThis will grant your faction {points} points for this Season!\n\n",
@@ -405,7 +405,7 @@
     "Français": "",
     "Español": "",
     "Português": "",
-    "Russian": "Ваши текущие настройки.\nНажимайте кнопки, чтобы изменить их!"
+    "Russian": "Здесь ваши текущие настройки.\nНажимайте кнопки, чтобы изменить их!"
   },
   "settings Bulk_confirm": {
     "English": "Confirm Multi-upgrade",
@@ -413,7 +413,7 @@
     "Français": "",
     "Español": "",
     "Português": "",
-    "Russian": "Подтверждение мульти-улучшения"
+    "Russian": "Подтверждение массового улучшения"
   },
   "settings CP_notification": {
     "English": "Coinopoly notifications",
@@ -429,7 +429,7 @@
     "Français": "",
     "Español": "",
     "Português": "",
-    "Russian": "Уведомления о загадочных предметах агентства"
+    "Russian": "Уведомления о загадочных предметах от агентства"
   },
   "button main sell option": {
     "English": "Sell {block_type} for {currency_sym}",
@@ -501,7 +501,7 @@
     "Français": "",
     "Español": "",
     "Português": "",
-    "Russian": "Федеральная резервная система"
+    "Russian": ""
   },
   "faction ECB": {
     "English": "European Central Bank",
@@ -509,7 +509,7 @@
     "Français": "",
     "Español": "",
     "Português": "Banco Central Europeu",
-    "Russian": "Европейский центральный банк"
+    "Russian": ""
   },
   "faction PBC": {
     "English": "People's Bank of China",
@@ -517,7 +517,7 @@
     "Français": "",
     "Español": "",
     "Português": "Banco da População Chinesa",
-    "Russian": "Народный банк Китая"
+    "Russian": ""
   },
   "faction RBA": {
     "English": "Reserve Bank of Australia",
@@ -525,7 +525,7 @@
     "Français": "",
     "Español": "",
     "Português": "Reserve Bank of Australia",
-    "Russian": "Резервный банк Австралии"
+    "Russian": ""
   },
   "faction CBB": {
     "English": "Central Bank of Brazil",
@@ -533,7 +533,7 @@
     "Français": "",
     "Español": "",
     "Português": "Banco Central do Brasil",
-    "Russian": "Центральный банк Бразилии"
+    "Russian": ""
   },
   "faction RBI": {
     "English": "Reserve Bank of India",
@@ -541,7 +541,7 @@
     "Français": "",
     "Español": "",
     "Português": "",
-    "Russian": "Резервный банк Индии"
+    "Russian": ""
   },
   "faction ACB": {
     "English": "African Central Bank ",
@@ -549,7 +549,7 @@
     "Français": "",
     "Español": "",
     "Português": "",
-    "Russian": "Африканский центральный банк"
+    "Russian": ""
   },
   "faction you": {
     "English": "You",
@@ -848,7 +848,7 @@
       "Извивающийся",
       "Шумный",
       "Тактический",
-      "Квир"
+      "Странный"
     ]
   },
   "NICK adjective_2": {
@@ -945,34 +945,34 @@
       "Nuclear"
     ],
     "Russian": [
-      "Слоновая кость",
-      "Алая",
-      "Оранжевая",
-      "Красная",
-      "Мятная",
-      "Синяя",
-      "Зеленая",
-      "Серая",
-      "Золотая",
-      "Фиолетовая",
-      "Серебряная",
-      "Бриллиантовая",
-      "Стальная",
-      "Деревянная",
-      "Стеклянная",
-      "Ледяная",
-      "Пластиковая",
-      "Печатная",
-      "Прозрачная",
-      "Секулярная",
-      "Скоростная",
-      "Танцующая",
-      "Радужная",
-      "Механическая",
-      "Кибернетическая",
-      "Бумажная",
-      "Сырная",
-      "Ядерная"
+      "Кремовый",
+      "Алый",
+      "Оранжевый",
+      "Красный",
+      "Мятный",
+      "Синий",
+      "Зелёный",
+      "Серый",
+      "Золотой",
+      "Фиолетовый",
+      "Серебряный",
+      "Бриллиантовый",
+      "Стальной",
+      "Деревянный",
+      "Стеклянный",
+      "Ледяной",
+      "Пластиковый",
+      "Печатный",
+      "Прозрачный",
+      "Светский",
+      "Скоростной",
+      "Танцующий",
+      "Радужный",
+      "Механический",
+      "Кибернетический",
+      "Бумажный",
+      "Сырный",
+      "Ядерный"
     ]
   },
   "NICK noun": {
@@ -1342,7 +1342,7 @@
       "Манга",
       "Комикс",
       "Люстра",
-      "Семь",
+      "Семёрка",
       "Туз",
       "Облако",
       "Солнце",
@@ -1497,7 +1497,7 @@
     "Français": "",
     "Español": "",
     "Português": "Placar",
-    "Russian": "Таблица лидеров"
+    "Russian": "Лидеры"
   },
   "button multiplayer_info": {
     "English": "Stats",
@@ -1622,7 +1622,7 @@
     "Français": "",
     "Español": "",
     "Português": "",
-    "Russian": "Daily News"
+    "Russian": ""
   },
   "button minis OM": {
     "English": "Ore Miner",
@@ -1630,7 +1630,7 @@
     "Français": "",
     "Español": "",
     "Português": "",
-    "Russian": "Ore Miner"
+    "Russian": ""
   },
   "button minis IP": {
     "English": "Investment Plan",
@@ -1638,7 +1638,7 @@
     "Français": "",
     "Español": "",
     "Português": "",
-    "Russian": "Investment Plan"
+    "Russian": ""
   },
   "button minis CP": {
     "English": "Coinopoly",
@@ -1646,7 +1646,7 @@
     "Français": "",
     "Español": "",
     "Português": "",
-    "Russian": "Coinopoly"
+    "Russian": ""
   },
   "button minis SR": {
     "English": "Global Steel Road",
@@ -1654,7 +1654,7 @@
     "Français": "",
     "Español": "",
     "Português": "",
-    "Russian": "Global Steel Road"
+    "Russian": ""
   },
   "button Shop Chain": {
     "English": "Shop Chain",
@@ -1662,7 +1662,7 @@
     "Français": "",
     "Español": "",
     "Português": "",
-    "Russian": "Shop Chain"
+    "Russian": ""
   },
   "DN notify most": {
     "English": "Congratulations! You've won {prize} from Daily News! Here's a message from them:\n_Thanks for having played to our last edition of Daily News. You've been the first voter of the most voted Country, please accept our prize!\nSee you soon,\n~President Anne Burger~_",
@@ -1987,7 +1987,7 @@
   "DN Agencies button create": {
     "English": "Create for ",
     "Italiano": "Crea per ",
-    "Russian": "Создать за "
+    "Russian": "Создать для "
   },
   "DN Agencies button leave": {
     "English": "Leave your agency",
@@ -2012,7 +2012,7 @@
   "DN Agencies notify jackpot": {
     "English": "Hey colleague! I just got a JACKPOT from my mysterious items, here are {quantity} for you!\nYours, {sender}",
     "Italiano": "Ehi collega! Ho appena fatto JACKPOT con i miei oggetti misteriosi, eccone {quantity} per te!\nA presto, {sender}",
-    "Russian": "Привет, коллега! Я только что получил ДЖЕКПОТ из загадочных предметов, вот {quantity} для тебя!\nТвой(я), {sender}"
+    "Russian": "Привет, коллега! Я только что получил ДЖЕКПОТ из загадочных предметов, вот {quantity} для тебя!\n{sender}"
   },
   "OM ores destroyed": {
     "English": "There were some ores here, but the hammer destroyed them!\n\n",
@@ -2139,7 +2139,7 @@
     "Français": "",
     "Español": "",
     "Português": "",
-    "Russian": "Вы нашли 1 защиту для будущих шахтных сессий!\n"
+    "Russian": "Вы нашли 1 защиту для будущих сессий добычи!\n"
   },
   "OM prize coal": {
     "English": "You found 1 coal for use in Global Steel Road!\n",
@@ -2436,7 +2436,7 @@
     "Français": "",
     "Español": "",
     "Português": "",
-    "Russian": "\nБонус за новые линии: {current} блоков (растет примерно на {rate} в минуту)\n"
+    "Russian": "\nБонус за новые линии: {current} блоков (растет на {rate} в минуту)\n"
   },
   "IP gamemode Timed_Capitalist": {
     "English": "Timed Capitalist mode: invest when it's your turn and get extra prizes when you score a tris, every faction has the same prices.\n",
@@ -2581,7 +2581,7 @@
       "Français": "",
       "Español": "",
       "Português": "",
-      "Russian": "Вы разблокировали _Таблицу лидеров_! Здесь можно получить больше информации о других игроках. Также вы открыли _Игровую комнату_, загляните туда, чтобы узнать, когда сможете повеселиться с мини-играми!"
+      "Russian": "Вы разблокировали _Таблицу лидеров_! Здесь можно получить больше информации о других игроках. Также вы открыли _Игровую комнату_, загляните туда, чтобы узнать, когда сможете повеселиться в мини-играх!"
     },
     "Minigame Daily News": {
       "English": "You can now play _Daily News_, go cast your vote in the _Game Room_!",
@@ -2654,21 +2654,21 @@
     "Français": "",
     "Español": "",
     "Português": "",
-    "Russian": "Откройте эту функцию на {gear} передаче"
+    "Russian": "Откройте эту функцию на gear {gear}"
   },
   "Gearup not ready": {
     "English": "You need more levels to gear up! Using {valves} valves, get to level {needed_level} and come back!",
     "Italiano": "Servono più livelli per salire di marcia! Se usi {valves} valvole, raggiungi il livello {needed_level} e riprova!",
     "Français": "",
     "Español": "",
-    "Russian": "Вам нужны еще уровни, чтобы повысить передачу! Используя {valves} клапанов, достигните уровня {needed_level} и возвращайтесь!"
+    "Russian": "Вам нужны еще уровни, чтобы повысить gear! Используя {valves} клапанов, достигните уровня {needed_level} и возвращайтесь!"
   },
   "Gearup not available": {
     "English": "You can't gear up at this time!",
     "Italiano": "Non puoi salire di marcia adesso!",
     "Français": "",
     "Español": "",
-    "Russian": "Сейчас нельзя повышать передачу!"
+    "Russian": "Сейчас нельзя повышать gear!"
   },
   "Gearup too much money": {
     "English": "The market can't absorb your money. Try to spend at least {excess}{sym} before!",
@@ -2682,7 +2682,7 @@
     "Italiano": "Hai la possibilità di migliorare la tua esperienza di gioco facendo salire di marcia la tua banca!\nSotto trovi la lista dei cambiamenti a cui verrai sottoposto. Puoi decidere di stare nella tua fazione corrente oppure di cambiare. Salire alle prossime marce diventerà sempre più dispendioso!\n\nNota che quando lo fai doni tutti i tuoi soldi al Mercato della fazione corrente!\n\n",
     "Français": "",
     "Español": "",
-    "Russian": "Теперь вы можете улучшить игровой опыт, повышая передачу своего банка!\nВот список изменений. Вы можете остаться в текущей фракции или сменить членство. С каждым разом повышать передачу будет сложнее!\n\nУчтите, что при этом все ваши деньги будут пожертвованы рынку вашей текущей фракции!\n\n"
+    "Russian": "Теперь вы можете улучшить игровой опыт, повышая gear своего банка!\nВот список изменений. Вы можете остаться в текущей фракции или сменить членство. С каждым разом повышать gear будет сложнее!\n\nУчтите, что при этом все ваши деньги будут пожертвованы рынку вашей текущей фракции!\n\n"
   },
   "Gearup effect Prod_level": {
     "English": "Production level: {current} → {final}\nWith your {valves} valves you get a discount of {discount} levels!\n\n",
@@ -2759,7 +2759,7 @@
     "Italiano": "Marcia Massima ({qty} marce)",
     "Français": "",
     "Español": "",
-    "Russian": "Максимум передач ({qty} передач) "
+    "Russian": "Максимальный gear ({qty}) "
   },
   "Gearup ACB rule": {
     "English": "ACB is a special faction: you can't stay in it twice in a row!",
@@ -2822,7 +2822,7 @@
     "Italiano": "*Mercato di {block}*\n{direction_emoji} Prezzo: {price}{cur_sym}\n`Soldi nel mercato: {money_pcent}% pieno\nBlocchi nel mercato: {block_pcent}% pieno`\n\n",
     "Français": "",
     "Español": "",
-    "Russian": "*рынок {block}*\n{direction_emoji} Цена: {price}{cur_sym}\n`Рынок деньги: {money_pcent}%\nРынок блоки: {block_pcent}%`\n\n"
+    "Russian": "*рынок {block}*\n{direction_emoji} Цена: {price}{cur_sym}\n`Рынок денег: {money_pcent}%\nРынок блоков: {block_pcent}%`\n\n"
   },
   "Market section status short": {
     "English": "{direction_emoji} *{block}*: {price}{cur_sym} per block\n`\tMoney: {money_pcent}% | Blocks: {block_pcent}%`\n",
@@ -2850,7 +2850,7 @@
     "Italiano": "Questo mercato non accetta altri acquisti",
     "Français": "",
     "Español": "",
-    "Russian": "Этот рынок не может принять больше покупок"
+    "Russian": "Этот рынок не может принимать покупки"
   },
   "Market empty money": {
     "English": "This market is out of money",
@@ -2920,7 +2920,7 @@
     "Italiano": "{offer_name} termina tra {time_left}:\n scambia {item_0} con {item_1}\n",
     "Français": "",
     "Español": "",
-    "Russian": "{offer_name} заканчивается через {time_left}:\n обменять {item_0} на {item_1}\n"
+    "Russian": "{offer_name} заканчивается через {time_left}:\n обмен {item_0} на {item_1}\n"
   },
   "Flea Market Fee": {
     "English": "Fee to pay: {price}{cur_sym}\n",
@@ -2990,7 +2990,7 @@
     "Italiano": "Crypto",
     "Français": "",
     "Español": "",
-    "Russian": "Крипто"
+    "Russian": "Крипта"
   },
   "FM item block": {
     "English": "Blocks",
@@ -3067,7 +3067,7 @@
     "Italiano": "Regole:\n- Ogni ora, puoi lanciare un dado e raggiungere un magazzino o un mercato di una crypto coin\n- Nei mercati, puoi fare Mining gratuitamente, comprare parte delle coin disponibili oppure vendere tutte le tue coin di quella crypto al prezzo attuale\n- Quando raggiungi un magazzino, vinci 1 blocco per ogni tipo di coin in tuo possesso!\n- Puoi anche pagare crypto per comprare case, e otterrai blocchi quando la gente cade su di esse.\n\n",
     "Français": "",
     "Español": "",
-    "Russian": "Правила:\n- Каждый час вы можете бросить кубик и попасть либо на склад, либо на рынок криптомонет\n- На рынках вы можете бесплатно майнить монеты, купить часть монет в наличии или продать все свои монеты этой крипты по текущей цене\n- Когда вы попадаете на склад, вы выигрываете 1 блок за каждый тип монет, которые у вас есть!\n- Вы также можете платить криптой за покупку домов, получая блоки, когда на них приземляются.\n\n"
+    "Russian": "Правила:\n- Каждый час вы можете бросить кубик и попасть либо на склад, либо на рынок криптомонет\n- На рынках вы можете бесплатно майнить монеты, купить часть монет в наличии или продать все свои монеты этой крипты по текущей цене\n- Когда вы попадаете на склад, вы выигрываете 1 блок за каждый тип монет, которые у вас есть!\n- Вы также можете платить криптой за покупку домов, получая блоки, когда на них попадают.\n\n"
   },
   "CP in storehouse": {
     "English": "You're currently in a storehouse.\n",
@@ -3102,7 +3102,7 @@
     "Italiano": "Fai Mining di crypto",
     "Français": "",
     "Español": "",
-    "Russian": "Добыть крипту"
+    "Russian": "Майнить крипту"
   },
   "CP button buy main": {
     "English": "Buy {qty} for {price}{cur_sym}",
@@ -3137,14 +3137,14 @@
     "Italiano": "Tabellone",
     "Français": "",
     "Español": "",
-    "Russian": "Поле целиком"
+    "Russian": "Всё поле"
   },
   "CP button Wallet": {
     "English": "Wallet",
     "Italiano": "Portafoglio",
     "Français": "",
     "Español": "",
-    "Russian": "Кошелек"
+    "Russian": "Кошелёк"
   },
   "CP button Stock": {
     "English": "Stock",
@@ -3172,7 +3172,7 @@
     "Italiano": "Qualcuno è arrivato sulla tua casa in Coinopoly! Hai vinto queste crypto: {cryptos}!",
     "Français": "",
     "Español": "",
-    "Russian": "Кто-то попал на ваш дом в Coinopoly! Вы выиграли эти крипты: {cryptos}!"
+    "Russian": "Кто-то попал на ваш дом в Coinopoly! Вы выиграли эту крипту: {cryptos}!"
   },
   "CP landon house": {
     "English": "\nSomeone has a house on this cell... You should probably buy one yourself!",
@@ -3306,7 +3306,7 @@
       "Italiano": "Carburante",
       "Français": "",
       "Español": "",
-      "Russian": "Топливо для транспорта"
+      "Russian": "Автомобильное топливо"
     },
     "DD": {
       "English": "Gas",
@@ -3348,7 +3348,7 @@
       "Italiano": "Energia Verde",
       "Français": "",
       "Español": "",
-      "Russian": "Зеленая энергия"
+      "Russian": "Зелёная энергия"
     },
     "FA": {
       "English": "Copper",
@@ -3362,7 +3362,7 @@
       "Italiano": "Circuiti Elettrici",
       "Français": "",
       "Español": "",
-      "Russian": "Электропровода"
+      "Russian": "Провода"
     },
     "FC": {
       "English": "Electronics",
@@ -3552,7 +3552,7 @@
     "Italiano": "Guadagni per i prodotti finali",
     "Français": "",
     "Español": "",
-    "Russian": "Доходы от финальных продуктов"
+    "Russian": "Доходы от конечных продуктов"
   },
   "SR section Prices": {
     "English": "Prices of materials",
@@ -3566,7 +3566,7 @@
     "Italiano": "Mappa degli scambi",
     "Français": "",
     "Español": "",
-    "Russian": "Карта обменов"
+    "Russian": "Карта обмена"
   },
   "SR button buy": {
     "English": "Buy {itemname}",
@@ -3594,14 +3594,14 @@
     "Italiano": "Vai al Mercato GSR",
     "Français": "",
     "Español": "",
-    "Russian": "В GSR Рынок"
+    "Russian": "К GSR Рынку"
   },
   "SR button to Factories": {
     "English": "Go to GSR Factories",
     "Italiano": "Vai alle Fabbriche GSR",
     "Français": "",
     "Español": "",
-    "Russian": "В GSR Фабрики"
+    "Russian": "К GSR Фабрикам"
   },
   "SR Factories button own": {
     "English": "Get {factory_letter}: {cost}{block_type}",
@@ -3629,7 +3629,7 @@
     "Italiano": "Qualcuno ha preso la tua Fabbrica in {city}!",
     "Français": "",
     "Español": "",
-    "Russian": "Кто-то получил вашу фабрику в {city}!"
+    "Russian": "Кто-то заполучил вашу фабрику в {city}!"
   },
   "SR Factories notify switched factory": {
     "English": "Somebody switched your Factory in {city}!",
@@ -3650,7 +3650,7 @@
     "Italiano": "Latifondista corrente (fabbrica S):\n{landowner}",
     "Français": "",
     "Español": "",
-    "Russian": "Текущий владелец земли (фабрика S):\n{landowner}"
+    "Russian": "Текущий землевладелец (фабрика S):\n{landowner}"
   },
   "SR Factories dividend": {
     "English": "Dividends in this city are: {base_div}{cur_sym}",
@@ -3678,7 +3678,7 @@
     "Italiano": "Regole:\n- Questa linea commerciale attraversa velocemente 42 città importanti in giro per il mondo\n- Ad ogni fermata, puoi comprare, scambiare e vendere beni, per premi molto ghiotti\n- Puoi vendere prodotti finiti solo nelle 7 capitali\n- Puoi fare accelerare il viaggio dando carbone, ottenuto in Ore Miner!\n\n",
     "Français": "",
     "Español": "",
-    "Russian": "Правила:\n- Этот обменный маршрут быстро проходит через 42 важные города мира\n- На каждой остановке вы можете покупать, обменивать и продавать товары за очень высокие цены\n- Продавать финальные продукты можно только в 7 столицах\n- Можно ускорить поездку, дав уголь, полученный в Ore Miner!\n\n"
+    "Russian": "Правила:\n- Этот обменный маршрут быстро проходит через 42 важные города мира\n- На каждой остановке вы можете покупать, обменивать и продавать товары за очень высокие цены\n- Продавать конечные продукты можно только в 7 столицах\n- Можно ускорить поездку, дав уголь, полученный в Ore Miner!\n\n"
   },
   "SR inventory": {
     "English": "Goods you currently have:\n{items}\n",
@@ -3692,7 +3692,7 @@
     "Italiano": "Prodotti finiti:\n",
     "Français": "",
     "Español": "",
-    "Russian": "Финальные продукты:\n"
+    "Russian": "Конечные продукты:\n"
   },
   "SR inventory next stop": {
     "English": "next stop",
@@ -3713,7 +3713,7 @@
     "Italiano": "Terreni della città:\n{state}\n",
     "Français": "",
     "Español": "",
-    "Russian": "Земля города:\n{state}\n"
+    "Russian": "Землевладелец города:\n{state}\n"
   },
   "SR travelling": {
     "English": "We're currently travelling to {next_station}...\n",
@@ -3741,7 +3741,7 @@
     "Italiano": "La {cenbank} vi dà il benvenuto alla nostra capitale, {statname}.\nPotete comprare {rawmatname}, ottenere {prod1name} e {prod2name}, oppure potete vendere qualsiasi prodotto finito.\n",
     "Français": "",
     "Español": "",
-    "Russian": "Центральный банк {cenbank} приветствует вас в нашей столице, {statname}.\nВы можете купить {rawmatname}, получить {prod1name} и {prod2name}, или продать любой финальный продукт.\n"
+    "Russian": "Центральный банк {cenbank} приветствует вас в нашей столице, {statname}.\nВы можете купить {rawmatname}, получить {prod1name} и {prod2name}, или продать любой конечный продукт.\n"
   },
   "SR available investments": {
     "English": "\nInvestments left: {num}",
@@ -3776,7 +3776,7 @@
     "Italiano": "Puoi solo vendere in città capitali!",
     "Français": "",
     "Español": "",
-    "Russian": "Продавать можно только в столичных городах!"
+    "Russian": "Продавать можно только в столицах!"
   },
   "SR error requirement not met": {
     "English": "You don't have the necessary item!",
@@ -3860,7 +3860,7 @@
     "Italiano": "Benvenutə alla tua Catena di Negozi!\nApri negozi nella fazione corrente e assumi fino a 10 lavoratori per ognuno di essi.\nPagali bene e ottieni blocchi in cambio! Competi con la tua fazione per il miglior salario, ma non sopraffare i tuoi compagni, potresti tagliarli fuori!\n\n",
     "Français": "",
     "Español": "",
-    "Russian": "Добро пожаловать в вашу Shop Chain!\nОткрывайте магазины в вашей текущей фракции и нанимайте до 10 работников на магазин.\nПлатите им честную зарплату и получайте блоки взамен. Соревнуйтесь в своей фракции за лучшую зарплату, но не перегружайте других членов фракции, иначе их могут вытеснить!\n\n"
+    "Russian": "Добро пожаловать в ваш Shop Chain!\nОткрывайте магазины в вашей текущей фракции и нанимайте до 10 работников на магазин.\nПлатите им честную зарплату и получайте блоки взамен. Соревнуйтесь в своей фракции за лучшую зарплату, но не перегружайте других членов фракции, иначе их могут вытеснить!\n\n"
   },
   "SC player data": {
     "English": "You currently employ {employees} people at {current_wage} daily wage.\nYou own {tot_shops} shops, so divided:\n[{shops_FED} | {shops_ECB} | {shops_PBC} | {shops_RBA} | {shops_CBB} | {shops_RBI} | {shops_ACB}]\nRecent paiments:\n2 days ago {recent_payments} now",
@@ -3979,7 +3979,7 @@
     "Italiano": "Apri 100 negozi totali per iniziare ad accumulare capitale e fare saldi!",
     "Français": "",
     "Español": "",
-    "Russian": "Откройте 100 магазинов всего, чтобы начать накапливать капитал и делать распродажи!"
+    "Russian": "Откройте 100 магазинов, чтобы начать накапливать капитал и делать распродажи!"
   },
   "SC button sale available": {
     "English": "Do sales!",
@@ -4021,7 +4021,7 @@
     "Italiano": "Servono almeno 100 negozi per fare i saldi",
     "Français": "",
     "Español": "",
-    "Russian": "Нужно как минимум 100 магазинов, чтобы делать распродажи"
+    "Russian": "Нужно как минимум 100 магазинов, чтобы проводить распродажи"
   },
   "minis button manual": {
     "English": "Manual",
@@ -4105,7 +4105,7 @@
     "Italiano": "Hai trovato {coins} {coin_type} di Coinopoly!",
     "Français": "",
     "Español": "",
-    "Russian": "Вы нашли {coins} {coin_type} в Coinopoly!"
+    "Russian": "Вы нашли {coins} {coin_type} для Coinopoly!"
   },
   "mystery prize crypto each": {
     "English": "You found {Solana} Solana, {Litecoin} Litecoin, {Polkadot} Polkadot, {Terra} Terra, {BitTorrent} BitTorrent, {Shiba} Shiba, {Dogecoin} Dogecoin, {Filecoin} Filecoin, {IdleCoin} IdleCoin, {Bitcoin} Bitcoin, {Ada} Ada, {Tether} Tether, {Ether} Ether of Coinopoly!",
@@ -4210,14 +4210,14 @@
     "Italiano": "Stagionale",
     "Français": "",
     "Español": "",
-    "Russian": "Сезонная"
+    "Russian": "Сезоны"
   },
   "Gearup season top": {
     "English": "You're the captain of your faction, you can't gear up!",
     "Italiano": "Sei capitano della tua fazione, non puoi salire di marcia!",
     "Français": "",
     "Español": "",
-    "Russian": "Вы капитан своей фракции, вы не можете повышать передачу!"
+    "Russian": "Вы капитан своей фракции, вы не можете повышать gear!"
   },
   "Month": {
     "English": [
@@ -4291,7 +4291,7 @@
     "Italiano": "Costo in blocchi per Migliorare la produzione è molto aumentato in base al livello marcia.",
     "Français": "",
     "Español": "",
-    "Russian": "Стоимость блоков для улучшения производства сильно увеличивается в зависимости от уровня передачи."
+    "Russian": "Стоимость блоков для улучшения производства сильно увеличивается в зависимости от уровня gear."
   },
   "TV Seasonal Top3 Factions Biweek Shrink": {
     "English": "Storage sizes of 1st, 2nd and 3rd factions markets shrink 90%, 80% and 50% respectively every ~2 weeks.",
@@ -4417,7 +4417,7 @@
     "Italiano": "Livello di produzione: {prod}\nLivello di marcia: {gear}\n",
     "Français": "",
     "Español": "",
-    "Russian": "Уровень производства: {prod}\nУровень передачи: {gear}\n"
+    "Russian": "Уровень производства: {prod}\nУровень gear: {gear}\n"
   },
   "PP SC highscore": {
     "English": "Shop Chain highscore: {score}\n\n",
@@ -4431,7 +4431,7 @@
     "Italiano": "Pioniere dal {creation_date}\nLivello marcia da pioniere {gear_level}\n",
     "Français": "",
     "Español": "",
-    "Russian": "Пионер с {creation_date}\nУровень передачи пионера {gear_level}\n"
+    "Russian": "Пионер с {creation_date}\nУровень gear пионера {gear_level}\n"
   },
   "PP Info": {
     "English": "Account created on {creation_date}\nLast activity on {lastlogin_date}\n",
@@ -4526,7 +4526,7 @@
   "mnm user debt": {
     "English": "Debt: {debt} L, plase repay with shards or gearing up!",
     "Italiano": "Debiti: {debt} L, ripagali con i cocci o aumentando marcia!",
-    "Russian": "Долг: {debt} L, пожалуйста, погасите осколками или повышением передачи!"
+    "Russian": "Долг: {debt} L, пожалуйста, погасите осколками или повышением gear!"
   },
   "mnm April Fools": {
     "English": "Did you enjoy the season? Because it was the last!\n\nThe game became too complex, so I decided to make it simple again, surprise!\nNo more seasons, no more factions, and most importatly no more minigames!\nIn this new, perfected version of IdleBank Alpha, blocks are generated!\nOh and I almost forgot, screw the automated market, let's go back to block requests, like the good old times!\n\nI hope you enjoy the new IB Alpha, because we won't go back!",
@@ -4581,37 +4581,37 @@
   "mnm shard name green": {
     "English": "HillGreen",
     "Italiano": "VerdeColle",
-    "Russian": "ХолмЗеленый"
+    "Russian": "ХолмовоЗеленый"
   },
   "mnm shard name blue": {
     "English": "SeaBlue",
     "Italiano": "BlueMare",
-    "Russian": "МореСинее"
+    "Russian": "СинеМорской"
   },
   "mnm shard name yellow": {
     "English": "SandYellow",
     "Italiano": "GialloSabbia",
-    "Russian": "ПесокЖелтый"
+    "Russian": "ПесочноЖёлтый"
   },
   "mnm shard name cyan": {
     "English": "JadeCyan",
     "Italiano": "CianoGiada",
-    "Russian": "НефритЦиан"
+    "Russian": "НефритовоГолубой"
   },
   "mnm shard name magenta": {
     "English": "BloomMagenta",
     "Italiano": "MagentaFiore",
-    "Russian": "ЦветокМаджента"
+    "Russian": "ЦветочноПурпурный"
   },
   "mnm shard name silver": {
     "English": "ChestSilver",
     "Italiano": "ArgentoScrigno",
-    "Russian": "СереброСундук"
+    "Russian": "СокровещноСеребряный"
   },
   "mnm shard name gold": {
     "English": "ViceGold",
     "Italiano": "OroVizio",
-    "Russian": "ЗолотоПорок"
+    "Russian": "ПорочноЗолотой"
   },
   "mnm Market Reserve": {
     "English": "Reserve for loans",
@@ -4621,12 +4621,12 @@
   "mnm Generator info": {
     "English": "The block generator will create blocks every hour.\nPlease, make sure the generator board has enough space for the new blocks!\n\nYou can take the finished blocks from the board here or in the main menu. Any unfinished production will be converted to blocks shards and sold to the market.\nYou can increase the block production and the board storage size!\n\n",
     "Italiano": "Il generatore di blocchi creerà blocchi ogni ora.\nRicorda di controllare che la tavola abbia abbastanza spazio per i nuovi blocchi!\n\nPuoi prendere i blocchi lavorati sulla tavola sia qui che nel menù principale. La produzione non terminata verrà convertita in cocci di blocchi, subito venduti al mercato.\nPuoi aumentare la produzione di blocchi e la dimensione della tavola!\n\n",
-    "Russian": "Генератор блоков будет создавать блоки каждый час.\nПожалуйста, убедитесь, что на доске генератора достаточно места для новых блоков!\n\nВы можете забрать готовые блоки с доски здесь или в главном меню. Любая незавершенная продукция будет превращена в осколки блоков и продана на рынке.\nВы можете увеличить производство блоков и размер хранения доски!\n\n"
+    "Russian": "Генератор блоков будет создавать блоки каждый час.\nПожалуйста, убедитесь, что на доске генератора достаточно места для новых блоков!\n\nВы можете забрать готовые блоки с доски здесь или в главном меню. Любая незавершенная продукция будет превращена в осколки блоков и продана на рынке.\nВы можете увеличить производство блоков и вместимость доски!\n\n"
   },
   "mnm Real Estate info": {
     "English": "Rather than keeping money around, you can invest them long-term here!\nIf you keep your real estate empty, its value will increase by 1% every 8 hours.\nThen, you can put your property for rent! This will decrease its value 8 hours, but you will collect that value as rent, although with a 20% tax!\n\nTip: to turn a profit, let the value rise for two weeks before renting out!\n\n",
     "Italiano": "Invece di tenere i soldi fermi, puoi investirli a lungo termine qui!\nSe tieni le tue proprietà vuote, il loro valore aumenterà dell'1% ogni 8 ore.\nPoi, puoi metterle in affitto! Questo farà scendere il loro valore 8 ore, ma il valore perso sarà ottenuto come affitto, seppur con una tassa del 20%!\n\nConsiglio: per realizzare profitto, lascia aumentare il valore per 2 settimane prima di affittare!\n\n",
-    "Russian": "Вместо того чтобы держать деньги, вы можете инвестировать их здесь на долгий срок!\nЕсли оставить недвижимость пустой, ее стоимость будет расти на 1% каждые 8 часов.\nЗатем вы можете сдавать ее в аренду! Это уменьшит стоимость на 8 часов, но вы получите эту стоимость как аренду, хотя и с налогом 20%!\n\nСовет: чтобы получить прибыль, дайте стоимости расти две недели перед сдачей!\n\n"
+    "Russian": "Вместо того чтобы держать деньги при себе, вы можете инвестировать их здесь на долгий срок!\nЕсли оставить недвижимость пустой, ее стоимость будет расти на 1% каждые 8 часов.\nЗатем вы можете сдавать ее в аренду! Это уменьшит стоимость на 8 часов, но вы получите эту стоимость как аренду, хотя и с налогом 20%!\n\nСовет: чтобы получить прибыль, позвольте стоимости расти две недели перед сдачей!\n\n"
   },
   "mnm Real Estate current": {
     "English": "Your property value: {value} L\n",
