@@ -682,8 +682,8 @@ def can_sell(chat_id, section, quantity=1):
     general_subtotal = best.get_price_for_market(chat_id, section) * quantity
     if data["money"] - general_subtotal < 0:
         return False
-    if data["blocks"] + quantity > block_limit * 10:
-        return False
+    #if data["blocks"] + quantity > block_limit * 10:
+    #    return False
 
     return True
 
@@ -698,8 +698,8 @@ def can_buy(chat_id, section, quantity=1):
 
     data = dbr.get_market_data(section)
     general_subtotal = best.get_price_for_market(chat_id, section) * quantity
-    if data["money"] + general_subtotal >= money_limit:
-        return False
+    #if data["money"] + general_subtotal >= money_limit:
+    #    return False
     if data["blocks"] - quantity < 0:
         return False
 
@@ -716,14 +716,14 @@ def market_buysell_limits(chat_id, section):
 
     buy_limit = max(0, min([
         stored_blocks,  # blocks in the market
-        (money_limit - stored_money) // market_price,  # money market can take
+        #(money_limit - stored_money) // market_price,  # money market can take
         player_balance // user_price  # blocks player can afford
     ]))
     if not tv.can_use_market(chat_id, best.season_upget()):
         buy_limit = 0
 
     sell_limit = max(0, min([
-        block_limit * 10 - stored_blocks,  # space left
+        #block_limit * 10 - stored_blocks,  # space left
         stored_money // market_price,  # blocks  market can afford
         player_blocks  # blocks currently owned by the player
     ]))
@@ -738,8 +738,8 @@ def market_sell(chat_id, section, quantity):
     general_subtotal = best.get_price_for_market(chat_id, section) * quantity
     if data["money"] - general_subtotal < 0:
         return uistr.get(chat_id, "Market empty money")
-    if data["blocks"] + quantity > block_limit * 10:
-        return uistr.get(chat_id, "Market full blocks")
+    #if data["blocks"] + quantity > block_limit * 10:
+    #    return uistr.get(chat_id, "Market full blocks")
     block_type = conv.name(block=section)["currency"]
     if not dbr.check_mmmb(chat_id, block_type, quantity):
         return uistr.get(chat_id, "No MMMB found")
@@ -761,8 +761,8 @@ def market_buy(chat_id, section, quantity):
         chat_id, section)
     data = dbr.get_market_data(section)
     general_subtotal = best.get_price_for_market(chat_id, section) * quantity
-    if data["money"] + general_subtotal >= money_limit:
-        return uistr.get(chat_id, "Market full money")
+    #if data["money"] + general_subtotal >= money_limit:
+    #    return uistr.get(chat_id, "Market full money")
     if data["blocks"] - quantity < 0:
         return uistr.get(chat_id, "Market empty blocks")
     money_payment = user_price * quantity
